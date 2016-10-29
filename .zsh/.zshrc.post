@@ -5,7 +5,7 @@
 ### GRML OVERRIDES ###
 
 # Custom prompt
-# prompt sfz
+prompt sfz
 
 # No shared history between terminal sessions
 unsetopt share_history
