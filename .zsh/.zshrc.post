@@ -1,0 +1,96 @@
+## CUSTOM ZSHRC ##############################################################
+#author# Mike Reinhardt
+
+
+### GRML OVERRIDES ###
+
+# Custom prompt
+# prompt sfz
+
+# No shared history between terminal sessions
+unsetopt share_history
+
+#k# Perform abbreviation expansion
+bind2maps emacs viins       -- -s '^xx' zleiab
+
+
+### ALIASES ###
+
+alias cmd='command'
+alias g=$(which git)
+alias la='command ls -laFh'
+alias lsb="echo 'Largest files'; command ls -flh *(.OL[1,10])"
+alias lst="echo 'Smallest files'; command ls -Srl *(.oL[1,10])"
+alias lsn="echo 'Newest files'; command ls -rtlh *(D.om[1,10])"
+alias lso="echo 'Oldest files'; command ls -rtlh *(D.Om[1,10])"
+alias lsnd="echo 'Newest dirs'; command ls -rthdl *(/om[1,10]) .*(D/om[1,10])"
+alias lsod="echo 'Oldest dirs'; command ls -rthdl *(/Om[1,10]) .*(D/Om[1,10])"
+alias tis="$(which tig) status"
+alias vm=$(which vim)
+
+
+### FUNCTIONS ###
+
+# Print ANSI/VT100 256 color table
+colortable() {
+	for code in {0..255}; do
+		pcode=$(printf "%03d" $code)
+        echo -ne "\e[07;38;05;${code}m $pcode"
+        if [[ $(( ($code + 1) % 16 )) -eq 0 ]]; then
+            echo -e "\e[38;48;05;00m"
+        fi
+    done
+    echo
+}
+
+# Convert integer to human readable bytes
+hb() {
+	awk '
+		function human(x) {
+			if (x<1000) {return x} else {x/=1024}
+			s="kMGTEPYZ";
+			while (x>=1000 && length(s)>1)
+				{x/=1024; s=substr(s,2)}
+			return int(x+0.5) substr(s,1,1)
+		}
+		{sub(/^[0-9]+/, human($1)); print}'
+}
+
+help-important-commands() {
+    echo -e "
+    Add commands that you want to always be available in history to ~/.important_commands
+    "
+}
+
+# Convert hex colors to rgb
+hex2rgb() {
+	hexinput=`echo $1 | sed 's/^#//g' | tr '[:lower:]' '[:upper:]'`
+    rh=`echo $hexinput | cut -c-2`
+    gh=`echo $hexinput | cut -c3-4`
+    bh=`echo $hexinput | cut -c5-6`
+
+    r=`echo "ibase=16; $rh" | bc`
+    g=`echo "ibase=16; $gh" | bc`
+    b=`echo "ibase=16; $bh" | bc`
+
+    echo "rgb($r, $g, $b)"
+}
+
+# SUPERMAN! (80 width centered man pages)
+man() {
+    MANWIDTH=${MANWIDTH:-80}
+    indent_count=$(echo "($(tput cols) - 80) / 2" | bc)
+    indent=$(seq -s' ' ${indent_count} | tr -d '[:digit:]')
+    command man $@ | sed "s/^/${indent}/" | less -isR
+}
+
+# Detailed memory footprint of a process
+pmem() {
+    sudo footprint -s $@ | egrep -v ' 0 bytes.* 0 bytes.* 0 bytes.* 0 bytes'
+}
+
+
+### PLUGINS ###
+
+
+## END CUSTOM ZSHRC ##########################################################
