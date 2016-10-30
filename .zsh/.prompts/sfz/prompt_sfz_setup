@@ -98,12 +98,12 @@ prompt_sfz_precmd() {
     prompt_sfz_jobs=""
     [[ -n $jobs ]] && prompt_sfz_jobs="%F{242}[%F{magenta}"${(j:,:)jobs}"%F{242}]%f "
 
-    PROMPT="$prompt_sfz_jobs%F{yellow}$prompt_sfz_tmux%F{242}$(prompt_sfz_pwd) %(?..%B%F{red}«%?» )%B%F{blue}$PROMPT_SFZ_CHAR%f%b "
+    PROMPT="$prompt_sfz_jobs%F{yellow}$prompt_sfz_tmux%F{242}$(prompt_sfz_pwd) %(?..%B%F{red}%? )%B%F{blue}$PROMPT_SFZ_CHAR%f%b "
 
     prompt_sfz_virtualenv=""
     [[ "$PROMPT_SFZ_VIRTUALENV_DISABLED" == '' && "$VIRTUAL_ENV" != '' ]] && prompt_sfz_virtualenv=" %f(%F{green}${VIRTUAL_ENV:t}%f)"
 
-    RPROMPT="%F{cyan}$(prompt_sfz_cmd_exec_time)%F{242}$vcs_info_msg_0_$(prompt_sfz_git_dirty)$prompt_sfz_virtualenv$prompt_sfz_host%f"
+    RPROMPT="%F{cyan}$(prompt_sfz_cmd_exec_time)%F{242}$vcs_info_msg_0_$(prompt_sfz_git_dirty)$prompt_sfz_virtualenv$prompt_sfz_ssh%f"
 
     unset cmd_timestamp # reset value since `preexec` isn't always triggered
 }
@@ -122,7 +122,7 @@ prompt_sfz_setup() {
     zstyle ':vcs_info:git*' formats ' %b'
     zstyle ':vcs_info:git*' actionformats ' %b|%a'
 
-    [[ "$SSH_CONNECTION" != '' ]] && prompt_sfz_host=" %F{yellow}%m%f"
+    [[ "$SSH_CONNECTION" != '' ]] && prompt_sfz_ssh=" %F{yellow}%n@%m%f"
     [[ "$TMUX" != '' ]] && prompt_sfz_tmux=$PROMPT_SFZ_TMUX
 }
 
