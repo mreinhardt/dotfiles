@@ -9,6 +9,29 @@ PROMPT_SFZ_CHAR=${PROMPT_SFZ_CHAR-"§"}
 PROMPT_SFZ_TMUX=${PROMPT_SFZ_TMUX-"™ "}
 PROMPT_SFZ_PATH_UNTRUNCATED=${PROMPT_SFZ_PATH_UNTRUNCATED-""}
 
+# subzero color palette, names correspond to terminal names but may not
+# represent actual color.
+prompt_sfz_colors () {
+    case $1 in
+        grey)     echo "{237}";;
+        bgrey)    echo "{239}";;
+        red)      echo "{063}";;
+        bred)     echo "{105}";;
+        green)    echo "{036}";;
+        bgreen)   echo "{072}";;
+        yellow)   echo "{152}";;
+        byellow)  echo "{115}";;
+        blue)     echo "{024}";;
+        bblue)    echo "{067}";;
+        magenta)  echo "{060}";;
+        bmagenta) echo "{068}";;
+        cyan)     echo "{103}";;
+        bcyan)    echo "{110}";;
+        white)    echo "{251}";;
+        bwhite)   echo "{254}";;
+    esac
+}
+
 prompt_sfz_help() {
   cat <<'EOF'
 This is a one line prompt that tries to stay out of your face. It utilizes
@@ -48,13 +71,13 @@ prompt_sfz_git_dirty() {
     local git_status="$(git status --porcelain --ignore-submodules | cut -c1-2 | grep -o . | sort -u | paste -s -d'\0' - | tr -d ' ')"
     [[ "${git_status}" == "" ]] && echo "" && return
     # colorize indicators by status
-    echo " ${git_status}%f" | sed -e 's/?/%F{white}?/' \
-                                  -e 's/M/%F{yellow}M/' \
-                                  -e 's/A/%F{green}A/' \
-                                  -e 's/D/%F{red}D/' \
-                                  -e 's/R/%F{magenta}R/' \
-                                  -e 's/C/$F{cyan}C/' \
-                                  -e 's/U/%F{blue}U/'
+    echo " ${git_status}%f" | sed -e "s/?/%F$(prompt_sfz_colors white)?%f/" \
+                                  -e "s/M/%B%F$(prompt_sfz_colors byellow)M%f%b/" \
+                                  -e "s/A/%B%F$(prompt_sfz_colors bgreen)A%f%b/" \
+                                  -e "s/D/%B%F$(prompt_sfz_colors bred)D%f%b/" \
+                                  -e "s/R/%F$(prompt_sfz_colors magenta)R%f/" \
+                                  -e "s/C/%F$(prompt_sfz_colors cyan)C%f/" \
+                                  -e "s/U/%B%F$(prompt_sfz_colors bblue)U%f%b/"
 }
 
 # displays the exec time of the last command if set threshold was exceeded
@@ -96,14 +119,21 @@ prompt_sfz_precmd() {
     }
     # print with [ ] and comma separated
     prompt_sfz_jobs=""
-    [[ -n $jobs ]] && prompt_sfz_jobs="%F{242}[%F{magenta}"${(j:,:)jobs}"%F{242}]%f "
+    [[ -n $jobs ]] && prompt_sfz_jobs="%F$(prompt_sfz_colors bgrey)[%F$(prompt_sfz_colors magenta)"${(j:,:)jobs}"%F$(prompt_sfz_colors bgrey)]%f "
 
-    PROMPT="$prompt_sfz_jobs%F{yellow}$prompt_sfz_tmux%F{242}$(prompt_sfz_pwd) %(?..%B%F{red}%? )%B%F{blue}$PROMPT_SFZ_CHAR%f%b "
+    local prompt_sfz_head
+    local prompt_sfz_tail
+    prompt_sfz_prompt_head="$prompt_sfz_jobs%F$(prompt_sfz_colors yellow)$prompt_sfz_tmux%F$(prompt_sfz_colors bgrey)$(prompt_sfz_pwd)"
+    prompt_sfz_prompt_tail="%(?..%B%F$(prompt_sfz_colors red)%?%f%b )%(!.%B%F$(prompt_sfz_colors bblue).%F$(prompt_sfz_colors blue))$PROMPT_SFZ_CHAR%f%b"
+    PROMPT="$prompt_sfz_prompt_head $prompt_sfz_prompt_tail "
+    export PROMPT_SFZ_COLORS=$prompt_sfz_colors
 
     prompt_sfz_virtualenv=""
-    [[ "$PROMPT_SFZ_VIRTUALENV_DISABLED" == '' && "$VIRTUAL_ENV" != '' ]] && prompt_sfz_virtualenv=" %f(%F{green}${VIRTUAL_ENV:t}%f)"
+    if [[ "$PROMPT_SFZ_VIRTUALENV_DISABLED" == '' && "$VIRTUAL_ENV" != '' ]]; then
+        prompt_sfz_virtualenv=" %f(%B%F$(prompt_sfz_colors byellow)${VIRTUAL_ENV:t}%f%b)"
+    fi
 
-    RPROMPT="%F{cyan}$(prompt_sfz_cmd_exec_time)%F{242}$vcs_info_msg_0_$(prompt_sfz_git_dirty)$prompt_sfz_virtualenv$prompt_sfz_ssh%f"
+    RPROMPT="%B%F$(prompt_sfz_colors bmagenta)$(prompt_sfz_cmd_exec_time)%f%b%F$(prompt_sfz_colors green)$vcs_info_msg_0_$(prompt_sfz_git_dirty)$prompt_sfz_virtualenv$prompt_sfz_ssh%f"
 
     unset cmd_timestamp # reset value since `preexec` isn't always triggered
 }
@@ -122,8 +152,12 @@ prompt_sfz_setup() {
     zstyle ':vcs_info:git*' formats ' %b'
     zstyle ':vcs_info:git*' actionformats ' %b|%a'
 
-    [[ "$SSH_CONNECTION" != '' ]] && prompt_sfz_ssh=" %F{yellow}%n@%m%f"
-    [[ "$TMUX" != '' ]] && prompt_sfz_tmux=$PROMPT_SFZ_TMUX
+    if [[ "$SSH_CONNECTION" != '' ]]; then
+        prompt_sfz_ssh=" %F$(prompt_sfz_colors bcyan)%n@%m%f"
+    fi
+    if [[ "$TMUX" != '' ]]; then
+        prompt_sfz_tmux=$PROMPT_SFZ_TMUX
+    fi
 }
 
 prompt_sfz_setup "$@"
