@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-#
+
 function displaytime {
   local T=$1
   local D=$((T/60/60/24))
@@ -11,6 +11,10 @@ function displaytime {
   (( $M > 1 )) && printf '%dm' $M
   printf '%ds' $S
 }
-uptime_secs="$(cat /proc/uptime | cut -d' ' -f1)"
+if [[ $(uname) == "Darwin" ]]; then
+    uptime_secs="$(sysctl -n kern.boottime | cut -c14-18)"
+else
+    uptime_secs="$(cat /proc/uptime | cut -d' ' -f1)"
+fi
 echo -n $(displaytime ${uptime_secs%%.*})
 

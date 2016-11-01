@@ -1,7 +1,12 @@
 #!/usr/bin/env zsh
 
-procs=$(nproc --all)
-cur_loadavg=$(cat /proc/loadavg | cut -d' ' -f1-3)
+if [[ $(uname) == "Darwin" ]]; then
+    procs=$(sysctl hw.ncpu | cut -d' ' -f2)
+    cur_loadavg=$(sysctl -n vm.loadavg | cut -d' ' -f2-4)
+else
+    procs=$(nproc --all)
+    cur_loadavg=$(cat /proc/loadavg | cut -d' ' -f1-3)
+fi
 normalized_loadavg=$(echo $cur_loadavg | egrep -o "[0-9]+[.][0-9]+" | xargs -I{} sh -c "echo {}/$procs | bc -l")
 for nl in $(echo $normalized_loadavg | sed "s/'//g"); do
     if [[ $nl -gt 1.5 ]]; then
