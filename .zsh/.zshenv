@@ -6,3 +6,5 @@ export PAGER=$(which less)
 
 fpath=( "${ZDOTDIR:-$HOME}/.zfunctions" $fpath )
 
+source ${ZDOTDIR:-$HOME}/.zshenv.grml
+
