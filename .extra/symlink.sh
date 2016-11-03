@@ -3,7 +3,6 @@
 
 ### zsh
 
-ln -sfv "$DOTFILES_REPO_DIR/.important_commands" "$HOME"
 ln -sfv "$DOTFILES_REPO_DIR/.zshenv" "$HOME"
 
 # Can't symlink .zsh directly since files like .zsh_history are added dynamically
