@@ -1,5 +1,8 @@
 ## CUSTOM ZSHRC ##############################################################
 #author# Mike Reinhardt
+# NOTE: Do not modify this file unless planning to commit to git.
+#       Untracked local customizations may be added to:
+#           ${ZDOTDIR:-HOME}/.zshrc.local
 
 
 ### GRML OVERRIDES ###
@@ -12,6 +15,21 @@ unsetopt share_history
 
 #k# Perform abbreviation expansion
 bind2maps emacs viins       -- -s '^xx' zleiab
+
+## Unset debian aliases
+if [[ -r /etc/debian_version ]] ; then
+    unset acs
+    unset acsh
+    unset acp
+    unset adg
+    unset agi
+    unset ati
+    unset ag
+    unset au
+    unset up
+    unset dbp
+    unset ge
+fi
 
 
 ### ALIASES ###
@@ -26,6 +44,7 @@ alias lso="echo 'Oldest files'; command ls -rtlh *(D.Om[1,10])"
 alias lsnd="echo 'Newest dirs'; command ls -rthdl *(/om[1,10]) .*(D/om[1,10])"
 alias lsod="echo 'Oldest dirs'; command ls -rthdl *(/Om[1,10]) .*(D/Om[1,10])"
 alias tis="$(which tig) status"
+alias vag="$(which vagrant)"
 alias vm=$(which vim)
 
 
