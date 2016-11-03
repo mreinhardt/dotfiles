@@ -7,5 +7,5 @@ git_cmd () {
 # Update dotfiles repo itself.
 if [ -d "$DOTFILES_REPO_DIR/.git" ]; then
     git_cmd fetch origin
-    git_cmd reset --hard origin/master
+    git_cmd pull origin master
 fi
