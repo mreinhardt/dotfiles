@@ -18,17 +18,17 @@ bind2maps emacs viins       -- -s '^xx' zleiab
 
 ## Unset debian aliases
 if [[ -r /etc/debian_version ]] ; then
-    unset acs
-    unset acsh
-    unset acp
-    unset adg
-    unset agi
-    unset ati
-    unset ag
-    unset au
-    unset up
-    unset dbp
-    unset ge
+    unalias acs
+    unalias acsh
+    unalias acp
+    unalias adg
+    unalias agi
+    unalias ati
+    unalias ag
+    unalias au
+    unalias up
+    unalias dbp
+    unalias ge
 fi
 
 
