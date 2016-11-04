@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-if [[ $(uname) == "Darwin" ]]; then
+if [[ $(uname -s) == "Darwin" ]]; then
     procs=$(sysctl hw.ncpu | cut -d' ' -f2)
     cur_loadavg=$(sysctl -n vm.loadavg | cut -d' ' -f2-4)
 else

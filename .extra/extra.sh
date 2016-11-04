@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
 # Install custom extra stuff.
 mkdir -p "$DOTFILES_EXTRA_DIR"

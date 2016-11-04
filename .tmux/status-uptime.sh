@@ -11,7 +11,7 @@ function displaytime {
   (( $M > 1 )) && printf '%dm' $M
   printf '%ds' $S
 }
-if [[ $(uname) == "Darwin" ]]; then
+if [[ $(uname -s) == "Darwin" ]]; then
     uptime_secs="$(sysctl -n kern.boottime | cut -c14-18)"
 else
     uptime_secs="$(cat /proc/uptime | cut -d' ' -f1)"

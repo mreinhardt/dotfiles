@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/usr/bin/env zsh
 
 git_cmd () {
     $(which git) --work-tree="$DOTFILES_REPO_DIR" --git-dir="$DOTFILES_REPO_DIR/.git" $@

@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/usr/bin/env zsh
 
 # Get current dir so this script can be run from anywhere.
 export DOTFILES_REPO_DIR DOTFILES_EXTRA_DIR
