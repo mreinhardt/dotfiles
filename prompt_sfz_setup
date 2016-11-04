@@ -69,15 +69,34 @@ prompt_sfz_git_dirty() {
     command git rev-parse --is-inside-work-tree &>/dev/null || return
     # get set of status indicators
     local git_status="$(git status --porcelain --ignore-submodules | cut -c1-2 | grep -o . | sort -u | paste -s -d'\0' - | tr -d ' ')"
-    [[ "${git_status}" == "" ]] && echo "" && return
-    # colorize indicators by status
-    echo " ${git_status}%f" | sed -e "s/?/%F$(prompt_sfz_colors white)?%f/" \
-                                  -e "s/M/%B%F$(prompt_sfz_colors byellow)M%f%b/" \
-                                  -e "s/A/%B%F$(prompt_sfz_colors bgreen)A%f%b/" \
-                                  -e "s/D/%B%F$(prompt_sfz_colors bred)D%f%b/" \
-                                  -e "s/R/%F$(prompt_sfz_colors magenta)R%f/" \
-                                  -e "s/C/%F$(prompt_sfz_colors cyan)C%f/" \
-                                  -e "s/U/%B%F$(prompt_sfz_colors bblue)U%f%b/"
+    # set ahead or behind upstream count
+    local git_ahead=$(git log --oneline @{u}.. 2> /dev/null | wc -l | tr -d '\n')
+    local git_behind=$(git log --oneline ..@{u} 2> /dev/null | wc -l | tr -d '\n')
+    if [[ $git_ahead -gt 0 ]]; then
+        local git_upstream_diff="%F$(prompt_sfz_colors bgreen)+$git_ahead"
+    elif [[ $git_behind -gt 0 ]]; then
+        local git_upstream_diff="%F$(prompt_sfz_colors bred)-$git_behind"
+    else
+        local git_upstream_diff=""
+    fi
+    [[ "${git_status}" == "" && "${git_upstream_diff}" == "" ]] && echo "" && return
+    prompt_sfz_git_status=""
+    if [[ "${git_upstream_diff}" ]]; then
+        prompt_sfz_git_status="${prompt_sfz_git_status} ${git_upstream_diff}"
+    fi
+    if [[ "${git_status}" ]]; then
+        # colorize indicators by status
+        local partial_git_status=$(echo " ${git_status}%f" | \
+                                   sed -e "s/?/%F$(prompt_sfz_colors white)?%f/" \
+                                       -e "s/M/%B%F$(prompt_sfz_colors byellow)M%f%b/" \
+                                       -e "s/A/%B%F$(prompt_sfz_colors bgreen)A%f%b/" \
+                                       -e "s/D/%B%F$(prompt_sfz_colors bred)D%f%b/" \
+                                       -e "s/R/%F$(prompt_sfz_colors magenta)R%f/" \
+                                       -e "s/C/%F$(prompt_sfz_colors cyan)C%f/" \
+                                       -e "s/U/%B%F$(prompt_sfz_colors bblue)U%f%b/")
+        prompt_sfz_git_status="${prompt_sfz_git_status}${partial_git_status}"
+    fi
+    echo "$prompt_sfz_git_status"
 }
 
 # displays the exec time of the last command if set threshold was exceeded
