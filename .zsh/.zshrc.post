@@ -95,6 +95,9 @@ hex2rgb() {
     echo "rgb($r, $g, $b)"
 }
 
+# View Markdown
+mk () { pandoc $1 | lynx -stdin }
+
 # SUPERMAN! (80 width centered man pages)
 sman() {
     MANWIDTH=${MANWIDTH:-80}
