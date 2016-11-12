@@ -13,3 +13,6 @@ DOTFILES_EXTRA_DIR="$HOME/.extra"
 . ${DOTFILES_REPO_DIR}/.extra/test.sh
 . ${DOTFILES_REPO_DIR}/.extra/extra.sh
 
+# Install custom vim configuration
+${DOTFILES_REPO_DIR}/.vim/install.sh
+
