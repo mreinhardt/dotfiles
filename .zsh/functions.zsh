@@ -2,8 +2,8 @@
 
 # Print ANSI/VT100 256 color table
 colortable() {
-	for code in {0..255}; do
-		pcode=$(printf "%03d" $code)
+    for code in {0..255}; do
+        pcode=$(printf "%03d" $code)
         echo -ne "\e[07;38;05;${code}m $pcode"
         if [[ $(( ($code + 1) % 16 )) -eq 0 ]]; then
             echo -e "\e[38;48;05;00m"
@@ -29,7 +29,7 @@ cx() {
           *.Z) uncompress $1;;
           *.7z) 7z x $1;;
           *) echo "'$1' cannot be extracted via >ex<";;
-		esac
+        esac
     else
         echo "'$1' is not a valid file"
     fi
@@ -46,15 +46,15 @@ dtree () {
 
 # Convert integer to human readable bytes
 hb() {
-	awk '
-		function human(x) {
-			if (x<1000) {return x} else {x/=1024}
-			s="kMGTEPYZ";
-			while (x>=1000 && length(s)>1)
-				{x/=1024; s=substr(s,2)}
-			return int(x+0.5) substr(s,1,1)
-		}
-		{sub(/^[0-9]+/, human($1)); print}'
+    awk '
+        function human(x) {
+            if (x<1000) {return x} else {x/=1024}
+            s="kMGTEPYZ";
+            while (x>=1000 && length(s)>1)
+                {x/=1024; s=substr(s,2)}
+            return int(x+0.5) substr(s,1,1)
+        }
+        {sub(/^[0-9]+/, human($1)); print}'
 }
 
 help-important-commands() {
@@ -65,7 +65,7 @@ help-important-commands() {
 
 # Convert hex colors to rgb
 hex2rgb() {
-	hexinput=`echo $1 | sed 's/^#//g' | tr '[:lower:]' '[:upper:]'`
+    hexinput=`echo $1 | sed 's/^#//g' | tr '[:lower:]' '[:upper:]'`
     rh=`echo $hexinput | cut -c-2`
     gh=`echo $hexinput | cut -c3-4`
     bh=`echo $hexinput | cut -c5-6`
