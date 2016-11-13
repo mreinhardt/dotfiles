@@ -17,6 +17,11 @@ mkdir -p "$HOME/.zsh/.zfunctions"
 ln -sfv "$DOTFILES_REPO_DIR/.zsh/.prompts/sfz/prompt_sfz_setup" "$HOME/.zsh/.zfunctions"
 
 
+### tig
+
+ln -sfv "$DOTFILES_REPO_DIR/.tigrc" "$HOME"
+
+
 ### tmux
 
 ln -sfv "$DOTFILES_REPO_DIR/.tmux.conf" "$HOME"
