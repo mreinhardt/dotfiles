@@ -1,0 +1,62 @@
+# [user]
+#     name = First Last
+#     email = flast@email.com
+
+[color]
+    branch = auto
+    diff = auto
+    interactive = auto
+    status = auto
+
+[alias]
+    st = status
+    s = status -sb
+    ad = add -NA :/
+    ci = commit
+    cam = commit -am
+    br = branch
+    co = checkout
+    sh = show -U2
+    df = diff -U2
+    dt = difftool
+    lg = log -p
+    lgr = log --pretty=format:'%C(cyan bold)%h%C(blue bold)%d %Creset%s (%C(green bold)%an%Creset, %C(yellow bold)%ad%Creset)' --graph --date=iso
+    lgn = log --pretty=format:'%C(cyan bold)%h%C(blue bold)%d %Creset%s (%C(green bold)%an%Creset, %C(yellow bold)%ad%Creset)' --graph --date=iso --no-merges
+    lgg = log --pretty=format:'%C(cyan bold)%h %C(blue bold)%s' --graph --date=iso --no-merges
+    fo = fetch origin
+    po = push origin HEAD:refs/for/master
+    am = commit --amend
+    aam = commit -a --amend
+    rbm = rebase origin/master
+    pd = push origin HEAD:refs/for/develop
+    rbd = rebase origin/develop
+    rbi = "!git rebase -ip HEAD~$1 #"
+    sp = stash pop
+    smu = submodule update --init
+    smur = submodule update --init --recursive
+    smeach = submodule foreach
+
+    ffs = flow feature start
+    fff = flow feature finish
+    fhs = flow hotfix start
+    fhf = flow hotfix finish
+
+[core]
+    editor = vim
+
+[diff]
+    context = 2
+
+[credential]
+    helper = cache --timeout=604800
+
+#[tig]
+#    show-date = yes         # Show commit date?
+#    author-width = 10       # Set width of the author column
+#    line-graphics = utf-8   # Enable graphics characters
+#    tab-size = 4            # Number of spaces per tab
+#    vertical-split = yes
+
+[push]
+    default = simple
+

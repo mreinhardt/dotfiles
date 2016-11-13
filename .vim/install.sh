@@ -18,7 +18,7 @@ cp "$HEREDIR/colors/*" "$INSTALLDIR/colors/."
 
 curl -fLo "$INSTALLDIR/autoload/plug.vim" --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-ln -sf "$HEREDIR/base.vimrc" "$INSTALLDIR/base.vimrc"
+ln -sfv "$HEREDIR/base.vimrc" "$INSTALLDIR/base.vimrc"
 
 if [[ $IS_SSH == true ]]; then
     VIMRC="$HEREDIR/.ssh.vimrc"
@@ -26,7 +26,7 @@ else
     VIMRC="$HEREDIR/.vimrc"
 fi
 echo $VIMRC
-ln -sf "$VIMRC" "$HOME/.vimrc"
+ln -sfv "$VIMRC" "$HOME/.vimrc"
 
 read -p "Install plugins? [yN]" INSTALL_PLUGINS
 if [[ $INSTALL_PLUGINS = "y" || $INSTALL_PLUGINS = "Y" ]]; then
