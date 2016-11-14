@@ -70,8 +70,8 @@ prompt_sfz_git_dirty() {
     # get set of status indicators
     local git_status="$(git status --porcelain --ignore-submodules | cut -c1-2 | grep -o . | sort -u | paste -s -d'\0' - | tr -d ' ')"
     # set ahead or behind upstream count
-    local git_ahead=$(git log --oneline @{u}.. 2> /dev/null | wc -l | tr -d '\n')
-    local git_behind=$(git log --oneline ..@{u} 2> /dev/null | wc -l | tr -d '\n')
+    local git_ahead="$(git log --oneline @{u}.. 2> /dev/null | wc -l | tr -d '\n')"
+    local git_behind="$(git log --oneline ..@{u} 2> /dev/null | wc -l | tr -d '\n')"
     if [[ $git_ahead -gt 0 ]]; then
         local git_upstream_diff="%F$(prompt_sfz_colors bgreen)+$git_ahead"
     elif [[ $git_behind -gt 0 ]]; then
@@ -86,7 +86,7 @@ prompt_sfz_git_dirty() {
     fi
     if [[ "${git_status}" ]]; then
         # colorize indicators by status
-        local partial_git_status=$(echo " ${git_status}%f" | \
+        local partial_git_status=$(echo "${git_status}%f" | \
                                    sed -e "s/?/%F$(prompt_sfz_colors white)?%f/" \
                                        -e "s/M/%B%F$(prompt_sfz_colors byellow)M%f%b/" \
                                        -e "s/A/%B%F$(prompt_sfz_colors bgreen)A%f%b/" \
@@ -94,9 +94,13 @@ prompt_sfz_git_dirty() {
                                        -e "s/R/%F$(prompt_sfz_colors magenta)R%f/" \
                                        -e "s/C/%F$(prompt_sfz_colors cyan)C%f/" \
                                        -e "s/U/%B%F$(prompt_sfz_colors bblue)U%f%b/")
-        prompt_sfz_git_status="${prompt_sfz_git_status}${partial_git_status}"
+        if [[ -n $prompt_sfz_git_status ]]; then
+            prompt_sfz_git_status="${partial_git_status}"
+        else
+            prompt_sfz_git_status="${prompt_sfz_git_status} ${partial_git_status}"
+        fi
     fi
-    echo "$prompt_sfz_git_status"
+    echo -n "$prompt_sfz_git_status"
 }
 
 # displays the exec time of the last command if set threshold was exceeded
