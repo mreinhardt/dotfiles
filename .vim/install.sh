@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 HEREDIR="$(cd "$(dirname "$0")" && pwd)"
 
-read -p "Install custom .vimrc and .vim directory files? [yN] " PROCEED
+echo -n "Install custom .vimrc and .vim directory files? [yN] "
+read PROCEED
 if [[ $PROCEED != "y" && $PROCEED != "Y" ]]; then exit; fi
 
-read -p "Installing to SSH server? [yN] " IS_SSH
+echo -n "Installing to SSH server? [yN] "
+read IS_SSH
 if [[ $IS_SSH = "y" || $IS_SSH = "Y" ]]; then
     INSTALLDIR="$HOME/.mvim"
     IS_SSH=true
@@ -28,7 +30,8 @@ fi
 echo $VIMRC
 ln -sfv "$VIMRC" "$HOME/.vimrc"
 
-read -p "Install plugins? [yN]" INSTALL_PLUGINS
+echo -n "Install plugins? [yN]"
+read INSTALL_PLUGINS
 if [[ $INSTALL_PLUGINS = "y" || $INSTALL_PLUGINS = "Y" ]]; then
     vim -u "$HOME/.vimrc" -c PlugInstall -c qa
 fi

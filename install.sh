@@ -9,7 +9,7 @@ DOTFILES_EXTRA_DIR="$HOME/.extra"
 . ${DOTFILES_REPO_DIR}/.extra/update.sh
 . ${DOTFILES_REPO_DIR}/.extra/copy.sh
 . ${DOTFILES_REPO_DIR}/.extra/symlink.sh
-. ${DOTFILES_REPO_DIR}/.extra/install.sh
+${DOTFILES_REPO_DIR}/.extra/install.sh
 . ${DOTFILES_REPO_DIR}/.extra/test.sh
 . ${DOTFILES_REPO_DIR}/.extra/extra.sh
 
