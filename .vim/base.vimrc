@@ -231,6 +231,11 @@ augroup resCur
   autocmd BufWinEnter * call ResCur()
 augroup END
 
+" Strip trailing whitespace
+if has('autocmd')
+    autocmd BufWritePre * :%s/\s\+$//e
+endif
+
 " Enable search highlighting.
 set hlsearch
 
