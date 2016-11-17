@@ -15,12 +15,12 @@ else
     IS_SSH=false
 fi
 
-mkdir -p "$INSTALLDIR/colors"
-cp "$HEREDIR/colors/*" "$INSTALLDIR/colors/."
-
 curl -fLo "$INSTALLDIR/autoload/plug.vim" --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ln -sfv "$HEREDIR/base.vimrc" "$INSTALLDIR/base.vimrc"
+
+mkdir -p "$INSTALLDIR/colors"
+cp -rn "$HEREDIR/colors/"* "$INSTALLDIR/colors/."
 
 if [[ $IS_SSH == true ]]; then
     VIMRC="$HEREDIR/.ssh.vimrc"
