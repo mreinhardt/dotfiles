@@ -82,7 +82,7 @@ nnoremap <Leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 let g:ctrlp_map = '<C-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g "'"
+let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g '
 
 " UltiSnips
 let g:UltiSnipsExpandTrigger = "<Tab>"
@@ -108,11 +108,5 @@ let g:syntastic_loc_list_height=5
 nmap <silent> e[ :lprev<CR>
 nmap <silent> e] :lnext<CR>
 
-" Evaluate Clojure buffers on load
-autocmd BufRead *.clj try | silent! Require | catch /^Fireplace/ | endtry
-
-" Filetypes
 filetype indent off
-au BufRead,BufNewFile *.sls set filetype=yaml
-au BufRead,BufNewFile *.erb set filetype=eruby.html
 

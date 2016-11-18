@@ -22,6 +22,9 @@ ln -sfv "$HEREDIR/base.vimrc" "$INSTALLDIR/base.vimrc"
 mkdir -p "$INSTALLDIR/colors"
 cp -rn "$HEREDIR/colors/"* "$INSTALLDIR/colors/."
 
+ln -sfv "$HEREDIR/ftdetect" "$INSTALLDIR/ftdetect"
+ln -sfv "$HEREDIR/ftplugin" "$INSTALLDIR/ftplugin"
+
 if [[ $IS_SSH == true ]]; then
     VIMRC="$HEREDIR/.ssh.vimrc"
 else
