@@ -444,6 +444,8 @@ nnoremap <Leader>b :ls<CR>:b<Space>
 
 " Tabs
 nnoremap <Leader>T :tabnew<CR>:b#<BAR>bd#<CR>
+nnoremap <Leader>. :tabnext<CR>
+nnoremap <Leader>, :tabprev<CR>
 
 " Move lines
 nnoremap <Leader>j :m .+1<CR>==
