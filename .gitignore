@@ -1,2 +1,4 @@
 *.local
+.vim/ftdetect/ftdetect
+.vim/ftplugin/ftplugin
 
