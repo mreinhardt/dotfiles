@@ -20,7 +20,7 @@ call plug#begin()
 Plug 'ervandew/supertab'
 Plug 'Valloric/YouCompleteMe'
 Plug 'SirVer/ultisnips'
-Plug 'kien/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all --no-update-rc' }
 Plug 'haya14busa/incsearch.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'tpope/vim-repeat'
@@ -78,12 +78,9 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 " YCM
 nnoremap <Leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-" CtrlP
-let g:ctrlp_map = '<C-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-let g:ctrlp_show_hidden = 1
+" FZF
+let g:fzf_layout = {'down': '~20%'}
+nnoremap <C-p> :FZF<CR>
 
 " UltiSnips
 let g:UltiSnipsExpandTrigger = "<Tab>"
@@ -106,8 +103,8 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_loc_list_height=5
 
-nmap <silent> e[ :lprev<CR>
-nmap <silent> e] :lnext<CR>
+nnoremap <silent> e[ :lprev<CR>
+nnoremap <silent> e] :lnext<CR>
 
 filetype indent off
 

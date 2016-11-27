@@ -30,6 +30,7 @@ if [[ $(uname -s) == "Darwin" ]]; then
                  coreutils \
                  curl \
                  fasd \
+                 fzf \
                  gnupg \
                  htop-osx \
                  leiningen \
