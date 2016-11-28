@@ -396,8 +396,8 @@ vnoremap <silent> y y`]
 vnoremap <silent> p p`]
 nnoremap <silent> p p`]
 
-" Toggle paste mode
-set pastetoggle=<Leader><Shift>v
+" Display
+nnoremap <Leader>l :redraw!<CR>
 
 " Writes and Quits
 nnoremap <Leader>q :q<CR>

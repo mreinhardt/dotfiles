@@ -23,6 +23,7 @@ Plug 'SirVer/ultisnips'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all --no-update-rc' }
 Plug 'haya14busa/incsearch.vim'
 Plug 'justinmk/vim-sneak'
+Plug 'mreinhardt/greplace.vim'
 Plug 'tpope/vim-repeat'
 Plug 'vim-scripts/ag.vim'
 Plug 'honza/vim-snippets'
@@ -81,6 +82,10 @@ nnoremap <Leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 " FZF
 let g:fzf_layout = {'down': '~20%'}
 nnoremap <C-p> :FZF<CR>
+
+" greplace
+let g:greplace_cmd='ag'
+let g:greplace_cmd_opts='--recurse --hidden --numbers --noheading'
 
 " UltiSnips
 let g:UltiSnipsExpandTrigger = "<Tab>"
