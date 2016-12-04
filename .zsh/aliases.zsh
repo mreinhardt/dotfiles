@@ -12,4 +12,5 @@ alias lsod="echo 'Oldest dirs'; command ls -rthdl *(/Om[1,10]) .*(D/Om[1,10])"
 alias tis="$(command -v tig) status"
 alias vag="$(command -v vagrant)"
 alias vm=$(command -v vim)
+alias nv=$(command -v nvim)
 

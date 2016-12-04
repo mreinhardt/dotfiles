@@ -35,6 +35,7 @@ if [[ $(uname -s) == "Darwin" ]]; then
                  htop-osx \
                  leiningen \
                  mobile-shell \
+                 neovim/neovim/neovim \
                  nginx \
                  node \
                  pandoc \

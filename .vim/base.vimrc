@@ -203,6 +203,9 @@ set nofoldenable
 " Enable mouse for scrolling and window resizing.
 " set mouse=a
 
+" Disable mouse explicitly
+set mouse=
+
 " Disable swap to prevent annoying messages.
 set noswapfile
 
@@ -212,7 +215,12 @@ set noswapfile
 "  :100 :  up to 100 lines of command-line history will be remembered
 "  %    :  saves and restores the buffer list
 "  n... :  where to save the viminfo files
-set viminfo='100,\"100,:100,%,n~/.viminfo
+" Also use different viminfo file for neovim
+if has('nvim')
+    set viminfo='100,\"100,:100,%,n~/.local/share/nvim/viminfo
+else
+    set viminfo='100,\"100,:100,%,n~/.viminfo
+endif
 
 " Restore cursor to previous location when reopening file
 function! ResCur()
