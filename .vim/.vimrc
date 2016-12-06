@@ -24,6 +24,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all --no-update-rc' }
 Plug 'haya14busa/incsearch.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'mreinhardt/greplace.vim'
+Plug 'mreinhardt/nvim-pfix'
 Plug 'tpope/vim-repeat'
 Plug 'vim-scripts/ag.vim'
 Plug 'honza/vim-snippets'
@@ -87,6 +88,12 @@ nnoremap <C-p> :FZF<CR>
 let g:greplace_cmd='ag'
 let g:greplace_cmd_opts='--recurse --hidden --numbers --noheading'
 
+" nvim-pfix
+let g:nvim_pfix_pfind='ag'
+let g:nvim_pfix_pfind_opts='--recurse --hidden --numbers --noheading'
+nnoremap <M-f> :Pfind<CR>
+nnoremap <M-r> :Pfix<CR>
+
 " UltiSnips
 let g:UltiSnipsExpandTrigger = "<Tab>"
 let g:UltiSnipsJumpForwardTrigger = "<Tab>"
@@ -112,4 +119,5 @@ nnoremap <silent> e[ :lprev<CR>
 nnoremap <silent> e] :lnext<CR>
 
 filetype indent off
+filetype plugin indent on
 

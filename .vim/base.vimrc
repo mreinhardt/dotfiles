@@ -497,3 +497,7 @@ nnoremap <expr> <Leader>fc FindAndChangeIn()
 " Toggle spellcheck
 nnoremap <Leader>S :setlocal spell! spelllang=en_us<CR>
 
+if has('nvim')
+    tnoremap <esc><esc> <c-\><c-n>
+endif
+
