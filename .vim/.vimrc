@@ -21,7 +21,6 @@ Plug 'ervandew/supertab'
 Plug 'Valloric/YouCompleteMe'
 Plug 'SirVer/ultisnips'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all --no-update-rc' }
-Plug 'haya14busa/incsearch.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'mreinhardt/greplace.vim'
 Plug 'mreinhardt/nvim-pfix'
@@ -62,11 +61,6 @@ let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#virtualenv#enabled=1
 let g:airline_powerline_fonts=1
 let g:airline_skip_empty_sections=1
-
-" incsearch
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
 
 " Cycle selection expansion
 vmap v <Plug>(expand_region_expand)
