@@ -7,10 +7,9 @@ execute "source $HOME/.vim/base.vimrc"
 set t_Co=256
 set t_ut=  " ensure tmux colors work correctly
 set background=dark
-colorscheme lapis256
-" lapis overrides
-  highlight ColorColumn ctermfg=125 ctermbg=020
-  highlight CursorLine ctermbg=018
+colorscheme arcadia
+let g:arcadia_Campfire=1
+
 " transparent bg
 hi Normal guibg=NONE ctermbg=NONE
 hi NonText guibg=NONE ctermbg=NONE
