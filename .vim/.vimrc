@@ -18,11 +18,9 @@ hi NonText guibg=NONE ctermbg=NONE
 " Plugins
 call plug#begin()
 Plug 'ervandew/supertab'
-Plug 'Valloric/YouCompleteMe'
 Plug 'SirVer/ultisnips'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all --no-update-rc' }
 Plug 'justinmk/vim-sneak'
-Plug 'mreinhardt/greplace.vim'
 Plug 'mreinhardt/nvim-pfix'
 Plug 'tpope/vim-repeat'
 Plug 'vim-scripts/ag.vim'
@@ -57,6 +55,9 @@ let g:bufferline_show_bufnr=0
 " Airline
 let g:airline_theme='behelit'
 let g:airline#extensions#bufferline#enabled=1
+let g:airline#extensions#ctrlp#enabled=1
+let g:airline#extensions#netrw#enabled=1
+let g:airline#extensions#syntastic#enabled=1
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#virtualenv#enabled=1
 let g:airline_powerline_fonts=1
@@ -65,14 +66,6 @@ let g:airline_skip_empty_sections=1
 " Cycle selection expansion
 vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
-
-" Make YCM work with soft tabs and be compatible with UltiSnips
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
-
-" YCM
-nnoremap <Leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 " FZF
 let g:fzf_layout = {'down': '~20%'}
@@ -83,8 +76,8 @@ let g:greplace_cmd='ag'
 let g:greplace_cmd_opts='--recurse --hidden --numbers --noheading'
 
 " nvim-pfix
-let g:nvim_pfix_pfind='ag'
-let g:nvim_pfix_pfind_opts='--recurse --hidden --numbers --noheading'
+let g:nvim_pfix_pfind='rg'
+let g:nvim_pfix_pfind_opts='--hidden --line-number --no-heading'
 nnoremap <M-f> :Pfind<CR>
 nnoremap <M-r> :Pfix<CR>
 
