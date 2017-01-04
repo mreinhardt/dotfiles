@@ -377,8 +377,12 @@ hi NonText guibg=NONE ctermbg=NONE
 " Set line numbers in directory view
 let g:netrw_bufsettings = 'noma nomod nu nobl nowrap ro'
 
-" Disable netrw banner
+" netrw settings
 let g:netrw_banner = 0
+let g:netrw_browse_split=0  " open in same window
+let g:netrw_alto=1          " open splits below
+let g:netrw_altv=1          " open splits to the right
+let g:netrw_liststyle=3     " tree view
 
 " Automatically show matching brackets
 set showmatch
@@ -386,6 +390,11 @@ set showmatch
 " Set matching bracket color
 highlight MatchParen cterm=none ctermbg=232 ctermfg=46
 
+
+""" Commnads
+
+" Create `tags` file
+command! MakeTags !ctags -R .
 
 """ Key bindings
 
@@ -427,13 +436,12 @@ nmap <Leader>< :setlocal wrap!<CR>:setlocal wrap?<CR>
 " Dir view
 nnoremap <Leader>o :Explore<CR>
 
-" Paging
-" nnoremap <Leader>b <C-u>
-" nnoremap <Leader><Leader> <C-d>
-
 " Easier jump to line
 nnoremap <CR> G
 nnoremap <BS> gg
+
+" Tag jumping
+nnoremap <Leader>g g<C-]>
 
 " Split
 nnoremap <Leader>sh :split<CR>
