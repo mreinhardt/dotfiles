@@ -9,6 +9,10 @@ alias lsn="echo 'Newest files'; ls -rtlh *(D.om[1,10])"
 alias lso="echo 'Oldest files'; ls -rtlh *(D.Om[1,10])"
 alias lsnd="echo 'Newest dirs'; ls -rthdl *(/om[1,10]) .*(D/om[1,10])"
 alias lsod="echo 'Oldest dirs'; ls -rthdl *(/Om[1,10]) .*(D/Om[1,10])"
+if [[ $(uname -s) != "Darwin" ]]; then
+    alias pbcopy="$(command -v xclip) -selection clipboard"
+    alias pbpaste="$(command -v xclip) -selection clipboard -o"
+fi
 alias tis="$(command -v tig) status"
 alias tp="$(command -v tmuxp)"
 alias tx="$(command -v tmux)"
