@@ -13,8 +13,8 @@ PROMPT_SFZ_PATH_UNTRUNCATED=${PROMPT_SFZ_PATH_UNTRUNCATED-""}
 # represent actual color.
 prompt_sfz_colors () {
     case $1 in
-        grey)     echo "{237}";;
-        bgrey)    echo "{239}";;
+        grey)     echo "{239}";;
+        bgrey)    echo "{243}";;
         red)      echo "{063}";;
         bred)     echo "{105}";;
         green)    echo "{036}";;
@@ -27,7 +27,7 @@ prompt_sfz_colors () {
         bmagenta) echo "{068}";;
         cyan)     echo "{103}";;
         bcyan)    echo "{110}";;
-        white)    echo "{251}";;
+        white)    echo "{250}";;
         bwhite)   echo "{254}";;
     esac
 }
