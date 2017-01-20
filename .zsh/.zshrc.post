@@ -39,4 +39,9 @@ fi
 . ${ZDOTDIR:-$HOME}/plugins.zsh
 
 
+### PATH ###
+
+export PATH="$HOME/.local/bin:$PATH"
+
+
 ## END CUSTOM ZSHRC ##########################################################
