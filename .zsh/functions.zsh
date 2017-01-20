@@ -87,16 +87,22 @@ lgf () {
 # View Markdown
 mk () { pandoc $1 | lynx -stdin }
 
+# Detailed memory footprint of a process
+pmem() {
+    sudo footprint -s $@ | egrep -v ' 0 bytes.* 0 bytes.* 0 bytes.* 0 bytes'
+}
+
+# pgrep with extra info
+psg() {
+    args="$@"
+    ps -eo 'user,pid,ppid,pcpu,pmem,vsz,rss,tty,stat,start,time,comm,args' | egrep "%CPU %MEM|$args" | grep -v grep
+}
+
 # SUPERMAN! (80 width centered man pages)
 sman() {
     MANWIDTH=${MANWIDTH:-80}
     indent_count=$(echo "($(tput cols) - 80) / 2" | bc)
     indent=$(seq -s' ' ${indent_count} | tr -d '[:digit:]')
     command man $@ | sed "s/^/${indent}/" | less -isR
-}
-
-# Detailed memory footprint of a process
-pmem() {
-    sudo footprint -s $@ | egrep -v ' 0 bytes.* 0 bytes.* 0 bytes.* 0 bytes'
 }
 
