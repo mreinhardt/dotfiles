@@ -382,7 +382,7 @@ let g:netrw_banner = 0
 let g:netrw_browse_split=0  " open in same window
 let g:netrw_alto=1          " open splits below
 let g:netrw_altv=1          " open splits to the right
-let g:netrw_liststyle=3     " tree view
+let g:netrw_liststyle=1     " detail list
 
 " Automatically show matching brackets
 set showmatch
