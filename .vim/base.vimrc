@@ -413,8 +413,11 @@ vnoremap <silent> y y`]
 vnoremap <silent> p p`]
 nnoremap <silent> p p`]
 
-" Display
+" Redraw
 nnoremap <Leader>l :redraw!<CR>
+
+" Clear search
+nnoremap <Leader>/ :let @/ = ""<CR>
 
 " Writes and Quits
 nnoremap <Leader>q :q<CR>

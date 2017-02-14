@@ -20,11 +20,14 @@ Plug 'ervandew/supertab'
 Plug 'SirVer/ultisnips'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all --no-update-rc' }
 Plug 'justinmk/vim-sneak'
-Plug 'mreinhardt/nvim-pfix'
+Plug 'mreinhardt/nvim-pfix', { 'do': ':UpdateRemotePlugins' }
 Plug 'tpope/vim-repeat'
 Plug 'vim-scripts/ag.vim'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
+Plug 'davidhalter/jedi-vim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-jedi'
 Plug 'tomtom/tcomment_vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'sukima/xmledit'
@@ -79,6 +82,9 @@ let g:nvim_pfix_pfind='rg'
 let g:nvim_pfix_pfind_opts='--hidden --line-number --no-heading'
 nnoremap <M-f> :Pfind<CR>
 nnoremap <M-r> :Pfix<CR>
+
+" deoplete
+let g:deoplete#enable_at_startup = 1
 
 " UltiSnips
 let g:UltiSnipsExpandTrigger = "<Tab>"
