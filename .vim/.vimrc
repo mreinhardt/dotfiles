@@ -31,7 +31,7 @@ Plug 'zchee/deoplete-jedi'
 Plug 'tomtom/tcomment_vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'sukima/xmledit'
-Plug 'scrooloose/syntastic'
+Plug 'vim-syntastic/syntastic'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-markdown'
 Plug 'guns/vim-clojure-static'
@@ -106,12 +106,6 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_loc_list_height=5
-if $VIRTUAL_ENV != ""
-  let g:syntastic_custom_pylint = $VIRTUAL_ENV . "/bin/pylint"
-else
-  let g:syntastic_custom_pylint = "pylint"
-end
-let g:syntastic_python_checkers = ["python", g:syntastic_custom_pylint]
 
 nnoremap <silent> e[ :lprev<CR>
 nnoremap <silent> e] :lnext<CR>
