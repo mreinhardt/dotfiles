@@ -25,6 +25,7 @@ if [[ -n $APT ]]; then
                             dconf-editor \
                             fasd \
                             firefox \
+                            flake8 \
                             git \
                             htop \
                             ipython \
@@ -48,6 +49,7 @@ if [[ -n $APT ]]; then
                             redshift \
                             ruby \
                             ruby2.3 \
+                            shellcheck \
                             silversearcher-ag \
                             subversion \
                             suckless-tools \
@@ -56,6 +58,7 @@ if [[ -n $APT ]]; then
                             unetbootin \
                             vagrant \
                             vim \
+                            vim-python-jedi \
                             virtualbox \
                             weechat \
                             workrave \

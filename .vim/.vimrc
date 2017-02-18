@@ -25,11 +25,12 @@ Plug 'tpope/vim-repeat'
 Plug 'vim-scripts/ag.vim'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
-Plug 'davidhalter/jedi-vim'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-jedi'
 Plug 'tomtom/tcomment_vim'
 Plug 'airblade/vim-gitgutter'
+Plug 'davidhalter/jedi-vim'
+Plug 'nvie/vim-flake8'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-jedi'
 Plug 'sukima/xmledit'
 Plug 'vim-syntastic/syntastic'
 Plug 'sheerun/vim-polyglot'
@@ -105,7 +106,8 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_loc_list_height=5
+let g:syntastic_loc_list_height = 5
+let g:syntastic_python_checkers = ['flake8', 'pylint']
 
 nnoremap <silent> e[ :lprev<CR>
 nnoremap <silent> e] :lnext<CR>
