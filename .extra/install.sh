@@ -16,12 +16,17 @@ if [[ -n $APT ]]; then
     sudo $APT install --yes software-properties-common
     sudo add-apt-repository ppa:aacebedo/fasd
     sudo add-apt-repository ppa:neovim-ppa/unstable
+    # weechat
+    sudo apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 11E9DE8848F2B65222AA75B8D1820DB22A11534E
+    sudo bash -c "echo 'deb https://weechat.org/ubuntu xenial main' > /etc/apt/sources.list.d/weechat.list"
+    sudo bash -c "echo 'deb-src https://weechat.org/ubuntu xenial main' >> /etc/apt/sources.list.d/weechat.list"
 
     # update
     sudo $APT update
 
     # install packages
-    sudo $APT install --yes cmake \
+    sudo $APT install --yes apt-transport-https \
+                            cmake \
                             dconf-editor \
                             fasd \
                             firefox \
@@ -60,7 +65,8 @@ if [[ -n $APT ]]; then
                             vim \
                             vim-python-jedi \
                             virtualbox \
-                            weechat \
+                            weechat-curses \
+                            weechat-plugins \
                             workrave \
                             xclip \
                             xdotool || true
