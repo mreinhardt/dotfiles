@@ -88,9 +88,15 @@ lgf () {
 mk () { pandoc $1 | lynx -stdin }
 
 # Detailed memory footprint of a process
-pmem() {
-    sudo footprint -s $@ | egrep -v ' 0 bytes.* 0 bytes.* 0 bytes.* 0 bytes'
-}
+if [[ $(uname -s) == "Darwin" ]]; then
+    pmem() {
+        sudo footprint -s $@ | egrep -v ' 0 bytes.* 0 bytes.* 0 bytes.* 0 bytes'
+    }
+else
+    pmem() {
+        grep VmSize /proc/$@/status
+    }
+fi
 
 # pgrep with extra info
 psg() {
