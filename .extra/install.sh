@@ -52,9 +52,11 @@ if [[ -n $APT ]]; then
                             pylint \
                             python-dev \
                             python-openssl \
+                            python-pip \
                             python2.7-dev \
                             python3 \
                             python3.5 \
+                            python3-pip \
                             redshift \
                             ruby \
                             ruby2.3 \
@@ -74,6 +76,13 @@ if [[ -n $APT ]]; then
                             workrave \
                             xclip \
                             xdotool || true
+
+    # install neovim python
+    pip install --upgrade neovim \
+                          pip
+    pip3 install --upgrade neovim \
+                           pip
+    pip3 install --upgrade --user tmuxp
 
 ### OSX
 elif [[ $PLATFORM == "Darwin" ]]; then
