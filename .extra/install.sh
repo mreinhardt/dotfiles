@@ -24,6 +24,10 @@ if [[ -n $APT ]]; then
     # update
     sudo $APT update
 
+    # remove packages
+    sudo $APT purge --yes apache2 || true
+    sudo $APT autoremove --yes || true
+
     # install packages
     sudo $APT install --yes apt-transport-https \
                             cmake \
