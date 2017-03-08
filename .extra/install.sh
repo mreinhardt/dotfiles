@@ -14,9 +14,9 @@ if [[ -n $APT ]]; then
 
     # add repositories
     sudo $APT install --yes software-properties-common
-    sudo add-apt-repository ppa:aacebedo/fasd
-    sudo add-apt-repository ppa:neovim-ppa/unstable
-    sudo add-apt-repository ppa:peterlevi/ppa  # variety
+    sudo add-apt-repository --yes ppa:aacebedo/fasd
+    sudo add-apt-repository --yes ppa:neovim-ppa/unstable
+    sudo add-apt-repository --yes ppa:peterlevi/ppa  # variety
     # weechat
     sudo apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 11E9DE8848F2B65222AA75B8D1820DB22A11534E
     sudo bash -c "echo 'deb https://weechat.org/ubuntu xenial main' > /etc/apt/sources.list.d/weechat.list"
@@ -37,6 +37,7 @@ if [[ -n $APT ]]; then
                             fasd \
                             firefox \
                             flake8 \
+                            font-manager \
                             git \
                             htop \
                             ipython \
@@ -86,6 +87,11 @@ if [[ -n $APT ]]; then
     pip3 install --upgrade neovim \
                            pip
     pip3 install --upgrade --user tmuxp
+
+    # install playerctl
+    latest_playerctl_release=$(curl -s https://api.github.com/repos/acrisci/playerctl/releases | grep browser_download_url | head -n1 | cut -d'"' -f4)
+    wget -O /tmp/playerctl.deb "$latest_playerctl_release"
+	sudo dpkg -i /tmp/playerctl.deb
 
 ### OSX
 elif [[ $PLATFORM == "Darwin" ]]; then
