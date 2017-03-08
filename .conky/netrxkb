@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# NOTE: This script will show the difference since the last time it was run.
+#       It's expected to be run in set intervals to plot the rate over time.
+
+CACHE_FILE="/tmp/.netrxkb"
+EPOCH=$(date +%s)
+EPOCH_CACHE_FILE="$CACHE_FILE.$EPOCH"
+
+raw_out=$(tail -n +3 /proc/net/dev)
+rxkb=$(echo "$raw_out" | sed 's/^.*: //' | awk '{rxb+=$1} END {printf "%d", rxb/1024}')
+if [[ -f $EPOCH_CACHE_FILE ]]; then
+    drxkb=$(cat "$EPOCH_CACHE_FILE")
+elif [[ -f $CACHE_FILE ]]; then
+    last_rxkb=$(cat $CACHE_FILE)
+    drxkb=$(printf "%.2f - %.2f\n" "$rxkb" "$last_rxkb" | bc)
+fi
+
+# remove old epoch cache files
+rm "$CACHE_FILE".*
+
+printf "%.2f" "$rxkb" > "$CACHE_FILE"
+if [[ $drxkb != '' ]]; then
+    printf "%.2f" "$drxkb" > "$CACHE_FILE.$EPOCH"
+    printf "%s" "${drxkb//\.*/}"
+else
+    printf "0"
+fi
