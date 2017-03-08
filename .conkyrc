@@ -71,7 +71,7 @@ conky.config = {
 }
 
 conky.text = [[
- ${uid_name 1000}@$nodename_short (${addr enp0s25})
+ ${uid_name 1000}@$nodename_short (${execi 3600 ip route get 8.8.8.8 | awk '{print $NF; exit}'})
  ${execi 3600 /usr/bin/lsb_release -d | /bin/sed 's/^.*:\s*//'} ($machine)
 $hr
  ${alignc}${execi 10 nowplaying}
