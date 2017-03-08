@@ -32,6 +32,7 @@ if [[ -n $APT ]]; then
     # install packages
     sudo $APT install --yes apt-transport-https \
                             cmake \
+                            conky-all \
                             dconf-editor \
                             fasd \
                             firefox \
