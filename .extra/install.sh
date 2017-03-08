@@ -16,6 +16,7 @@ if [[ -n $APT ]]; then
     sudo $APT install --yes software-properties-common
     sudo add-apt-repository ppa:aacebedo/fasd
     sudo add-apt-repository ppa:neovim-ppa/unstable
+    sudo add-apt-repository ppa:peterlevi/ppa  # variety
     # weechat
     sudo apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 11E9DE8848F2B65222AA75B8D1820DB22A11534E
     sudo bash -c "echo 'deb https://weechat.org/ubuntu xenial main' > /etc/apt/sources.list.d/weechat.list"
@@ -68,6 +69,7 @@ if [[ -n $APT ]]; then
                             tmux \
                             unetbootin \
                             vagrant \
+                            variety \
                             vim \
                             vim-python-jedi \
                             virtualbox \
