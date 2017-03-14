@@ -1,0 +1,21 @@
+#!/bin/bash
+shopt -s extglob
+
+CACHE_FILE_PREFIX="/tmp/.vmhogs"
+EPOCH=$(date +%s)
+EPOCH_CACHE_FILE="$CACHE_FILE_PREFIX.$EPOCH"
+
+if [[ -f "$EPOCH_CACHE_FILE" ]]; then
+    vmhogs=$(cat "$EPOCH_CACHE_FILE")
+    printf "%s" "$vmhogs"
+    exit
+fi
+
+# remove old epoch cache files if any
+rm -f "$CACHE_FILE_PREFIX".!("$EPOCH")
+
+sorted_vsz=$(ps awwlx --sort=vsz | tac)
+vmhogs=$(echo "$sorted_vsz" | awk '{printf "%s:%.1f\n", $NF, $7 / 1024 / 1024}' | sed 's#/.*/##g' | egrep -v '^[0-9<[(-]')
+echo -n "$vmhogs" > "$EPOCH_CACHE_FILE"
+echo -n "$vmhogs"
+

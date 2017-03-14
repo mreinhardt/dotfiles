@@ -96,17 +96,21 @@ $hr
  ${color white}RAM$color    ${membar} $mem / $memmax ($memperc%)
  ${color white}Swap$color   ${swapbar} $swap / $swapmax ($swapperc%)
  ${color white}Disk$color   ${fs_bar /} ${fs_used /} / ${fs_size /} ($fs_used_perc%)
- ${color white}Net Up$color ${lua_parse pad 6 ${exec ~/.conky/nettxkb}}K  ${color white}Net Down$color ${lua_parse pad 6 ${exec ~/.conky/netrxkb}}K
- ${color white}Procs$color  ${lua_parse pad 7 $processes}  ${color white}Running$color  ${lua_parse pad 7 $running_processes}
+ ${color white}Write$color  ${lua_parse pad 7 ${diskio_write}}  ${color white}Read$color     ${lua_parse pad 6 ${diskio_read}}
+ ${color white}Net Up$color ${lua_parse pad 6 ${exec ~/.conky/nettxkb}}K  ${color white}Net Down$color ${lua_parse pad 5 ${exec ~/.conky/netrxkb}}K
 $hr
  ${color white}${loadgraph 32,285 00FFFF FF00FF scale -t}
  ${color white}LOAD$color    ${alignr 6}$loadavg
 $hr
- ${color white}${diskiograph 32,285 00FFFF FF00FF scale -t}
- ${color white}DISK I/O$color    ${alignr 6}$diskio
+ ${color white}CPU HOGS ${alignr 6}Load
+ ${color lightgrey}${execi 5 ~/.conky/cpuhogs | sed -n '1p' | cut -d':' -f1} $color ${alignr 6}${execi 5 ~/.conky/cpuhogs | sed -n '1p' | cut -d':' -f2}%
+ ${color lightgrey}${execi 5 ~/.conky/cpuhogs | sed -n '2p' | cut -d':' -f1} $color ${alignr 6}${execi 5 ~/.conky/cpuhogs | sed -n '2p' | cut -d':' -f2}%
+ ${color lightgrey}${execi 5 ~/.conky/cpuhogs | sed -n '3p' | cut -d':' -f1} $color ${alignr 6}${execi 5 ~/.conky/cpuhogs | sed -n '3p' | cut -d':' -f2}%
 $hr
- ${color white}Top Hog ${alignr 6}PID   CPU%   MEM%
- ${color lightgrey}${top name 1} $color ${alignr 6}${top pid 1} ${top cpu 1} ${top mem 1}
+ ${color white}MEM HOGS ${alignr 6}Size
+ ${color lightgrey}${execi 5 ~/.conky/vmhogs | sed -n '1p' | cut -d':' -f1} $color ${alignr 6}${execi 5 ~/.conky/vmhogs | sed -n '1p' | cut -d':' -f2}G
+ ${color lightgrey}${execi 5 ~/.conky/vmhogs | sed -n '2p' | cut -d':' -f1} $color ${alignr 6}${execi 5 ~/.conky/vmhogs | sed -n '2p' | cut -d':' -f2}G
+ ${color lightgrey}${execi 5 ~/.conky/vmhogs | sed -n '3p' | cut -d':' -f1} $color ${alignr 6}${execi 5 ~/.conky/vmhogs | sed -n '3p' | cut -d':' -f2}G
 $hr
  ${scroll 42 ${execi 900 fortune | tr '\n' ' ' | sed -e 's/\s\+/ /g' -e 's/|/ /g'}}
 $hr

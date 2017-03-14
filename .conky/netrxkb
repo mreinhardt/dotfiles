@@ -1,4 +1,5 @@
 #!/bin/bash
+shopt -s extglob
 
 # NOTE: This script will show the difference since the last time it was run.
 #       It's expected to be run in set intervals to plot the rate over time.
@@ -11,13 +12,15 @@ raw_out=$(tail -n +3 /proc/net/dev)
 rxkb=$(echo "$raw_out" | sed 's/^.*: //' | awk '{rxb+=$1} END {printf "%d", rxb/1024}')
 if [[ -f $EPOCH_CACHE_FILE ]]; then
     drxkb=$(cat "$EPOCH_CACHE_FILE")
+    printf "%s" "${drxkb//\.*/}"
+    exit 0
 elif [[ -f $CACHE_FILE ]]; then
     last_rxkb=$(cat $CACHE_FILE)
     drxkb=$(printf "%.2f - %.2f\n" "$rxkb" "$last_rxkb" | bc)
 fi
 
 # remove old epoch cache files
-rm "$CACHE_FILE".*
+rm -f "$CACHE_FILE".!("$EPOCH")
 
 printf "%.2f" "$rxkb" > "$CACHE_FILE"
 if [[ $drxkb != '' ]]; then

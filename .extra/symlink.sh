@@ -22,8 +22,10 @@ ln -sfv "$DOTFILES_REPO_DIR/.zsh/.prompts/sfz/prompt_sfz_setup" "$HOME/.zsh/.zfu
 mkdir -p "$HOME/.conky"
 ln -sfv "$DOTFILES_REPO_DIR/.conkyrc" "$HOME"
 ln -sfv "$DOTFILES_REPO_DIR/.conky/conky_scripts.lua" "$HOME/.conky"
+ln -sfv "$DOTFILES_REPO_DIR/.conky/cpuhogs" "$HOME/.conky"
 ln -sfv "$DOTFILES_REPO_DIR/.conky/netrxkb" "$HOME/.conky"
 ln -sfv "$DOTFILES_REPO_DIR/.conky/nettxkb" "$HOME/.conky"
+ln -sfv "$DOTFILES_REPO_DIR/.conky/vmhogs" "$HOME/.conky"
 
 
 ### tig

@@ -1,0 +1,21 @@
+#!/bin/bash
+shopt -s extglob
+
+CACHE_FILE_PREFIX="/tmp/.cpuhogs"
+EPOCH=$(date +%s)
+EPOCH_CACHE_FILE="$CACHE_FILE_PREFIX.$EPOCH"
+
+if [[ -f "$EPOCH_CACHE_FILE" ]]; then
+    cpuhogs=$(cat "$EPOCH_CACHE_FILE")
+    printf "%s" "$cpuhogs"
+    exit
+fi
+
+# remove old epoch cache files if any
+rm -f "$CACHE_FILE_PREFIX".!("$EPOCH")
+
+sorted_cpu=$(ps ux --sort=-pcpu | head -n51 | tail -n50)
+cpuhogs=$(echo "$sorted_cpu" | sed -e 's/[0-9]\+:[0-9]\+\s*[0-9]\+:[0-9]\+\s*\(\S\+\).*$/\1/' -e 's#\S*/\(\S*\)$#\1#' | awk '{printf "%s:%.1f\n", $9, $3}' | sed -e '/:0\.0$/d')
+echo -n "$cpuhogs" > "$EPOCH_CACHE_FILE"
+echo -n "$cpuhogs"
+
