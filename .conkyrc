@@ -37,7 +37,7 @@ conky.config = {
     default_gauge_height = 56,
     default_gauge_width = 56,
     default_graph_height = 32,
-    default_graph_width = 285,
+    default_graph_width = 295,
     default_outline_color = 'cyan',
     default_shade_color = 'black',
     double_buffer = true,
@@ -46,14 +46,14 @@ conky.config = {
     draw_outline = false,
     draw_shades = false,
     use_xft = true,
-    font = 'Noto Sans Mono CJK JP:size=10',
+    font = 'Noto Sans Mono CJK JP:size=9',
     format_human_readable = true,
     gap_x = 0,
     gap_y = 0,
     lua_load = "~/.conky/conky_scripts.lua",
-    maximum_width = 300,
+    maximum_width = 307,
     minimum_height = 5,
-    minimum_width = 300,
+    minimum_width = 307,
     net_avg_samples = 2,
     no_buffers = false,
     out_to_console = false,
@@ -83,7 +83,9 @@ conky.text = [[
  ${color white}Logged In$color  ${execi 60 who | awk '{print $1}' | sort -u | tr '\n' ',' | sed -e 's/,$//' -e 's/,/, /g'}
 $hr
  ${alignc}${execi 10 nowplaying}
- ${image /tmp/.nowplaying-art.jpg -p 60,112 -n}
+ ${image /tmp/.nowplaying-art.jpg -p 64,100 -n}
+
+
 
 
 
@@ -99,7 +101,7 @@ $hr
  ${color white}Write$color  ${lua_parse pad 7 ${diskio_write}}  ${color white}Read$color     ${lua_parse pad 6 ${diskio_read}}
  ${color white}Net Up$color ${lua_parse pad 6 ${exec ~/.conky/nettxkb}}K  ${color white}Net Down$color ${lua_parse pad 5 ${exec ~/.conky/netrxkb}}K
 $hr
- ${color white}${loadgraph 32,285 00FFFF FF00FF scale -t}
+ ${color white}${loadgraph 32,295 00FFFF FF00FF scale -t}
  ${color white}LOAD$color    ${alignr 6}$loadavg
 $hr
  ${color white}CPU HOGS ${alignr 6}Load
@@ -112,7 +114,7 @@ $hr
  ${color lightgrey}${execi 5 ~/.conky/vmhogs | sed -n '2p' | cut -d':' -f1} $color ${alignr 6}${execi 5 ~/.conky/vmhogs | sed -n '2p' | cut -d':' -f2}G
  ${color lightgrey}${execi 5 ~/.conky/vmhogs | sed -n '3p' | cut -d':' -f1} $color ${alignr 6}${execi 5 ~/.conky/vmhogs | sed -n '3p' | cut -d':' -f2}G
 $hr
- ${scroll 42 ${execi 900 fortune | tr '\n' ' ' | sed -e 's/\s\+/ /g' -e 's/|/ /g'}}
+ ${scroll 49 ${execi 900 fortune | tr '\n' ' ' | sed -e 's/\s\+/ /g' -e 's/|/ /g'}}
 $hr
  ${execi 1800 ~/.tmux/status-weather.sh} ${alignr 6}${exec date | sed 's/\(:[0-9][0-9]\) [A-Za-z].*$/\1/g'}
 ]]
