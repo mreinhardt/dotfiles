@@ -1,4 +1,4 @@
-export EDITOR=$(which vim)
+export EDITOR=$(which nvim)
 export PAGER=$(which less)
 
 # PATH customizations should go here
