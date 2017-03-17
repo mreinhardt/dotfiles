@@ -5,18 +5,10 @@ echo -n "Install custom .vimrc and .vim directory files? [yN] "
 read PROCEED
 if [[ $PROCEED != "y" && $PROCEED != "Y" ]]; then exit; fi
 
-echo -n "Installing to SSH server? [yN] "
-read IS_SSH
-if [[ $IS_SSH = "y" || $IS_SSH = "Y" ]]; then
-    INSTALLDIR="$HOME/.mvim"
-    IS_SSH=true
-else
-    INSTALLDIR="$HOME/.vim"
-    NEOVIMDIR="$HOME/.config/nvim"
-    mkdir -p "$NEOVIMDIR"
-    mkdir -p "$HOME/.local/share/nvim"
-    IS_SSH=false
-fi
+INSTALLDIR="$HOME/.vim"
+NEOVIMDIR="$HOME/.config/nvim"
+mkdir -p "$NEOVIMDIR"
+mkdir -p "$HOME/.local/share/nvim"
 
 curl -fLo "$INSTALLDIR/autoload/plug.vim" --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -31,11 +23,8 @@ cp -rn "$HEREDIR/colors/"* "$INSTALLDIR/colors/."
 ln -sfv "$HEREDIR/ftdetect" "$INSTALLDIR/ftdetect"
 ln -sfv "$HEREDIR/ftplugin" "$INSTALLDIR/ftplugin"
 
-if [[ $IS_SSH == true ]]; then
-    VIMRC="$HEREDIR/.ssh.vimrc"
-else
-    VIMRC="$HEREDIR/.vimrc"
-fi
+VIMRC="$HEREDIR/.vimrc"
+
 echo "$VIMRC"
 ln -sfv "$VIMRC" "$HOME/.vimrc"
 
