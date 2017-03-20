@@ -7,7 +7,7 @@ xrdb -merge .Xresources
 while true; do
     ln -sfv "$(find -L "$HOME/Pictures/backgrounds" -type f | sort -R | head -n1)" "$HOME/Pictures/.current_background"
     xli -onroot -fillscreen "$HOME/Pictures/.current_background"
-    sleep 900
+    sleep 900s
 done &
 
 # Start udiskie to handle media
@@ -17,8 +17,6 @@ udiskie &
 xfce4-power-manager &
 
 xscreensaver -no-splash &
-
-conky &
 
 if [ -x /usr/bin/nm-applet ] ; then
    nm-applet --sm-disable &

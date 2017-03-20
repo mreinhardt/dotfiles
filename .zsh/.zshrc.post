@@ -17,6 +17,11 @@ if [[ $(pgrep polybar) == '' ]]; then
     done
 fi
 
+# Start conky
+if [[ $(pgrep conky) == '' ]]; then
+    sh -c "conky &" > /dev/null 2>&1
+fi
+
 # No shared history between terminal sessions
 unsetopt share_history
 
