@@ -49,9 +49,7 @@ main = do
            spawn "xscreensaver-command -lock")
         -- Workspace movement
         , ((mod4Mask, xK_Left), prevWS)
-        , ((mod4Mask .|. shiftMask, xK_Tab), prevWS)
         , ((mod4Mask, xK_Right), nextWS)
-        , ((mod4Mask, xK_Tab), nextWS)
         , ((mod4Mask .|. shiftMask, xK_Left), shiftToPrev)
         , ((mod4Mask .|. shiftMask, xK_Right), shiftToNext)
         -- Volume controls
