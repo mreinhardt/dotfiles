@@ -91,6 +91,7 @@ if [[ -n $APT ]]; then
                             xclip \
                             xdotool \
                             xfce4-power-manager \
+                            xli \
                             xmonad \
                             || true
 
