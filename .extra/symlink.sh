@@ -38,3 +38,8 @@ ln -sfv "$DOTFILES_REPO_DIR/.tigrc" "$HOME"
 ln -sfv "$DOTFILES_REPO_DIR/.tmux.conf" "$HOME"
 ln -sfv "$DOTFILES_REPO_DIR/.tmux" "$HOME"
 
+
+### xmonad
+
+mkdir -p "$HOME/.xmonad"
+ln -sfv "$DOTFILES_REPO_DIR/.xmonad/xmonad.hs" "$HOME/.xmonad"

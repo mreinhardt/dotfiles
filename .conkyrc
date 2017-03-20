@@ -26,10 +26,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
 conky.config = {
-    alignment = 'top_right',
+    alignment = 'middle_right',
     background = false,
     border_inner_margin = 0,
-    border_width = 2,
+    border_width = 1,
     cpu_avg_samples = 2,
     default_bar_height = 3,
     default_bar_width = 56,
@@ -49,11 +49,12 @@ conky.config = {
     font = 'Noto Sans Mono CJK JP:size=9',
     format_human_readable = true,
     gap_x = 3,
-    gap_y = 23,
+    gap_y = 1,
     lua_load = "~/.conky/conky_scripts.lua",
-    maximum_width = 242,
-    minimum_height = 742,
-    minimum_width = 242,
+    maximum_height = 707,
+    maximum_width = 244,
+    minimum_height = 707,
+    minimum_width = 244,
     net_avg_samples = 2,
     no_buffers = false,
     out_to_console = false,
@@ -63,7 +64,7 @@ conky.config = {
     own_window = true,
     own_window_class = 'Conky',
     own_window_colour = '#252E32',
-    own_window_type = 'dock',
+    own_window_type = 'panel',
     own_window_transparent = false,
     own_window_hints = 'undecorated,sticky,below,skip_taskbar,skip_pager',
     own_window_argb_visual = true,
@@ -113,8 +114,6 @@ $hr
  ${color lightgrey}${execi 5 ~/.conky/vmhogs | sed -n '1p' | cut -d':' -f1} $color ${alignr 6}${execi 5 ~/.conky/vmhogs | sed -n '1p' | cut -d':' -f2}G
  ${color lightgrey}${execi 5 ~/.conky/vmhogs | sed -n '2p' | cut -d':' -f1} $color ${alignr 6}${execi 5 ~/.conky/vmhogs | sed -n '2p' | cut -d':' -f2}G
  ${color lightgrey}${execi 5 ~/.conky/vmhogs | sed -n '3p' | cut -d':' -f1} $color ${alignr 6}${execi 5 ~/.conky/vmhogs | sed -n '3p' | cut -d':' -f2}G
-$hr
- ${scroll 38 ${execi 900 fortune | tr '\n' ' ' | sed -e 's/\s\+/ /g' -e 's/|/ /g'}}
 $hr
  ${execi 1800 ~/.tmux/status-weather.sh} ${alignr 6}${exec date | sed 's/\(:[0-9][0-9]\) [A-Za-z].*$/\1/g'}
 ]]

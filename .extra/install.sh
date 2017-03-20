@@ -21,6 +21,9 @@ if [[ -n $APT ]]; then
     sudo apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 11E9DE8848F2B65222AA75B8D1820DB22A11534E
     sudo bash -c "echo 'deb https://weechat.org/ubuntu xenial main' > /etc/apt/sources.list.d/weechat.list"
     sudo bash -c "echo 'deb-src https://weechat.org/ubuntu xenial main' >> /etc/apt/sources.list.d/weechat.list"
+    # polybar
+    wget -q -O - http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add -
+    sudo sh -c 'echo "deb http://archive.getdeb.net/ubuntu xenial-getdeb apps" >> /etc/apt/sources.list.d/getdeb.list'
 
     # update
     sudo $APT update
@@ -31,10 +34,12 @@ if [[ -n $APT ]]; then
 
     # install packages
     sudo $APT install --yes apt-transport-https \
+                            cabal-install \
                             cmake \
                             conky-all \
                             dconf-editor \
                             fasd \
+                            feh \
                             firefox \
                             flake8 \
                             font-manager \
@@ -42,6 +47,8 @@ if [[ -n $APT ]]; then
                             htop \
                             ipython \
                             java-common \
+                            libghc-xmonad-contrib-dev \
+                            libghc-xmonad-dev \
                             lua5.3 \
                             lynx \
                             meld \
@@ -52,6 +59,7 @@ if [[ -n $APT ]]; then
                             npm \
                             openssh-server \
                             pandoc \
+                            polybar \
                             pylint \
                             python-dev \
                             python-openssl \
@@ -67,8 +75,10 @@ if [[ -n $APT ]]; then
                             silversearcher-ag \
                             subversion \
                             suckless-tools \
+                            terminology \
                             tig \
                             tmux \
+                            udiskie \
                             unetbootin \
                             vagrant \
                             variety \
@@ -79,7 +89,10 @@ if [[ -n $APT ]]; then
                             weechat-plugins \
                             workrave \
                             xclip \
-                            xdotool || true
+                            xdotool \
+                            xfce4-power-manager \
+                            xmonad \
+                            || true
 
     # install neovim python
     pip install --upgrade neovim \
@@ -89,9 +102,15 @@ if [[ -n $APT ]]; then
     pip3 install --upgrade --user tmuxp
 
     # install playerctl
-    latest_playerctl_release=$(curl -s https://api.github.com/repos/acrisci/playerctl/releases | grep browser_download_url | head -n1 | cut -d'"' -f4)
+    latest_playerctl_release=$(curl -s https://api.github.com/repos/acrisci/playerctl/releases \
+        | grep browser_download_url \
+        | head -n1 \
+        | cut -d'"' -f4)
     wget -O /tmp/playerctl.deb "$latest_playerctl_release"
-	sudo dpkg -i /tmp/playerctl.deb
+    sudo dpkg -i /tmp/playerctl.deb
+
+    # install yeganesh
+    cabal install -g --user yeganesh
 
 ### OSX
 elif [[ $PLATFORM == "Darwin" ]]; then

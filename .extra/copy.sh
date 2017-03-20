@@ -19,3 +19,7 @@ cp -vn "$DOTFILES_REPO_DIR/.gitconfig" "$HOME"
 mkdir -p "$HOME/.lein"
 cp -vn "$DOTFILES_REPO_DIR/.lein/profiles.clj" "$HOME/.lein"
 
+
+### xmonad
+
+cp -vn "$DOTFILES_REPO_DIR/.xsessionrc" "$HOME"
