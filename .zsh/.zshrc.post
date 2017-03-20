@@ -10,6 +10,13 @@
 # Custom prompt
 prompt sfz
 
+# Start polybar
+if [[ $(pgrep polybar) == '' ]]; then
+    polybar -m | cut -d: -f1 | while read -r screen; do
+        sh -c "MONITOR=$screen polybar example &" > /dev/null 2>&1
+    done
+fi
+
 # No shared history between terminal sessions
 unsetopt share_history
 

@@ -4,14 +4,12 @@
 xrdb -merge .Xresources
 
 # Set background image with feh
-feh --auto-zoom '/usr/share/backgrounds/Living Stones.jpg' &
+xli -onroot -fillscreen "$HOME/Pictures/.current_background" &
 
 # Start udiskie to handle media
 udiskie &
 
 # Fire up apps
-xrandr | grep -oE '\S* connected' | cut -d' ' -f1 | xargs -I{} /bin/sh -c 'MONITOR="{}" polybar example &'
-
 xfce4-power-manager &
 
 xscreensaver -no-splash &
