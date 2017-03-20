@@ -19,7 +19,7 @@ import XMonad.Util.EZConfig (additionalKeys)
 
 myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 myStartupHook = do
-    spawnOn "1" "terminology -e /home/mike/bin/tpd"
+    spawnOn "1" "terminology"
     spawnOn "2" "firefox"
     spawnOn "3" "spotify"
 
