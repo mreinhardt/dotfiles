@@ -3,14 +3,6 @@
 cp -vn "$DOTFILES_REPO_DIR/.important_commands" "$HOME"
 
 
-### bin
-
-mkdir -p "$HOME/bin"
-cp -vn "$DOTFILES_REPO_DIR/bin/nowplaying" "$HOME/bin"
-cp -vn "$DOTFILES_REPO_DIR/bin/upgrade-all" "$HOME/bin"
-cp -vn "$DOTFILES_REPO_DIR/bin/yeg" "$HOME/bin"
-
-
 ### conky
 mkdir -p "$HOME/.conky"
 cp -vn "$DOTFILES_REPO_DIR/.conkyrc" "$HOME"

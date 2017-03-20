@@ -17,6 +17,14 @@ mkdir -p "$HOME/.zsh/.zfunctions"
 ln -sfv "$DOTFILES_REPO_DIR/.zsh/.prompts/sfz/prompt_sfz_setup" "$HOME/.zsh/.zfunctions"
 
 
+### bin
+
+mkdir -p "$HOME/bin"
+ln -sfv "$DOTFILES_REPO_DIR/bin/nowplaying" "$HOME/bin"
+ln -sfv "$DOTFILES_REPO_DIR/bin/upgrade-all" "$HOME/bin"
+ln -sfv "$DOTFILES_REPO_DIR/bin/yeg" "$HOME/bin"
+
+
 ### conky
 
 ln -sfv "$DOTFILES_REPO_DIR/.conky/conky_scripts.lua" "$HOME/.conky"
