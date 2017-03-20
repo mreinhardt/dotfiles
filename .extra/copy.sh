@@ -7,6 +7,7 @@ cp -vn "$DOTFILES_REPO_DIR/.important_commands" "$HOME"
 
 mkdir -p "$HOME/bin"
 cp -vn "$DOTFILES_REPO_DIR/bin/nowplaying" "$HOME/bin"
+cp -vn "$DOTFILES_REPO_DIR/bin/upgrade-all" "$HOME/bin"
 
 
 ### git
