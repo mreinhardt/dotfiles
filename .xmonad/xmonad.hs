@@ -37,10 +37,7 @@ main = do
         , startupHook = myStartupHook
         , layoutHook = avoidStruts $ layoutHook defaultConfig
         , handleEventHook = handleEventHook defaultConfig <+> docksEventHook
-        , logHook = dynamicLogWithPP xmobarPP
-                        { ppOutput = hPutStrLn xmproc
-                        , ppTitle = xmobarColor "green" "" . shorten 50
-                        }
+        , logHook = logHook defaultConfig
         } `additionalKeys`
         [
         -- Replace dmenu with yeganesh
