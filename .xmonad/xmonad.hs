@@ -47,6 +47,8 @@ main = do
         [
         -- Replace dmenu with yeganesh
           ((mod4Mask, xK_p), spawn "yeg")
+        -- Alternate terminal open
+        , ((mod4Mask .|. shiftMask, xK_grave), spawn "terminology")
         -- Lock screen
         , ((mod4Mask .|. shiftMask, xK_x),
            spawn "xscreensaver-command -lock")
