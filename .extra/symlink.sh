@@ -22,6 +22,7 @@ ln -sfv "$DOTFILES_REPO_DIR/.zsh/.prompts/sfz/prompt_sfz_setup" "$HOME/.zsh/.zfu
 mkdir -p "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/nowplaying" "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/upgrade-all" "$HOME/bin"
+ln -sfv "$DOTFILES_REPO_DIR/bin/xmc" "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/yeg" "$HOME/bin"
 
 
