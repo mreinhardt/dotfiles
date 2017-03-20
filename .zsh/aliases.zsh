@@ -4,7 +4,7 @@ alias cmd='command'
 alias emacs='XLIB_SKIP_ARGB_VISUALS=1 emacs24 -nw'
 alias g=$(command -v git)
 alias la='ls -laFh'
-alias logout="sudo pkill -u $(whoami)"
+alias logout="pkill -u $(whoami)"
 alias lsb="echo 'Largest files'; ls -flh *(.OL[1,10])"
 alias lst="echo 'Smallest files'; ls -Srl *(.oL[1,10])"
 alias lsn="echo 'Newest files'; ls -rtlh *(D.om[1,10])"
