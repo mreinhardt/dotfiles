@@ -59,10 +59,14 @@ main = do
         , ((mod4Mask .|. shiftMask, xK_Right), shiftToNext)
         -- Volume controls
         , ((0, 0x1008FF11), spawn "amixer set Master 4-")
+        , ((mod4Mask, xK_F3), spawn "amixer set Master 4-")
         , ((0, 0x1008FF13), spawn "amixer set Master 4+")
+        , ((mod4Mask, xK_F4), spawn "amixer set Master 4+")
         -- Brightness controls
-        , ((0, 0x1008FF02), spawn "xbacklight +5")
         , ((0, 0x1008FF03), spawn "xbacklight -5")
+        , ((mod4Mask, xK_F5), spawn "xbacklight -5")
+        , ((0, 0x1008FF02), spawn "xbacklight +5")
+        , ((mod4Mask, xK_F6), spawn "xbacklight +5")
         -- Spotify controls
         , ((controlMask .|. shiftMask, xK_Up),
            spawn "playerctl -p spotify play")
