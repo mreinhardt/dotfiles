@@ -19,6 +19,8 @@ xfce4-power-manager &
 
 xscreensaver -no-splash &
 
+synergy &
+
 conky &
 
 if [ -x /usr/bin/nm-applet ] ; then
