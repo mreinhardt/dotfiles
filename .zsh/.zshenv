@@ -1,9 +1,6 @@
 export EDITOR=$(which nvim)
 export PAGER=$(which less)
 
-# PATH customizations should go here
-export PATH="$HOME/bin:$PATH"
-
 fpath=( "${ZDOTDIR:-$HOME}/.zfunctions" $fpath )
 
 source ${ZDOTDIR:-$HOME}/.zshenv.grml

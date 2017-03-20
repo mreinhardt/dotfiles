@@ -41,7 +41,8 @@ fi
 
 ### PATH ###
 
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.local/bin:$HOME/.cabal/bin:$PATH"
+
 
 
 ## END CUSTOM ZSHRC ##########################################################
