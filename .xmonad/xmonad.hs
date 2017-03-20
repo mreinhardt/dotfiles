@@ -24,8 +24,6 @@ myStartupHook = do
     spawnOn "3" "spotify"
 
 main = do
-    xmproc <- spawnPipe "polybar example"
-
     xmonad $
         -- XMonad config
         defaultConfig
