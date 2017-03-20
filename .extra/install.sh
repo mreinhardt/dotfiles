@@ -110,6 +110,7 @@ if [[ -n $APT ]]; then
     sudo dpkg -i /tmp/playerctl.deb
 
     # install yeganesh
+    cabal update
     cabal install -g --user yeganesh
 
 ### OSX

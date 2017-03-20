@@ -1,0 +1,2 @@
+#!/usr/bin/zsh
+exec $(dmenu_path | "$HOME/.cabal/bin/yeganesh" --)
