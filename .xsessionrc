@@ -3,8 +3,12 @@
 # Load resources
 xrdb -merge .Xresources
 
-# Set background image with feh
-xli -onroot -fillscreen "$HOME/Pictures/.current_background" &
+# Rotate background
+while true; do
+    ln -sfv "$(find -L "$HOME/Pictures/backgrounds" -type f | sort -R | head -n1)" "$HOME/Pictures/.current_background"
+    xli -onroot -fillscreen "$HOME/Pictures/.current_background"
+    sleep 900
+done &
 
 # Start udiskie to handle media
 udiskie &
