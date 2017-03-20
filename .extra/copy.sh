@@ -10,6 +10,11 @@ cp -vn "$DOTFILES_REPO_DIR/bin/nowplaying" "$HOME/bin"
 cp -vn "$DOTFILES_REPO_DIR/bin/upgrade-all" "$HOME/bin"
 
 
+### conky
+mkdir -p "$HOME/.conky"
+cp -vn "$DOTFILES_REPO_DIR/.conkyrc" "$HOME"
+
+
 ### git
 
 cp -vn "$DOTFILES_REPO_DIR/.gitconfig" "$HOME"
