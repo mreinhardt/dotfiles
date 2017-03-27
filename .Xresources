@@ -1,0 +1,68 @@
+! rofi
+rofi.modi: window,run,run-shell,ssh
+rofi.opacity: 100
+rofi.width: 50
+rofi.lines: 10
+rofi.columns: 1
+rofi.font: Monoid 9
+
+! ------------------------------------------------------------------------------
+! ROFI Color themes
+! ------------------------------------------------------------------------------
+
+! default.theme
+! rofi.color-enabled: false
+! rofi.color-normal: #fdf6e3,#002b36,#eee8d5,#586e75,#eee8d5
+! rofi.color-urgent: #fdf6e3,#dc322f,#eee8d5,#dc322f,#fdf6e3
+! rofi.color-active: #fdf6e3,#268bd2,#eee8d5,#268bd2,#fdf6e3
+! rofi.color-window: #fdf6e3,#002b36
+
+! glue_pro_blue.theme
+! rofi.color-enabled: true
+! rofi.color-window: #393939, #393939, #268bd2
+! rofi.color-normal: #393939, #ffffff, #393939, #268bd2, #ffffff
+! rofi.color-active: #393939, #268bd2, #393939, #268bd2, #205171
+! rofi.color-urgent: #393939, #f3843d, #393939, #268bd2, #ffc39c
+
+! solarized_alternate.theme
+rofi.color-enabled: true
+rofi.color-window: #002b37, #002b37, #003642
+rofi.color-normal: #002b37, #819396, #003643, #008ed4, #ffffff
+rofi.color-active: #002b37, #008ed4, #003643, #008ed4, #66c6ff
+rofi.color-urgent: #002b37, #da4281, #003643, #008ed4, #890661
+
+! /end themes
+
+rofi.fixed-num-lines: false
+rofi.terminal: rofi-sensible-terminal
+rofi.ssh-client: ssh
+rofi.ssh-command: {terminal} -e {ssh-client} {host}
+rofi.run-command: {cmd}
+rofi.run-list-command:
+rofi.run-shell-command: {terminal} -e {cmd}
+rofi.disable-history: false
+rofi.levenshtein-sort: false
+rofi.case-sensitive: false
+rofi.sidebar-mode: false
+rofi.lazy-filter-limit: 15000
+rofi.eh: 1
+rofi.auto-select: false
+rofi.parse-hosts: false
+rofi.parse-known-hosts: true
+rofi.combi-modi: window,run
+rofi.fuzzy: true
+rofi.glob: false
+rofi.tokenize: true
+rofi.m: -1
+rofi.separator-style: solid
+rofi.hide-scrollbar: true
+rofi.markup-rows: false
+rofi.fullscreen: false
+rofi.fake-transparency: false
+rofi.dpi: -1
+rofi.key-window:
+rofi.key-run:
+rofi.key-ssh:
+
+! XTerm
+XTerm*metaSendsEscape: true

@@ -57,3 +57,4 @@ ln -sfv "$DOTFILES_REPO_DIR/.tmux" "$HOME"
 
 mkdir -p "$HOME/.xmonad"
 ln -sfv "$DOTFILES_REPO_DIR/.xmonad/xmonad.hs" "$HOME/.xmonad"
+ln -sfv "$DOTFILES_REPO_DIR/.Xresources" "$HOME"
