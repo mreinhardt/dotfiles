@@ -12,9 +12,9 @@ prompt sfz
 
 # Start polybar
 if [[ $(pgrep polybar) == '' ]]; then
-    polybar -m | cut -d: -f1 | while read -r screen; do
+    while read -r screen; do
         sh -c "MONITOR=$screen polybar --reload default &" > /dev/null 2>&1
-    done
+    done <<< $(polybar -m | cut -d: -f1)
 fi
 
 # Start conky
