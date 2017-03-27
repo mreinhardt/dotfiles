@@ -49,8 +49,8 @@ font-1 = "Noto Mono Regular:size=9;0"
 font-2 = "Monoid Regular:size=9;0"
 
 modules-left = wminfo
-modules-center = spotify
-modules-right = volume battery temperature date powermenu
+modules-center =
+modules-right = spotify volume battery temperature date powermenu
 
 tray-position = right
 tray-padding = 2
@@ -383,7 +383,7 @@ label-empty-foreground = #55
 
 [module/wminfo]
 type = custom/script
-exec = wminfo
+exec = wminfo ${MONITOR_INDEX:1}
 interval = 1
 format-padding = 1
 
