@@ -25,6 +25,8 @@ ln -sfv "$DOTFILES_REPO_DIR/bin/upgrade-all" "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/wminfo" "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/xmc" "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/yeg" "$HOME/bin"
+mkdir -p "$HOME/Pictures/artstation"
+ln -sfv "$DOTFILES_REPO_DIR/bin/wget-artstation-bgs.sh" "$HOME/Pictures/artstation"
 
 
 ### config
