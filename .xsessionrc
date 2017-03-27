@@ -1,13 +1,14 @@
 #!/bin/bash
 
 # Load resources
-xrdb -merge .Xresources
+xrdb -merge ~/.Xresources
 
 # Rotate background
 while true; do
-    ln -sfv "$(find -L "$HOME/Pictures/backgrounds" -type f | sort -R | head -n1)" "$HOME/Pictures/.current_background"
-    xli -onroot -fillscreen "$HOME/Pictures/.current_background"
-    sleep 900s
+    ln -sfv "$(find -L "$HOME/Pictures/backgrounds" -type f | grep -E '[.](jpg|png)$' | sort -R | head -n1)" \
+            "$HOME/Pictures/.current_background"
+    xli -onroot -fillscreen -smooth -dispgamma 1.5 "$HOME/Pictures/.current_background"
+    sleep 360s
 done &
 
 # Start udiskie to handle media

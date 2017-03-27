@@ -5,6 +5,7 @@ import XMonad
 import XMonad.Actions.CycleWS
 import XMonad.Actions.SpawnOn
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ManageDocks
@@ -17,14 +18,14 @@ import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.EZConfig (additionalKeys)
 
 
-myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
+myWorkspaces = ["1:term","2:web","3:music","4","5","6","7","8","9"]
 myStartupHook = do
-    spawnOn "1" "terminology"
-    spawnOn "2" "firefox"
-    spawnOn "3" "spotify"
+    spawnOn "1:term" "terminology"
+    spawnOn "2:net" "firefox"
+    spawnOn "3:music" "spotify"
 
 main = do
-    xmonad $
+    xmonad $ ewmh $
         -- XMonad config
         defaultConfig
         { borderWidth = 1
@@ -40,8 +41,9 @@ main = do
         , logHook = logHook defaultConfig
         } `additionalKeys`
         [
-        -- Replace dmenu with yeganesh
-          ((mod4Mask, xK_p), spawn "yeg")
+        -- Replace dmenu with rofi
+          ((mod4Mask, xK_p), spawn "rofi -fuzzy -show run")
+        , ((mod4Mask .|. shiftMask, xK_p), spawn "rofi -fuzzy -show ssh")
         -- Alternate terminal open
         , ((mod4Mask .|. shiftMask, xK_grave), spawn "terminology")
         -- Lock screen

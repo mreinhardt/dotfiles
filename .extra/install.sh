@@ -53,6 +53,7 @@ if [[ -n $APT ]]; then
                             lynx \
                             meld \
                             mkdocs \
+                            nemo \
                             neovim \
                             nginx \
                             nodejs \
@@ -87,6 +88,7 @@ if [[ -n $APT ]]; then
                             virtualbox \
                             weechat-curses \
                             weechat-plugins \
+                            wmctrl \
                             workrave \
                             xclip \
                             xdotool \

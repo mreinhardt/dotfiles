@@ -1,0 +1,12 @@
+#!/bin/bash
+current_desktop=$(wmctrl -d | grep -E '[0-9]+\s+\*' | awk '{print $1, $NF}')
+desktop_index=$(echo -n "$current_desktop" | cut -d' ' -f1)
+desktop_name=$(echo -n "$current_desktop" | cut -d' ' -f2)
+
+current_window=$(wmctrl -pxl | grep -E "^0x\S+\s+$desktop_index")
+# window_pid=$(echo -n "$current_window" | awk '{print $3}')
+window_app=$(echo -n "$current_window" | awk '{print $4}' | grep -oE '[^.]*$')
+hostname=$(echo -n "$current_window" | awk '{print $5}')
+window_title=$(echo -n "$current_window" | sed "s/^.* $hostname //")
+
+printf "[%s] %s § %s" "$desktop_name" "$window_app" "$window_title"
