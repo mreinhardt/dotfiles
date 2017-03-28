@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+git clean -fd && git fetch origin && git reset --hard origin/`git rev-parse --abbrev-ref HEAD`

@@ -20,6 +20,9 @@ ln -sfv "$DOTFILES_REPO_DIR/.zsh/.prompts/sfz/prompt_sfz_setup" "$HOME/.zsh/.zfu
 ### bin
 
 mkdir -p "$HOME/bin"
+ln -sfv "$DOTFILES_REPO_DIR/bin/gpull" "$HOME/bin"
+ln -sfv "$DOTFILES_REPO_DIR/bin/gpush" "$HOME/bin"
+ln -sfv "$DOTFILES_REPO_DIR/bin/grr" "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/nowplaying" "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/otp" "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/upgrade-all" "$HOME/bin"
