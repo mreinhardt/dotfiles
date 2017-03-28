@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+shuf() { awk 'BEGIN {srand(); OFMT="%.17f"} {print rand(), $0}' "$@" |
+		               sort -k1,1n | cut -d ' ' -f2-; }
+man $(man -k ' ' | shuf | head -n1 | sed 's/(.*$//g') | cat
+
