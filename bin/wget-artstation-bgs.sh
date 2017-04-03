@@ -159,7 +159,8 @@ https://cdnb.artstation.com/p/assets/images/images/000/561/399/large/alex-konsta
 https://cdna.artstation.com/p/assets/images/images/000/535/250/large/alex-konstad-jotunheim-environment-giantskeep.jpg
 https://cdna.artstation.com/p/assets/images/images/000/535/248/large/alex-konstad-jotunheim-environment-giantschasm.jpg
 https://cdna.artstation.com/p/assets/images/images/000/656/428/large/alex-konstad-dragonsnest.jpg
-https://cdnb.artstation.com/p/assets/images/images/000/332/437/large/alex-konstad-tumblr-nfz708bqto1ql5teno1-1280.jpg"
+https://cdnb.artstation.com/p/assets/images/images/000/332/437/large/alex-konstad-tumblr-nfz708bqto1ql5teno1-1280.jpg
+https://cdnb.artstation.com/p/assets/images/images/000/380/909/large/nicholas-litvinenko-dust-storm.jpg"
 
 while read -r image; do
     url_nums=$(echo -n "$image" | grep -oE '[0-9]/[0-9]{3}/[0-9]{3}' | sed 's#/#-#g')
@@ -170,7 +171,7 @@ while read -r image; do
     else
         wget -nv --output-document="$filename" "$image"
         sleep_time="$(shuf -i2-8 -n1)s"
-		echo "Sleeping $sleep_time..."
-		sleep $sleep_time
+        echo "Sleeping $sleep_time..."
+        sleep $sleep_time
     fi
 done <<< "$images"
