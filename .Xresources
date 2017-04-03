@@ -66,13 +66,14 @@ rofi.key-ssh:
 
 
 !!! urxvt !!!
+URxvt.depth: 32
 URxvt.keysym.M-Escape: perl:keyboard-select:activate
 URxvt.keysym.M-s: perl:keyboard-select:search
 URxvt.perl-ext-common: ...,keyboard-select
 URxvt.perl-lib: ~/.urxvt/text/
 
 ! tango color  scheme
-URxvt*background: #2B2B2B
+URxvt*background: 2b2b/2b2b/2b2b/cccc
 URxvt*foreground: #DEDEDE
 URxvt*colorUL: #86a2b0
 ! black

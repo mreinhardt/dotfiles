@@ -17,6 +17,7 @@ if [[ -n $APT ]]; then
     sudo add-apt-repository --yes ppa:aacebedo/fasd
     sudo add-apt-repository --yes ppa:neovim-ppa/unstable
     sudo add-apt-repository --yes ppa:peterlevi/ppa  # variety
+    sudo add-apt-repository --yes ppa:webupd8team/terminix  # tilix
     # weechat
     sudo apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 11E9DE8848F2B65222AA75B8D1820DB22A11534E
     sudo bash -c "echo 'deb https://weechat.org/ubuntu xenial main' > /etc/apt/sources.list.d/weechat.list"
@@ -78,6 +79,7 @@ if [[ -n $APT ]]; then
                             suckless-tools \
                             terminology \
                             tig \
+                            tilix \
                             tmux \
                             udiskie \
                             unetbootin \

@@ -20,7 +20,7 @@ import XMonad.Util.EZConfig (additionalKeys)
 
 myWorkspaces = ["1:term","2:web","3:music","4","5","6","7","8","9"]
 myStartupHook = do
-    spawnOn "1:term" "terminology"
+    spawnOn "1:term" "tilix"
     spawnOn "2:net" "firefox"
     spawnOn "3:music" "spotify"
 
@@ -30,7 +30,7 @@ main = do
         defaultConfig
         { borderWidth = 1
         , modMask = mod4Mask     -- Rebind Mod to the Windows key
-        , terminal = "terminology"
+        , terminal = "tilix"
         , workspaces = myWorkspaces
         , normalBorderColor = "#666666"
         , focusedBorderColor = "#899CFF"
@@ -45,7 +45,7 @@ main = do
           ((mod4Mask, xK_p), spawn "rofi -fuzzy -show run")
         , ((mod4Mask .|. shiftMask, xK_p), spawn "rofi -fuzzy -show ssh")
         -- Alternate terminal open
-        , ((mod4Mask .|. shiftMask, xK_grave), spawn "terminology")
+        , ((mod4Mask .|. shiftMask, xK_grave), spawn "tilix")
         -- Lock screen
         , ((mod4Mask .|. shiftMask, xK_x),
            spawn "xscreensaver-command -lock")

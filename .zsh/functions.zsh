@@ -5,7 +5,7 @@ colortable() {
     for code in {0..255}; do
         pcode=$(printf "%03d" $code)
         echo -ne "\e[07;38;05;${code}m $pcode"
-        if [[ $(( ($code + 1) % 16 )) -eq 0 ]]; then
+        if [[ $(( ($code + 1) % 8 )) -eq 0 ]]; then
             echo -e "\e[38;48;05;00m"
         fi
     done

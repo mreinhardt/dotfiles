@@ -58,5 +58,12 @@ fi
 export PATH="$HOME/bin:$HOME/.local/bin:$HOME/.cabal/bin:$PATH"
 
 
+### tilix
+
+if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+    source /etc/profile.d/vte.sh
+    PS1="$PS1$(__vte_osc7)"
+fi
+
 
 ## END CUSTOM ZSHRC ##########################################################
