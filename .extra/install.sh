@@ -5,8 +5,10 @@ read PROCEED
 if [[ $PROCEED != "y" && $PROCEED != "Y" ]]; then exit; fi
 
 PLATFORM=$(uname -s)
+LSB_ID=$(lsb_release -s -i)
 APT=$(command -v apt-get)
 BREW=$(command -v brew)
+PACMAN=$(command -v pacman)
 
 
 ### Ubuntu
@@ -35,13 +37,11 @@ if [[ -n $APT ]]; then
 
     # install packages
     sudo $APT install --yes apt-transport-https \
-                            cabal-install \
                             cmake \
                             conky-all \
                             dconf-editor \
                             fasd \
                             feh \
-                            firefox \
                             flake8 \
                             font-manager \
                             git \
@@ -71,25 +71,24 @@ if [[ -n $APT ]]; then
                             python3.5 \
                             python3-pip \
                             redshift \
+                            rofi \
                             ruby \
                             ruby2.3 \
                             shellcheck \
                             silversearcher-ag \
                             subversion \
                             suckless-tools \
-                            terminology \
                             tig \
                             tilix \
                             tmux \
                             udiskie \
                             unetbootin \
                             vagrant \
-                            variety \
                             vim \
                             vim-python-jedi \
-                            virtualbox \
                             weechat-curses \
                             weechat-plugins \
+                            wget \
                             wmctrl \
                             workrave \
                             xclip \
@@ -99,13 +98,6 @@ if [[ -n $APT ]]; then
                             xmonad \
                             || true
 
-    # install neovim python
-    pip install --upgrade neovim \
-                          pip
-    pip3 install --upgrade neovim \
-                           pip
-    pip3 install --upgrade --user tmuxp
-
     # install playerctl
     latest_playerctl_release=$(curl -s https://api.github.com/repos/acrisci/playerctl/releases \
         | grep browser_download_url \
@@ -114,9 +106,59 @@ if [[ -n $APT ]]; then
     wget -O /tmp/playerctl.deb "$latest_playerctl_release"
     sudo dpkg -i /tmp/playerctl.deb
 
-    # install yeganesh
-    cabal update
-    cabal install -g --user yeganesh
+### Manjaro
+elif [[ -n $PACMAN ]]; then
+
+    # install shit
+    sudo $PACMAN -S --noconfirm \
+                    cmake \
+                    conky \
+                    curl \
+                    dconf-editor \
+                    fasd \
+                    flake8 \
+                    fzf \
+                    htop \
+                    ipython \
+                    java-runtime-common \
+                    lua \
+                    lynx \
+                    meld \
+                    neovim \
+                    nginx \
+                    openssh \
+                    openssl \
+                    pandoc \
+                    playerctl \
+                    python-pip \
+                    python-pylint \
+                    python2 \
+                    redshift \
+                    ruby \
+                    ruby2.3 \
+                    shellcheck \
+                    subversion \
+                    the_silver_searcher \
+                    tig \
+                    tmux \
+                    udiskie \
+                    unetbootin \
+                    vagrant \
+                    vim \
+                    weechat \
+                    wget \
+                    wmctrl \
+                    workrave \
+                    xclip \
+                    xdotool \
+                    xfce4-power-manager \
+                    xmonad \
+                    yaourt \
+                    || true
+
+    yaourt -S --noconfirm \
+              community/rofi \
+              || true
 
 ### OSX
 elif [[ $PLATFORM == "Darwin" ]]; then
@@ -167,4 +209,11 @@ elif [[ $PLATFORM == "Darwin" ]]; then
     brew prune
 
 fi
+
+# install neovim python
+pip2 install --upgrade neovim \
+                       pip
+pip3 install --upgrade neovim \
+                       pip
+pip3 install --upgrade --user tmuxp
 
