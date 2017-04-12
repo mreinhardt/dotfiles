@@ -118,14 +118,10 @@ elif [[ -n $PACMAN ]]; then
                     curl \
                     dconf-editor \
                     fasd \
-                    flake8 \
                     fzf \
                     htop \
                     ipython \
-                    java-runtime-common \
-                    lua \
                     lynx \
-                    meld \
                     neovim \
                     nginx \
                     openssh \
@@ -133,24 +129,18 @@ elif [[ -n $PACMAN ]]; then
                     pandoc \
                     playerctl \
                     python-pip \
-                    python-pylint \
                     python2 \
                     redshift \
-                    ruby \
-                    ruby2.3 \
                     shellcheck \
-                    subversion \
                     the_silver_searcher \
                     tig \
                     tmux \
                     udiskie \
                     unetbootin \
-                    vagrant \
                     vim \
                     weechat \
                     wget \
                     wmctrl \
-                    workrave \
                     xclip \
                     xdotool \
                     xfce4-power-manager \
