@@ -21,14 +21,14 @@ import XMonad.Util.EZConfig (additionalKeys)
 myWorkspaces = ["1:term","2:web","3:music","4","5","6","7","8","9"]
 myStartupHook = do
     spawnOn "1:term" "tilix"
-    spawnOn "2:net" "firefox"
+    spawnOn "2:net" "chromium-browser"
     spawnOn "3:music" "spotify"
 
 main = do
     xmonad $ ewmh $
         -- XMonad config
         defaultConfig
-        { borderWidth = 1
+        { borderWidth = 2
         , modMask = mod4Mask     -- Rebind Mod to the Windows key
         , terminal = "tilix"
         , workspaces = myWorkspaces

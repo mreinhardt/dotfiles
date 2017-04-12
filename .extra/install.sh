@@ -39,12 +39,14 @@ if [[ -n $APT ]]; then
     sudo $APT install --yes apt-transport-https \
                             cmake \
                             conky-all \
+                            compton \
                             dconf-editor \
                             fasd \
                             feh \
                             flake8 \
                             font-manager \
                             git \
+                            hsetroot \
                             htop \
                             ipython \
                             java-common \
@@ -158,6 +160,7 @@ elif [[ -n $PACMAN ]]; then
 
     yaourt -S --noconfirm \
               community/rofi \
+              hsetroot \
               || true
 
 ### OSX
