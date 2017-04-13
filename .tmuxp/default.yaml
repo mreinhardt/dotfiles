@@ -1,0 +1,5 @@
+session_name: default
+windows:
+  - window_name: default
+    panes:
+    - cd

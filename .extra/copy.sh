@@ -19,6 +19,12 @@ mkdir -p "$HOME/.lein"
 cp -vu "$DOTFILES_REPO_DIR/.lein/profiles.clj" "$HOME/.lein"
 
 
+### tmuxp
+
+mkdir -p "$HOME/.tmuxp"
+cp -vi "$DOTFILES_REPO_DIR/.tmuxp/default.yaml" "$HOME/.tmuxp"
+
+
 ### xmonad
 
 cp -vi "$DOTFILES_REPO_DIR/.xsessionrc" "$HOME"
