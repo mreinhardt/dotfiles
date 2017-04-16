@@ -20,7 +20,7 @@ import XMonad.Util.EZConfig (additionalKeys)
 
 myWorkspaces = ["1:term","2:web","3:music","4","5","6","7","8","9"]
 myStartupHook = do
-    spawnOn "1:term" "tilix"
+    spawnOn "1:term" "xfce4-terminal"
     spawnOn "2:net" "chromium-browser"
     spawnOn "3:music" "spotify"
 
@@ -29,8 +29,9 @@ main = do
         -- XMonad config
         defaultConfig
         { borderWidth = 2
-        , modMask = mod4Mask     -- Rebind Mod to the Windows key
-        , terminal = "tilix"
+        -- , modMask = mod4Mask     -- Rebind Mod to the Windows key
+        -- , modMask = altMask
+        , terminal = "xfce4-terminal"
         , workspaces = myWorkspaces
         , normalBorderColor = "#666666"
         , focusedBorderColor = "#899CFF"
@@ -42,28 +43,28 @@ main = do
         } `additionalKeys`
         [
         -- Replace dmenu with rofi
-          ((mod4Mask, xK_p), spawn "rofi -fuzzy -show run")
-        , ((mod4Mask .|. shiftMask, xK_p), spawn "rofi -fuzzy -show ssh")
+          ((modMask, xK_p), spawn "rofi -fuzzy -show run")
+        , ((modMask .|. shiftMask, xK_p), spawn "rofi -fuzzy -show ssh")
         -- Alternate terminal open
-        , ((mod4Mask .|. shiftMask, xK_grave), spawn "tilix")
+        , ((modMask .|. shiftMask, xK_grave), spawn "tilix")
         -- Lock screen
-        , ((mod4Mask .|. shiftMask, xK_x),
+        , ((modMask .|. shiftMask, xK_x),
            spawn "xscreensaver-command -lock")
         -- Workspace movement
-        , ((mod4Mask, xK_Left), prevWS)
-        , ((mod4Mask, xK_Right), nextWS)
-        , ((mod4Mask .|. shiftMask, xK_Left), shiftToPrev)
-        , ((mod4Mask .|. shiftMask, xK_Right), shiftToNext)
+        , ((modMask, xK_Left), prevWS)
+        , ((modMask, xK_Right), nextWS)
+        , ((modMask .|. shiftMask, xK_Left), shiftToPrev)
+        , ((modMask .|. shiftMask, xK_Right), shiftToNext)
         -- Volume controls
         , ((0, 0x1008FF11), spawn "amixer set Master 4-")
-        , ((mod4Mask, xK_F3), spawn "amixer set Master 4-")
+        , ((modMask, xK_F3), spawn "amixer set Master 4-")
         , ((0, 0x1008FF13), spawn "amixer set Master 4+")
-        , ((mod4Mask, xK_F4), spawn "amixer set Master 4+")
+        , ((modMask, xK_F4), spawn "amixer set Master 4+")
         -- Brightness controls
         , ((0, 0x1008FF03), spawn "xbacklight -5")
-        , ((mod4Mask, xK_F5), spawn "xbacklight -5")
+        , ((modMask, xK_F5), spawn "xbacklight -5")
         , ((0, 0x1008FF02), spawn "xbacklight +5")
-        , ((mod4Mask, xK_F6), spawn "xbacklight +5")
+        , ((modMask, xK_F6), spawn "xbacklight +5")
         -- Spotify controls
         , ((controlMask .|. shiftMask, xK_Up),
            spawn "playerctl -p spotify play")
