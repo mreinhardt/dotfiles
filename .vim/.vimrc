@@ -4,11 +4,9 @@
 
 execute "source $HOME/.vim/base.vimrc"
 
-set t_Co=256
 set t_ut=  " ensure tmux colors work correctly
 set background=dark
-colorscheme arcadia
-let g:arcadia_Campfire=1
+colorscheme onedark
 
 " transparent bg
 hi Normal guibg=NONE ctermbg=NONE
@@ -56,7 +54,7 @@ let g:bufferline_echo=0
 let g:bufferline_show_bufnr=0
 
 " Airline
-let g:airline_theme='behelit'
+let g:airline_theme='onedark'
 let g:airline#extensions#bufferline#enabled=1
 let g:airline#extensions#ctrlp#enabled=1
 let g:airline#extensions#netrw#enabled=1
