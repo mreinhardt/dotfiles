@@ -8,6 +8,7 @@ PLATFORM=$(uname -s)
 LSB_ID=$(lsb_release -s -i)
 APT=$(command -v apt-get)
 BREW=$(command -v brew)
+EOPKG=$(command -v eopkg)
 PACMAN=$(command -v pacman)
 
 
@@ -111,7 +112,7 @@ if [[ -n $APT ]]; then
 ### Manjaro
 elif [[ -n $PACMAN ]]; then
 
-    # install shit
+    # install packages
     sudo $PACMAN -S --noconfirm \
                     cmake \
                     conky \
@@ -152,6 +153,39 @@ elif [[ -n $PACMAN ]]; then
               community/rofi \
               hsetroot \
               || true
+
+### Solus
+elif [[ -n $EOPKG ]]; then
+
+    # install packages
+    sudo $EOPKG install \
+                cmake \
+                curl \
+                dconf-editor \
+                fzf \
+                htop \
+                lynx \
+                neovim \
+                nginx \
+                openssh \
+                openssl \
+                pandoc \
+                playerctl \
+                ranger \
+                redshift \
+                rofi \
+                shellcheck \
+                silver-searcher \
+                tig \
+                tmux \
+                vim \
+                weechat \
+                wget \
+                xclip \
+                || true
+
+    sudo $EOPKG upgrade
+    sudo $EOPKG clean
 
 ### OSX
 elif [[ $PLATFORM == "Darwin" ]]; then
