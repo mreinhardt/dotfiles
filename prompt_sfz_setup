@@ -15,19 +15,19 @@ prompt_sfz_colors () {
     case $1 in
         grey)     echo "{234}";;
         bgrey)    echo "{060}";;
-        red)      echo "{089}";;
+        red)      echo "{126}";;
         bred)     echo "{200}";;
-        green)    echo "{029}";;
+        green)    echo "{035}";;
         bgreen)   echo "{048}";;
         yellow)   echo "{148}";;
         byellow)  echo "{190}";;
         blue)     echo "{025}";;
-        bblue)    echo "{027}";;
-        magenta)  echo "{091}";;
-        bmagenta) echo "{093}";;
+        bblue)    echo "{069}";;
+        magenta)  echo "{092}";;
+        bmagenta) echo "{099}";;
         cyan)     echo "{074}";;
         bcyan)    echo "{081}";;
-        white)    echo "{189}";;
+        white)    echo "{153}";;
         bwhite)   echo "{195}";;
     esac
 }
