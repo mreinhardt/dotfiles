@@ -20,6 +20,7 @@ ln -sfv "$DOTFILES_REPO_DIR/.zsh/.prompts/sfz/prompt_sfz_setup" "$HOME/.zsh/.zfu
 ### bin
 
 mkdir -p "$HOME/bin"
+ln -sfv "$DOTFILES_REPO_DIR/bin/0x2ip" "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/gpull" "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/gpush" "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/grr" "$HOME/bin"
