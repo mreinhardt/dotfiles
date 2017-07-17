@@ -116,6 +116,21 @@ if &t_Co == 8 && $TERM !~# '^linux'
   set t_Co=16
 endif
 
+"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
+"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
+"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
+if (empty($TMUX))
+  if (has("nvim"))
+    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  endif
+  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+  if (has("termguicolors"))
+    set termguicolors
+  endif
+endif
 
 " Load matchit.vim, but only if the user hasn't installed a newer version.
 if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
@@ -175,6 +190,11 @@ set hidden
 " Wrap lines by default
 "set wrap linebreak
 "set showbreak=" "
+
+" Wrap with indent
+set breakindent
+set breakindentopt=shift:4,sbr
+set showbreak=↪
 
 " Allow easy navigation between wrapped lines.
 vmap j gj
@@ -396,6 +416,7 @@ highlight MatchParen cterm=none ctermbg=232 ctermfg=46
 " Create `tags` file
 command! MakeTags !ctags -R .
 
+
 """ Key bindings
 
 " Leader binding
@@ -449,6 +470,8 @@ nnoremap <Leader>g g<C-]>
 " Split
 nnoremap <Leader>sh :split<CR>
 nnoremap <Leader>sv :vsplit<CR>
+nnoremap <Leader>sH <C-w>t<C-w>K
+nnoremap <Leader>sV <C-w>t<C-w>H
 
 " Move to split
 nnoremap <C-J> <C-W>j
@@ -465,6 +488,15 @@ nnoremap <Leader>b :ls<CR>:b<Space>
 nnoremap <Leader>T :tabnew<CR>:b#<BAR>bd#<CR>
 nnoremap <Leader>. :tabnext<CR>
 nnoremap <Leader>, :tabprev<CR>
+nnoremap <Leader>1 1gt
+nnoremap <Leader>2 2gt
+nnoremap <Leader>3 3gt
+nnoremap <Leader>4 4gt
+nnoremap <Leader>5 5gt
+nnoremap <Leader>6 6gt
+nnoremap <Leader>7 7gt
+nnoremap <Leader>8 8gt
+nnoremap <Leader>9 9gt
 
 " Move lines
 nnoremap <Leader>j :m .+1<CR>==
@@ -479,6 +511,9 @@ vnoremap <Leader>k :m '<-2<CR>gv=gv
 " inoremap [[ []<ESC>i
 " inoremap {{ {}<ESC>i
 " inoremap << <><ESC>i
+
+" Close HTML tags
+inoremap <silent> <C-c> </<C-X><C-O><C-X><Esc>F<i
 
 " Toggle tab style
 nnoremap <Leader>tt :set noet ci pi sts=0 sw=4 ts=4<CR>
