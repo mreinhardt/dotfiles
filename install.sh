@@ -2,7 +2,9 @@
 
 # Get current dir so this script can be run from anywhere.
 export DOTFILES_REPO_DIR DOTFILES_EXTRA_DIR
-DOTFILES_REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
+PARENT_SHELL="$(ps -p $$ | tail -n1 | awk '{print $NF}')"
+SOURCE_FILE="$(if [[ $PARENT_SHELL == *bash ]]; then echo "${BASH_SOURCE[0]}"; else echo "$0"; fi)"
+DOTFILES_REPO_DIR="$(cd "$(dirname "$SOURCE_FILE")" && pwd)"
 DOTFILES_EXTRA_DIR="$HOME/.extra"
 
 # Run install scripts.

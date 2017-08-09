@@ -10,13 +10,17 @@ cp -vi "$DOTFILES_REPO_DIR/.conkyrc" "$HOME"
 
 ### git
 
-cp -vu "$DOTFILES_REPO_DIR/.gitconfig" "$HOME"
+if [[ ! -f "$HOME/.gitconfig" ]]; then
+    cp -v "$DOTFILES_REPO_DIR/.gitconfig" "$HOME"
+fi
 
 
 ### lein
 
 mkdir -p "$HOME/.lein"
-cp -vu "$DOTFILES_REPO_DIR/.lein/profiles.clj" "$HOME/.lein"
+if [[ ! -f "$HOME/.lein/profiles.clj" ]]; then
+    cp -v "$DOTFILES_REPO_DIR/.lein/profiles.clj" "$HOME/.lein"
+fi
 
 
 ### tmuxp

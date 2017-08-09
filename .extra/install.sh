@@ -5,7 +5,9 @@ read PROCEED
 if [[ $PROCEED != "y" && $PROCEED != "Y" ]]; then exit; fi
 
 PLATFORM=$(uname -s)
-LSB_ID=$(lsb_release -s -i)
+if [[ -n $(command -v lsb_release) ]]; then
+    LSB_ID=$(lsb_release -s -i)
+fi
 APT=$(command -v apt-get)
 BREW=$(command -v brew)
 EOPKG=$(command -v eopkg)
@@ -191,7 +193,7 @@ elif [[ -n $EOPKG ]]; then
 elif [[ $PLATFORM == "Darwin" ]]; then
 
     # install xcode command line tools
-    /usr/bin/xcode-select --install || true
+    /usr/bin/xcode-select --install 2> /dev/null || true
 
     # install brew
     if [[ -z $BREW ]]; then
@@ -223,6 +225,7 @@ elif [[ $PLATFORM == "Darwin" ]]; then
                  node \
                  pandoc \
                  postgresql \
+                 python3 \
                  rogue \
                  the_silver_searcher \
                  tig \
