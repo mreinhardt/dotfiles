@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+PLATFORM=$(uname -s)
+
 
 ### zsh
 
@@ -49,6 +51,13 @@ ln -sfv "$DOTFILES_REPO_DIR/.conky/cpuhogs" "$HOME/.conky"
 ln -sfv "$DOTFILES_REPO_DIR/.conky/netrxkb" "$HOME/.conky"
 ln -sfv "$DOTFILES_REPO_DIR/.conky/nettxkb" "$HOME/.conky"
 ln -sfv "$DOTFILES_REPO_DIR/.conky/vmhogs" "$HOME/.conky"
+
+
+### hammerspoon
+
+if [[ $PLATFORM == "Darwin" ]]; then
+    ln -sfv "$DOTFILES_REPO_DIR/.hammerspoon" "$HOME"
+fi
 
 
 ### tig
