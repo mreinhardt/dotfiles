@@ -60,6 +60,13 @@ if [[ $PLATFORM == "Darwin" ]]; then
 fi
 
 
+### neovim
+
+if [[ $PLATFORM == "Darwin" ]]; then
+    ln -sfv "$DOTFILES_REPO_DIR/Applications/Neovim.app" "$HOME/Applications"
+fi
+
+
 ### tig
 
 ln -sfv "$DOTFILES_REPO_DIR/.tigrc" "$HOME"
