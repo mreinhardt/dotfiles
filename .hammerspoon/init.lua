@@ -1,5 +1,16 @@
 -- mod key
 mod = {"cmd", "alt", "ctrl"}
+smod = {"cmd", "alt", "ctrl", "shift"}
+
+-- move window function
+function movewin(x, y)
+  local win = hs.window.focusedWindow()
+  local f = win:frame()
+
+  f.x = f.x + x
+  f.y = f.y + y
+  win:setFrame(f)
+end
 
 -- snap window function
 function snapwin(x, y, w, h)
@@ -14,6 +25,32 @@ function snapwin(x, y, w, h)
   f.h = (s.y + h[2]) + s.h * h[1]
   win:setFrame(f)
 end
+
+-- move window bindings
+hs.hotkey.bind(mod, "up", function()
+  movewin(0, -10)
+end)
+hs.hotkey.bind(mod, "right", function()
+  movewin(10, 0)
+end)
+hs.hotkey.bind(mod, "down", function()
+  movewin(0, 10)
+end)
+hs.hotkey.bind(mod, "left", function()
+  movewin(-10, 0)
+end)
+hs.hotkey.bind(smod, "up", function()
+  movewin(0, -100)
+end)
+hs.hotkey.bind(smod, "right", function()
+  movewin(100, 0)
+end)
+hs.hotkey.bind(smod, "down", function()
+  movewin(0, 100)
+end)
+hs.hotkey.bind(smod, "left", function()
+  movewin(-100, 0)
+end)
 
 -- snap window bindings
 hs.hotkey.bind(mod, "H", function()
