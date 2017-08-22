@@ -480,8 +480,8 @@ nnoremap <C-H> <C-W>h
 nnoremap <C-L> <C-W>l
 
 " Move to buffer
-nnoremap <Leader>n :bn<CR>
-nnoremap <Leader>p :bp<CR>
+nnoremap <Leader>] :bn<CR>
+nnoremap <Leader>[ :bp<CR>
 nnoremap <Leader>b :ls<CR>:b<Space>
 
 " Tabs

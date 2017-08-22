@@ -6,7 +6,7 @@ execute "source $HOME/.vim/base.vimrc"
 
 set t_ut=  " ensure tmux colors work correctly
 set background=dark
-colorscheme onedark
+colorscheme seadragon
 
 " transparent bg
 hi Normal guibg=NONE ctermbg=NONE
@@ -105,7 +105,7 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_loc_list_height = 5
-let g:syntastic_python_checkers = ['flake8', 'pylint']
+let g:syntastic_python_checkers = ['pylint']
 
 nnoremap <silent> e[ :lprev<CR>
 nnoremap <silent> e] :lnext<CR>
