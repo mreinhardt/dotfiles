@@ -19,10 +19,18 @@ function snapwin(x, y, w, h)
   local screen = win:screen()
   local s = screen:frame()
 
-  f.x = (s.x + x[2]) + s.w * x[1]
-  f.y = (s.y + y[2]) + s.h * y[1]
-  f.w = (s.x + w[2]) + s.w * w[1]
-  f.h = (s.y + h[2]) + s.h * h[1]
+  if x then
+      f.x = (s.x + x[2]) + s.w * x[1]
+  end
+  if y then
+      f.y = (s.y + y[2]) + s.h * y[1]
+  end
+  if w then
+      f.w = (s.x + w[2]) + s.w * w[1]
+  end
+  if h then
+      f.h = (s.y + h[2]) + s.h * h[1]
+  end
   win:setFrame(f)
 end
 
@@ -54,27 +62,51 @@ end)
 
 -- snap window bindings
 hs.hotkey.bind(mod, "H", function()
+  snapwin({0, 0}, false, false, false)
+end)
+hs.hotkey.bind(smod, "H", function()
   snapwin({0, 0}, {0, 0}, {0.5, 0}, {1, 0})
 end)
 hs.hotkey.bind(mod, "J", function()
+  snapwin(false, {0.5, 0}, false, false)
+end)
+hs.hotkey.bind(smod, "J", function()
   snapwin({0, 0}, {0.5, 0}, {1, 0}, {0.5, 0})
 end)
 hs.hotkey.bind(mod, "K", function()
+  snapwin(false, {0, 0}, false, false)
+end)
+hs.hotkey.bind(smod, "K", function()
   snapwin({0, 0}, {0, 0}, {1, 0}, {0.5, 0})
 end)
 hs.hotkey.bind(mod, "L", function()
+  snapwin({0.5, 0}, false, false, false)
+end)
+hs.hotkey.bind(smod, "L", function()
   snapwin({0.5, 0}, {0, 0}, {0.5, 0}, {1, 0})
 end)
 hs.hotkey.bind(mod, "Y", function()
+  snapwin({0, 0}, {0, 0}, false, false)
+end)
+hs.hotkey.bind(smod, "Y", function()
   snapwin({0, 0}, {0, 0}, {0.5, 0}, {0.5, 0})
 end)
 hs.hotkey.bind(mod, "U", function()
+  snapwin({0.5, 0}, {0, 0}, false, false)
+end)
+hs.hotkey.bind(smod, "U", function()
   snapwin({0.5, 0}, {0, 0}, {0.5, 0}, {0.5, 0})
 end)
 hs.hotkey.bind(mod, "B", function()
+  snapwin({0, 0}, {0.5, 0}, false, false)
+end)
+hs.hotkey.bind(smod, "B", function()
   snapwin({0, 0}, {0.5, 0}, {0.5, 0}, {0.5, 0})
 end)
 hs.hotkey.bind(mod, "N", function()
+  snapwin({0.5, 0}, {0.5, 0}, false, false)
+end)
+hs.hotkey.bind(smod, "N", function()
   snapwin({0.5, 0}, {0.5, 0}, {0.5, 0}, {0.5, 0})
 end)
 hs.hotkey.bind(mod, "M", function()
