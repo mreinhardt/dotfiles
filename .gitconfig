@@ -42,7 +42,7 @@
     fhf = flow hotfix finish
 
 [core]
-    editor = vim
+    editor = nvim
 
 [diff]
     context = 2
