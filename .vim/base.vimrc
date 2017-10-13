@@ -380,7 +380,7 @@ if has('autocmd')
   autocmd FileType python set textwidth=79
   autocmd FileType python set colorcolumn=+1,+41
   autocmd FileType clojure set textwidth=99
-  autocmd FileType clojure set colorcolumn=+1
+  autocmd FileType clojure set colorcolumn=+1,+21
 else
   set textwidth=99
   set colorcolumn=+1

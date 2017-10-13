@@ -22,4 +22,4 @@ alias vag="$(command -v vagrant)"
 alias vim=$(command -v nvim)
 alias vm=$(command -v nvim)
 alias nv=$(command -v nvim)
-
+alias lgh="git lgg | head"

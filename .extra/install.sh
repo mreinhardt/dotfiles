@@ -49,8 +49,10 @@ if [[ -n $APT ]]; then
                             flake8 \
                             font-manager \
                             git \
+                            glances \
                             hsetroot \
                             htop \
+                            httpie \
                             ipython \
                             java-common \
                             libghc-xmonad-contrib-dev \
@@ -66,6 +68,7 @@ if [[ -n $APT ]]; then
                             npm \
                             openssh-server \
                             pandoc \
+                            pgcli \
                             polybar \
                             pylint \
                             python-dev \
@@ -245,5 +248,5 @@ pip2 install --upgrade neovim \
                        pip
 pip3 install --upgrade neovim \
                        pip
-pip3 install --upgrade --user tmuxp
-
+pip3 install --upgrade --user doitlive \
+                              tmuxp
