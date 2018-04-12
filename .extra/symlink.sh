@@ -39,8 +39,8 @@ ln -sfv "$DOTFILES_REPO_DIR/bin/wget-artstation-bgs.sh" "$HOME/Pictures/artstati
 
 ### config
 
-ln -sfv "$DOTFILES_REPO_DIR/.config/compton.conf" "$HOME/.config"
 mkdir -p "$HOME/.config/polybar"
+ln -sfv "$DOTFILES_REPO_DIR/.config/compton.conf" "$HOME/.config"
 ln -sfv "$DOTFILES_REPO_DIR/.config/polybar/config" "$HOME/.config/polybar"
 
 
