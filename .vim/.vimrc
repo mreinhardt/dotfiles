@@ -4,46 +4,64 @@
 
 execute "source $HOME/.vim/base.vimrc"
 
+" Plugins
+call plug#begin()
+  Plug 'ervandew/supertab'
+  Plug 'godlygeek/tabular'
+  Plug 'SirVer/ultisnips'
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all --no-update-rc' }
+  Plug 'justinmk/vim-sneak'
+  Plug 'mreinhardt/nvim-pfix', { 'do': ':UpdateRemotePlugins' }
+  Plug 'tpope/vim-repeat'
+  Plug 'easymotion/vim-easymotion'
+  Plug 'vim-scripts/ag.vim'
+  Plug 'honza/vim-snippets'
+  Plug 'tpope/vim-fugitive'
+  Plug 'tomtom/tcomment_vim'
+  Plug 'airblade/vim-gitgutter'
+  Plug 'ruanyl/vim-gh-line'
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'zchee/deoplete-jedi'
+  Plug 'sukima/xmledit'
+  Plug 'vim-syntastic/syntastic'
+  Plug 'sheerun/vim-polyglot'
+  Plug 'vim-airline/vim-airline'
+  Plug 'bling/vim-bufferline'
+  Plug 'junegunn/vader.vim'
+  " Language Specific
+  Plug 'hdima/python-syntax'
+  Plug 'davidhalter/jedi-vim'
+  Plug 'nvie/vim-flake8'
+  Plug 'pangloss/vim-javascript'
+  Plug 'prettier/vim-prettier', {
+    \ 'do': 'npm install',
+    \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss']}
+  Plug 'elzr/vim-json'
+  Plug 'vim-scripts/CSSMinister'
+  Plug 'plasticboy/vim-markdown'
+  Plug 'guns/vim-clojure-static'
+  Plug 'tpope/vim-classpath'
+  Plug 'tpope/vim-fireplace'
+  Plug 'guns/vim-clojure-highlight'
+  Plug 'raichoo/haskell-vim'
+  Plug 'fbernier/nginx-vim-syntax'
+  Plug 'stephpy/vim-php-cs-fixer'
+  " Themes and Colors
+  Plug 'lilydjwg/colorizer'
+  Plug 'vim-airline/vim-airline-themes'
+  Plug 'NLKNguyen/papercolor-theme'
+  Plug 'mreinhardt/papercolor-kelp'
+call plug#end()
+
+
 set t_ut=  " ensure tmux colors work correctly
 set background=dark
-colorscheme seadragon
+let g:PaperColor_Theme = 'kelp'
+colorscheme PaperColor
 
 " transparent bg
 hi Normal guibg=NONE ctermbg=NONE
 hi NonText guibg=NONE ctermbg=NONE
-
-" Plugins
-call plug#begin()
-Plug 'ervandew/supertab'
-Plug 'SirVer/ultisnips'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all --no-update-rc' }
-Plug 'justinmk/vim-sneak'
-Plug 'mreinhardt/nvim-pfix', { 'do': ':UpdateRemotePlugins' }
-Plug 'tpope/vim-repeat'
-Plug 'vim-scripts/ag.vim'
-Plug 'honza/vim-snippets'
-Plug 'tpope/vim-fugitive'
-Plug 'tomtom/tcomment_vim'
-Plug 'airblade/vim-gitgutter'
-Plug 'davidhalter/jedi-vim'
-Plug 'nvie/vim-flake8'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-jedi'
-Plug 'sukima/xmledit'
-Plug 'vim-syntastic/syntastic'
-Plug 'sheerun/vim-polyglot'
-Plug 'tpope/vim-markdown'
-Plug 'guns/vim-clojure-static'
-Plug 'tpope/vim-classpath'
-Plug 'tpope/vim-fireplace'
-Plug 'guns/vim-clojure-highlight'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'bling/vim-bufferline'
-Plug 'lilydjwg/colorizer'
-Plug 'vim-scripts/CSSMinister'
-Plug 'junegunn/vader.vim'
-call plug#end()
 
 
 let mapleader = "\<Space>"
@@ -69,7 +87,7 @@ vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
 
 " FZF
-let g:fzf_layout = {'down': '~20%'}
+let g:fzf_layout = {'down': '~40%'}
 nnoremap <C-p> :FZF<CR>
 
 " greplace
@@ -83,6 +101,7 @@ nnoremap <M-f> :Pfind<CR>
 nnoremap <M-r> :Pfix<CR>
 
 " deoplete
+let g:python3_host_prog = "/usr/bin/python3.6"
 let g:deoplete#enable_at_startup = 1
 
 " UltiSnips
@@ -106,6 +125,19 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_loc_list_height = 5
 let g:syntastic_python_checkers = ['pylint']
+
+" python-syntax
+let python_highlight_all = 1
+
+" vim-markdown
+let g:vim_markdown_no_default_key_mappings = 1
+
+" haskell-vim
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 
 nnoremap <silent> e[ :lprev<CR>
 nnoremap <silent> e] :lnext<CR>

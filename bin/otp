@@ -10,8 +10,7 @@ def get_hotp_token(secret, intervals_no):
     return h
 
 def get_totp_token(secret):
-	return '{0:06d}'.format(get_hotp_token(secret, intervals_no=int(time.time())//30))
+    return '{0:06d}'.format(get_hotp_token(secret, intervals_no=int(time.time())//30))
 
 if __name__ == '__main__':
     print get_totp_token(sys.argv[1])
-

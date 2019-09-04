@@ -72,6 +72,9 @@ set wildmenu
 " When 'wrap' is on, display last line even if it doesn't fit.
 set display+=lastline
 
+" Redraw when needed, helps with screen refresh over ssh.
+set lazyredraw
+
 " Force utf-8 encoding in GVim
 if &encoding ==# 'latin1' && has('gui_running')
   set encoding=utf-8
@@ -399,10 +402,12 @@ let g:netrw_bufsettings = 'noma nomod nu nobl nowrap ro'
 
 " netrw settings
 let g:netrw_banner = 0
-let g:netrw_browse_split=0  " open in same window
-let g:netrw_alto=1          " open splits below
-let g:netrw_altv=1          " open splits to the right
-let g:netrw_liststyle=1     " detail view
+let g:netrw_browse_split=0    " open in same window
+let g:netrw_alto=1            " open splits below
+let g:netrw_altv=1            " open splits to the right
+let g:netrw_liststyle=1       " detail view
+let g:netrw_sizestyle="H"     " human readable 1024-base
+let g:netrw_sort_options="i"  " ignore case in sort
 
 " Automatically show matching brackets
 set showmatch
@@ -433,6 +438,10 @@ inoremap <C-D> <Esc>
 vnoremap <silent> y y`]
 vnoremap <silent> p p`]
 nnoremap <silent> p p`]
+
+" Paste and reselect visual
+nnoremap <Leader>p pgvy
+nnoremap <Leader>P Pgvy
 
 " Redraw
 nnoremap <Leader>l :redraw!<CR>

@@ -19,11 +19,12 @@ import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.EZConfig (additionalKeys)
 
 
-myWorkspaces = ["1:term","2:web","3:music","4","5","6","7","8","9"]
+myWorkspaces = ["1:term","2:web","3:music","4:alt","5","6","7","8","9"]
 myStartupHook = do
     spawnOn "1:term" "tilix"
-    spawnOn "2:net" "chromium-browser"
+    spawnOn "2:net" "google-chrome-stable"
     spawnOn "3:music" "spotify"
+    spawnOn "4:alt" "tilix"
 
 main = do
     xmonad $ ewmh $
@@ -32,6 +33,7 @@ main = do
         { borderWidth = 2
         , modMask = mod4Mask     -- Rebind Mod to the Windows key
         -- , modMask = altMask
+        -- , modMask = mod3Mask        -- Rebind Mod to the Right Alt key
         , terminal = "xfce4-terminal"
         , workspaces = myWorkspaces
         , normalBorderColor = "#666666"
