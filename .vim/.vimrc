@@ -20,8 +20,8 @@ call plug#begin()
   Plug 'tomtom/tcomment_vim'
   Plug 'airblade/vim-gitgutter'
   Plug 'ruanyl/vim-gh-line'
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'zchee/deoplete-jedi'
+  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  " Plug 'zchee/deoplete-jedi'
   Plug 'sukima/xmledit'
   Plug 'vim-syntastic/syntastic'
   Plug 'sheerun/vim-polyglot'
@@ -101,7 +101,7 @@ nnoremap <M-f> :Pfind<CR>
 nnoremap <M-r> :Pfix<CR>
 
 " deoplete
-let g:python3_host_prog = "/usr/bin/python3.6"
+let g:python3_host_prog = "/usr/bin/python3.8"
 let g:deoplete#enable_at_startup = 1
 
 " UltiSnips

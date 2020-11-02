@@ -4,26 +4,26 @@
 xrdb -merge ~/.Xresources
 
 # Rotate background
-while true; do
-    sleep 5s
-    ln -sfv "$(find -L "$HOME/Pictures/backgrounds" -type f | grep -E '[.](jpg|png)$' | sort -R | head -n1)" \
-            "$HOME/Pictures/.current_background"
-    hsetroot -cover "$HOME/Pictures/.current_background"
-    sleep 355s
-done &
+#while true; do
+#    sleep 5s
+#    ln -sfv "$(find -L "$HOME/Pictures/backgrounds" -type f | grep -E '[.](jpg|png)$' | sort -R | head -n1)" \
+#            "$HOME/Pictures/.current_background"
+#    hsetroot -cover "$HOME/Pictures/.current_background"
+#    sleep 355s
+#done &
 
 # Start udiskie to handle media
 udiskie &
 
 # Fire up apps
-xfce4-power-manager &
+#xfce4-power-manager &
 
-compton -d :0 --config ~/.config/compton.conf -b &
+#compton -d :0 --config ~/.config/compton.conf -b &
 
-xscreensaver -no-splash &
+#xscreensaver -no-splash &
 
 if [ -x /usr/bin/nm-applet ] ; then
    nm-applet --sm-disable &
 fi
 
-exec xmonad
+#exec xmonad

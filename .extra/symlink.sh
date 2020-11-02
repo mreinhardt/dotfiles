@@ -39,9 +39,9 @@ ln -sfv "$DOTFILES_REPO_DIR/bin/wget-artstation-bgs.sh" "$HOME/Pictures/artstati
 
 ### config
 
-mkdir -p "$HOME/.config/polybar"
+# mkdir -p "$HOME/.config/polybar"
 ln -sfv "$DOTFILES_REPO_DIR/.config/compton.conf" "$HOME/.config"
-ln -sfv "$DOTFILES_REPO_DIR/.config/polybar/config" "$HOME/.config/polybar"
+# ln -sfv "$DOTFILES_REPO_DIR/.config/polybar/config" "$HOME/.config/polybar"
 
 
 ### conky
@@ -80,6 +80,6 @@ ln -sfv "$DOTFILES_REPO_DIR/.tmux" "$HOME"
 
 ### xmonad
 
-mkdir -p "$HOME/.xmonad"
-ln -sfv "$DOTFILES_REPO_DIR/.xmonad/xmonad.hs" "$HOME/.xmonad"
-ln -sfv "$DOTFILES_REPO_DIR/.Xresources" "$HOME"
+# mkdir -p "$HOME/.xmonad"
+# ln -sfv "$DOTFILES_REPO_DIR/.xmonad/xmonad.hs" "$HOME/.xmonad"
+# ln -sfv "$DOTFILES_REPO_DIR/.Xresources" "$HOME"

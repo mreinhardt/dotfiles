@@ -23,6 +23,7 @@
     lgr = log --pretty=format:'%C(cyan bold)%h%C(blue bold)%d %Creset%s (%C(green bold)%an%Creset, %C(yellow bold)%ad%Creset)' --graph --date=iso
     lgn = log --pretty=format:'%C(cyan bold)%h%C(blue bold)%d %Creset%s (%C(green bold)%an%Creset, %C(yellow bold)%ad%Creset)' --graph --date=iso --no-merges
     lgg = log --pretty=format:'%C(cyan bold)%h %C(blue bold)%s' --graph --date=iso --no-merges
+    lgh = log --pretty=format:'%C(cyan bold)%h %C(blue bold)%s' --graph --date=iso --no-merges
     fo = fetch origin
     po = push origin HEAD:refs/for/master
     am = commit --amend
