@@ -90,6 +90,7 @@ mk () { pandoc $1 | lynx -stdin }
 # Find and edit
 rged () { $(command -v rg) -l $1 | xargs $(command -v nvim) -p }
 rgud () { $(command -v rg) -uuu -l $1 | xargs $(command -v nvim) -p }
+ffed () { $(command -v find) . -iname "*$1*" | xargs $(command -v nvim) -p }
 
 # Detailed memory footprint of a process
 if [[ $(uname -s) == "Darwin" ]]; then
