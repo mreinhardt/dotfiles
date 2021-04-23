@@ -1,0 +1,251 @@
+" Disable strange Vi defaults.
+set nocompatible
+
+" Turn on filetype plugins (:help filetype-plugin).
+if has('autocmd')
+  silent filetype plugin indent on
+endif
+
+" Enable syntax highlighting.
+if has('syntax')
+  syntax enable
+endif
+
+" Autoindent when starting new line, or using `o` or `O`.
+set autoindent
+
+" Allow backspace in insert mode.
+set backspace=indent,eol,start
+
+" Don't scan included files. The .tags file is more performant.
+set complete-=i
+
+" Use 'shiftwidth' when using `<Tab>` in front of a line.
+" By default it's used only for shift commands (`<`, `>`).
+set smarttab
+
+" Disable octal format for number processing.
+set nrformats-=octal
+
+" Allow for mappings including `Esc`, while preserving
+" zero timeout after pressing it manually.
+set ttimeout
+set ttimeoutlen=100
+
+" Enable highlighted case-insensitive incremential search.
+set incsearch
+
+" Indent using four spaces.
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+
+" Use `Ctrl-L` to clear the highlighting of :set hlsearch.
+nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
+
+" Always show window statuses, even if there's only one.
+set laststatus=2
+
+" Show the line and column number of the cursor position.
+set ruler
+
+" Show the size of block one selected in visual mode.
+set showcmd
+
+" Autocomplete commands using nice menu in place of window status.
+" Enable `Ctrl-N` and `Ctrl-P` to scroll through matches.
+set wildmenu
+
+" When 'wrap' is on, display last line even if it doesn't fit.
+set display+=lastline
+
+" Set default whitespace characters when using `:set list`
+set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+
+" Search upwards for tags file instead only locally
+if has('path_extra')
+  setglobal tags-=./tags tags^=./tags;
+endif
+
+" Increase history size to 1000 items.
+set history=1000
+
+" `Ctrl-U` in insert mode deletes a lot. Use `Ctrl-G` u to first break undo,
+" so that you can undo `Ctrl-U` without undoing what you typed before it.
+inoremap <C-U> <C-G>u<C-U>
+
+" Keep flags when repeating last substitute command.
+nnoremap & :&&<CR>
+xnoremap & :&&<CR>
+
+" Y yanks from the cursor to the end of line as expected. See :help Y.
+nnoremap Y y$
+
+" Highlight line under cursor. It helps with navigation.
+set cursorline
+
+" Keep 4 lines above or below the cursor when scrolling.
+set scrolloff=4
+
+" Keep 15 columns next to the cursor when scrolling horizontally.
+set sidescroll=1
+set sidescrolloff=15
+
+" Hide buffers instead of asking if to save them.
+set hidden
+
+" Allow easy navigation between wrapped lines.
+vmap j gj
+vmap k gk
+nmap j gj
+nmap k gk
+
+" For autocompletion, complete as much as you can.
+set wildmode=longest,full
+
+" Show line numbers on the sidebar.
+set number
+
+" Don't parse modelines (google "vim modeline vulnerability").
+set nomodeline
+
+" Do not fold by default. But if, do it up to 3 levels.
+set foldmethod=indent
+set foldnestmax=3
+set nofoldenable
+
+" Strip trailing whitespace
+if has('autocmd')
+    autocmd BufWritePre * :%s/\s\+$//e
+endif
+
+" Enable search highlighting.
+set hlsearch
+
+" Don't ignore case when search has capital letter
+" (although also don't ignore case by default).
+set smartcase
+
+" Use dash as word separator.
+set iskeyword+=-
+
+" Add gems.tags to files searched for tags.
+set tags+=gems.tags
+
+" Disable output, vcs, archive, build, temp and backup files.
+set wildignore+=*.pyc,*.pyo,*.egg,*.egg-info,.DS_Store
+set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
+set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
+set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
+set wildignore+=*.swp,*~,._*
+
+" Auto center on matched string.
+noremap n nzz
+noremap N Nzz
+
+" Visually select the text that was last edited/pasted (Vimcast#26).
+noremap gV `[v`]
+
+" Expand %% to path of current buffer in command mode.
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+
+" Enable saving by `Ctrl-s`
+nnoremap <C-s> :w<CR>
+inoremap <C-s> <ESC>:w<CR>
+
+" Make sure pasting in visual mode doesn't replace paste buffer
+function! RestoreRegister()
+  let @" = s:restore_reg
+  return ''
+endfunction
+function! s:Repl()
+  let s:restore_reg = @"
+  return "p@=RestoreRegister()\<cr>"
+endfunction
+vmap <silent> <expr> p <sid>Repl()
+
+""" Key bindings
+
+" Leader binding
+let mapleader = "\<Space>"
+set relativenumber
+
+nnoremap <silent> e[ :lprev<CR>
+nnoremap <silent> e] :lnext<CR>
+
+filetype indent off
+filetype plugin indent on
+
+" Ergo
+inoremap <C-H> <Left>
+inoremap <C-J> <Down>
+"inoremap <C-K> <Up>
+inoremap <C-L> <Right>
+inoremap <C-D> <Esc>
+
+" Jump to end of paste
+vnoremap <silent> y y`]
+vnoremap <silent> p p`]
+nnoremap <silent> p p`]
+
+" Paste and reselect visual
+nnoremap <Leader>p pgvy
+nnoremap <Leader>P Pgvy
+
+" Clear search
+nnoremap <Leader>' /'#;!o027&hsk`:.:@uU8%cv~vG'-_<CR>
+
+" Writes and Quits
+nnoremap <Leader>q :q<CR>
+nnoremap <Leader>Q :qa<CR>
+nnoremap <Leader>w :w<CR>
+nnoremap <Leader>W :wq<CR>
+
+" Toggles
+nmap <Leader># :setlocal number! relativenumber!<CR>
+nmap <Leader>> :set paste!<CR>
+nmap <Leader>< :setlocal wrap!<CR>:setlocal wrap?<CR>
+
+" Easier jump to line
+nnoremap <CR> G
+nnoremap <BS> gg
+
+" Tag jumping
+nnoremap <Leader>g g<C-]>
+
+" Move to buffer
+nnoremap <Leader>] :bn<CR>
+nnoremap <Leader>[ :bp<CR>
+nnoremap <Leader>b :ls<CR>:b<Space>
+
+" Move lines
+nnoremap <Leader>j :m .+1<CR>==
+nnoremap <Leader>k :m .-2<CR>==
+vnoremap <Leader>j :m '>+1<CR>gv=gv
+vnoremap <Leader>k :m '<-2<CR>gv=gv
+
+" Surrounds
+" inoremap '' ''<ESC>i
+" inoremap "" ""<ESC>i
+" inoremap (( ()<ESC>i
+" inoremap [[ []<ESC>i
+" inoremap {{ {}<ESC>i
+" inoremap << <><ESC>i
+
+" Close HTML tags
+inoremap <silent> <C-c> </<C-X><C-O><C-X><Esc>F<i
+
+" Toggle tab style
+nnoremap <Leader>tt :set noet ci pi sts=0 sw=4 ts=4<CR>
+nnoremap <Leader>ts :set et noci nopi sts=4 sw=4 ts=4<CR>
+
+" Trim whitespace
+nnoremap <Leader>rt :%s/\s\+$//g<CR>
+
+" Find/replace
+func FindAndChangeIn()
+    let captured_char = nr2char(getchar())
+    return 'f' . captured_char . "ci" . captured_char
+endfunc
+nnoremap <expr> <Leader>fc FindAndChangeIn()

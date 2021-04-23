@@ -24,9 +24,13 @@ ln -sfv "$HEREDIR/ftdetect" "$INSTALLDIR/ftdetect"
 ln -sfv "$HEREDIR/ftplugin" "$INSTALLDIR/ftplugin"
 
 VIMRC="$HEREDIR/.vimrc"
+IDEAVIMRC="$HEREDIR/.ideavimrc"
 
 echo "$VIMRC"
 ln -sfv "$VIMRC" "$HOME/.vimrc"
+
+echo "$IDEAVIMRC"
+ln -sfv "$IDEAVIMRC" "$HOME/.ideavimrc"
 
 if [[ -n $NEOVIMDIR ]]; then
     ln -sfv "$HEREDIR/base.vimrc" "$NEOVIMDIR/base.vimrc"
