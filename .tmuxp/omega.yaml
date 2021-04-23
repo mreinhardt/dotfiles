@@ -1,0 +1,62 @@
+session_name: omega
+windows:
+  - window_name: sys0
+    layout: main-vertical
+    focus: true
+    panes:
+      - shell_command: cd && clear && tail -f /var/log/syslog
+      - shell_command: cd && htop -d16
+      - shell_command: cd && clear && dstat -ta --top-bio
+      - shell_command: cd && bmon -p '!lo*,!en*,!qdisc*,!mp*'
+      - shell_command: cd && tmux select-layout -E && tmux select-layout -E && clear
+        focus: true
+  - window_name: dev1
+    layout: main-vertical
+    panes:
+      - shell_command: cd ~/git && clear
+      - shell_command: cd ~/git && clear
+  - window_name: ops2
+    layout: even-horizontal
+    panes:
+      - shell_command: cd && clear && grep Host ~/.ssh/config | grep -v '*'
+      - shell_command: cd && clear && hostname -I
+  - window_name: dev3
+    layout: main-vertical
+    panes:
+      - shell_command: cd ~/git && clear
+      - shell_command: cd ~/git && clear
+        focus: true
+  - window_name: ops4
+    layout: even-horizontal
+    panes:
+      - shell_command: cd && clear && grep Host ~/.ssh/config | grep -v '*'
+      - shell_command: cd && clear && hostname -I
+  - window_name: dev5
+    layout: main-vertical
+    panes:
+      - shell_command: cd ~/git && clear
+      - shell_command: cd ~/git && clear
+        focus: true
+  - window_name: ops6
+    layout: main-vertical
+    panes:
+      - shell_command: cd ~/git && clear
+      - shell_command: cd ~/git && clear
+        focus: true
+  - window_name: dev7
+    layout: even-horizontal
+    panes:
+      - shell_command: cd ~/git && clear
+      - shell_command: cd ~/git && clear
+  - window_name: aws8
+    layout: main-vertical
+    panes:
+      - shell_command: cd && clear && grep Host ~/.ssh/config | grep -v '*'
+      - shell_command: cd && clear
+      - shell_command: cd && clear && hostname -I
+      - shell_command: cd && clear
+  - window_name: msc0
+    layout: main-vertical
+    panes:
+      - shell_command: cd && clear && echo "Life ====== Death\nStrength Before Weakness\nJourney ====== Destination" | column -t
+      - shell_command: cd && clear && hostname -I

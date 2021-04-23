@@ -27,3 +27,5 @@ fi
 
 mkdir -p "$HOME/.tmuxp"
 cp -vi "$DOTFILES_REPO_DIR/.tmuxp/default.yaml" "$HOME/.tmuxp"
+cp -vi "$DOTFILES_REPO_DIR/.tmuxp/prime.yaml" "$HOME/.tmuxp"
+cp -vi "$DOTFILES_REPO_DIR/.tmuxp/omega.yaml" "$HOME/.tmuxp"

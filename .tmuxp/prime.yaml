@@ -1,0 +1,68 @@
+session_name: prime
+windows:
+  - window_name: misc
+    focus: true
+    layout: main-vertical
+    options:
+      main-pane-width: 60
+    panes:
+      - shell_command: cd && clear && echo "Life ====== Death\nStrength Before Weakness\nJourney ====== Destination" | column -t
+      - shell_command: cd && clear && hostname -I
+  - window_name: dev1
+    layout: main-vertical
+    panes:
+      - shell_command: cd ~/git && clear
+      - shell_command: cd ~/git && clear
+  - window_name: ops1
+    layout: main-vertical
+    panes:
+      - shell_command: cd && clear && grep Host ~/.ssh/config | grep -v '*'
+      - shell_command: cd && clear && hostname -I
+  - window_name: dev2
+    layout: main-vertical
+    panes:
+      - shell_command: cd ~/git && clear
+      - shell_command: cd ~/git && clear
+  - window_name: ops2
+    layout: main-vertical
+    panes:
+      - shell_command: cd && clear && grep Host ~/.ssh/config | grep -v '*'
+      - shell_command: cd && clear && hostname -I
+  - window_name: dev3
+    layout: main-vertical
+    panes:
+      - shell_command: cd ~/git && clear
+      - shell_command: cd ~/git && clear
+  - window_name: ops3
+    layout: main-vertical
+    panes:
+      - shell_command: cd ~/git && clear
+      - shell_command: cd ~/git && clear
+  - window_name: dev4
+    layout: main-vertical
+    panes:
+      - shell_command: cd ~/git && clear
+      - shell_command: cd ~/git && clear
+  - window_name: ops4
+    layout: main-vertical
+    panes:
+      - shell_command: cd && clear
+      - shell_command: cd && clear
+  - window_name: cloud
+    layout: main-vertical
+    options:
+      main-pane-width: 90
+    panes:
+      - shell_command: cd && clear
+      - shell_command: cd && clear
+  - window_name: play
+    layout: main-vertical
+    panes:
+      - shell_command: cd && clear
+      - shell_command: cd && clear
+  - window_name: sys
+    window_index: 99
+    layout: main-vertical
+    panes:
+      - shell_command: cd && clear && tail -f /var/log/syslog
+      - shell_command: cd && htop -d16
