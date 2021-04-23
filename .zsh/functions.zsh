@@ -77,6 +77,12 @@ hex2rgb() {
     echo "rgb($r, $g, $b)"
 }
 
+# Simple calculator
+bcl() {
+    echo "$*"
+    echo "$*" | bc -l
+}
+
 # Find largest files
 lgf () {
     root_dir=${1:-$(pwd)}
@@ -90,7 +96,13 @@ mk () { pandoc $1 | lynx -stdin }
 # Find and edit
 rged () { $(command -v rg) -l $1 | xargs $(command -v nvim) -p }
 rgud () { $(command -v rg) -uuu -l $1 | xargs $(command -v nvim) -p }
-ffed () { $(command -v find) . -iname "*$1*" | xargs $(command -v nvim) -p }
+ffed () {
+    if [[ -n $2 ]]; then
+        $(command -v find) . -iname "*$1*" -o -iname "*$2*" -not -path "*/.git/*" | xargs $(command -v nvim) -p
+    else
+        $(command -v find) . -iname "*$1*" -not -path "*/.git/*" | xargs $(command -v nvim) -p
+    fi
+}
 
 # Detailed memory footprint of a process
 if [[ $(uname -s) == "Darwin" ]]; then
