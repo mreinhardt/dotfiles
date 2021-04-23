@@ -497,6 +497,8 @@ nnoremap <Leader>b :ls<CR>:b<Space>
 nnoremap <Leader>T :tabnew<CR>:b#<BAR>bd#<CR>
 nnoremap <Leader>. :tabnext<CR>
 nnoremap <Leader>, :tabprev<CR>
+nnoremap <Leader>} :tabmove +1<CR>
+nnoremap <Leader>{ :tabmove -1<CR>
 nnoremap <Leader>1 1gt
 nnoremap <Leader>2 2gt
 nnoremap <Leader>3 3gt
@@ -527,6 +529,9 @@ inoremap <silent> <C-c> </<C-X><C-O><C-X><Esc>F<i
 " Toggle tab style
 nnoremap <Leader>tt :set noet ci pi sts=0 sw=4 ts=4<CR>
 nnoremap <Leader>ts :set et noci nopi sts=4 sw=4 ts=4<CR>
+
+" Trim whitespace
+nnoremap <Leader>wd :%s/\s\+$//g<CR>
 
 " Find/replace
 func FindAndChangeIn()
