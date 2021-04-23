@@ -156,7 +156,7 @@ prompt_sfz_precmd() {
         prompt_sfz_virtualenv=" %f(%B%F$(prompt_sfz_colors byellow)${VIRTUAL_ENV:t}%f%b)"
     fi
 
-    RPROMPT="%B%F$(prompt_sfz_colors bmagenta)$(prompt_sfz_cmd_exec_time)%f%b%F$(prompt_sfz_colors green)$vcs_info_msg_0_$(prompt_sfz_git_dirty)$prompt_sfz_virtualenv$prompt_sfz_ssh%f"
+    RPROMPT="%B%F$(prompt_sfz_colors bmagenta)$(prompt_sfz_cmd_exec_time)%f%b%F$(prompt_sfz_colors green)$vcs_info_msg_0_$(prompt_sfz_git_dirty)$prompt_sfz_virtualenv$prompt_sfz_ssh %F$(prompt_sfz_colors grey)[%t]%f%b"
 
     unset cmd_timestamp # reset value since `preexec` isn't always triggered
 }
