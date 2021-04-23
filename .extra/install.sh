@@ -40,10 +40,12 @@ if [[ -n $APT ]]; then
 
     # install packages
     sudo $APT install --yes apt-transport-https \
+                            bmon \
                             cmake \
                             conky-all \
                             compton \
                             dconf-editor \
+                            dstat \
                             fasd \
                             feh \
                             flake8 \
