@@ -15,8 +15,10 @@ call plug#begin()
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all --no-update-rc' }
   Plug 'junegunn/gv.vim'
   Plug 'junegunn/vader.vim'
+  Plug 'junegunn/goyo.vim'
   Plug 'justinmk/vim-sneak'
   Plug 'mbbill/undotree'
+  Plug 'mhinz/vim-startify'
   Plug 'mreinhardt/nvim-pfix', { 'do': ':UpdateRemotePlugins' }
   Plug 'preservim/vimux'
   Plug 'raimondi/delimitmate'
@@ -60,17 +62,18 @@ call plug#begin()
   Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 
+function! InitVimRcColors()
+  set t_ut=  " ensure tmux colors work correctly
+  set background=dark
+  " let g:PaperColor_Theme = 'kelp'
+  let g:PaperColor_Theme = 'cyborg'
+  colorscheme PaperColor
 
-set t_ut=  " ensure tmux colors work correctly
-set background=dark
-" let g:PaperColor_Theme = 'kelp'
-let g:PaperColor_Theme = 'cyborg'
-colorscheme PaperColor
-
-" transparent bg
-hi Normal guibg=NONE ctermbg=NONE
-hi NonText guibg=NONE ctermbg=NONE
-
+  " transparent bg
+  hi Normal guibg=NONE ctermbg=NONE
+  hi NonText guibg=NONE ctermbg=NONE
+endfunction
+call InitVimRcColors()
 
 let mapleader = "\<Space>"
 set relativenumber
@@ -147,6 +150,31 @@ let g:undotree_SplitWidth = 21
 let g:undotree_DiffpanelHeight = 6
 let g:undotree_TreeNodeShape = '¤'
 let g:undotree_TreeVertShape = '│'
+
+" Goyo
+function! s:goyo_enter()
+  " tmux zoom pane
+  if executable('tmux') && strlen($TMUX)
+    silent !tmux set status off
+    silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+  endif
+  " Custom disables
+  set eventignore=BufWinEnter,CursorMoved,CursorMovedI,FocusLost,InsertEnter,InsertLeave,WinEnter
+endfunction
+
+function! s:goyo_leave()
+  if executable('tmux') && strlen($TMUX)
+    silent !tmux set status on
+    silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+  endif
+
+  " Custom enables
+  set eventignore=""
+  call InitVimRcColors()
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 " python-syntax
 let python_highlight_all = 1
