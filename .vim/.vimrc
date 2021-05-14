@@ -159,6 +159,7 @@ function! s:goyo_enter()
     silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
   endif
   " Custom disables
+  set wrap linebreak
   set eventignore=BufWinEnter,CursorMoved,CursorMovedI,FocusLost,InsertEnter,InsertLeave,WinEnter
 endfunction
 

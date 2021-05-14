@@ -380,10 +380,10 @@ omap s :normal vs<CR>
 
 " Column markers at 80, 120
 if has('autocmd')
-  autocmd FileType python set textwidth=79
-  autocmd FileType python set colorcolumn=+1,+41
-  autocmd FileType clojure set textwidth=99
-  autocmd FileType clojure set colorcolumn=+1,+21
+  autocmd FileType python set textwidth=119
+  autocmd FileType python set colorcolumn=-39,+1
+  autocmd FileType clojure set textwidth=119
+  autocmd FileType clojure set colorcolumn=-19,+1
 else
   set textwidth=99
   set colorcolumn=+1

@@ -6,7 +6,7 @@ windows:
     panes:
       - shell_command: cd && clear && tail -f /var/log/syslog
       - shell_command: cd && htop -d16
-      - shell_command: cd && clear && dstat -ta --top-bio
+      - shell_command: cd && clear && dstat -ta 4
       - shell_command: cd && bmon -p '!lo*,!en*,!qdisc*,!mp*'
       - shell_command: cd && tmux select-layout -E && tmux select-layout -E && clear
         focus: true
