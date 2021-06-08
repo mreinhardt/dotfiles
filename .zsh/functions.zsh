@@ -129,3 +129,27 @@ sman() {
     command man $@ | sed "s/^/${indent}/" | less -isR
 }
 
+# k8s stuff
+kgo() {
+    if [[ -z $2 ]]; then
+        kubectl exec --stdin --tty $(kubectl get pods | grep "$1" | cut -d' ' -f1) -- /bin/sh;
+    else
+        kubectl exec --stdin --tty -c "$2" $(kubectl get pods | grep "$1" | cut -d' ' -f1) -- /bin/sh;
+    fi
+}
+kku() {
+    # kku app=nginx server # (dry-run only deployment and service)
+    # kku app=nginx        # (only deployment and service)
+    # kku dep=nginx        # (only deployment)
+    # kku svc=nginx        # (only service)
+    # kku cfg=nginx        # (only config)
+    # kku pod=nginx        # (everything) (edited)
+    if [[ -z $2 ]]; then
+        kubectl kustomize "$(kubectl config view | grep namespace | awk '{print $NF }' | tr '-' '/' | sed 's#\(.*\)/\(.*\)#\2/\1/#')" | kubectl apply -l "$1" -f -
+    else
+        kubectl kustomize "$(kubectl config view | grep namespace | awk '{print $NF }' | tr '-' '/' | sed 's#\(.*\)/\(.*\)#\2/\1/#')" | kubectl apply --dry-run="$2" -l "$1" -f -
+    fi
+}
+kecm() {
+    kubectl edit configmap $(kubectl get configmap | grep "$1" | cut -d' ' -f1)
+}

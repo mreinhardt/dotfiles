@@ -1,4 +1,5 @@
  [buildPlans.iosevka-preferred]               # <iosevka-preferred> is your plan name
+ # for r3.7.1
  family = "Iosevka Preferred"                 # Font menu family name
  design = [
     "sp-fixed",  # monospace no-ligation
