@@ -19,7 +19,11 @@ capital-k = 'straight-serifless'              # K
 capital-m = 'flat-bottom'             # M
 capital-q = 'crossing'              # Q
 capital-w = 'straight-flat-top'       # W
+a = 'double-storey-serifless'
+b = 'toothed'
+c = 'serifless'
 d = 'toothed-serifless'
+e = 'flat-crossbar'
 f = 'flat-hook-crossbar-at-x-height'
 i = 'hooky'
 j = 'flat-hook-serifless'
@@ -153,11 +157,13 @@ powerlineScaleY = 1
 powerlineScaleX = 1
 powerlineShiftY = 0
 powerlineShiftX = 0
+
+leading = 1.0000
+sb = 60
+cap = 785
+xheight = 565
+symbolMid = 395
 [buildPlans.iosevka-hyperlegible.metric-override.multiplies]
-leading = 1.25
-# sb = ?
 [buildPlans.iosevka-hyperlegible.metric-override.adds]
-# cap = ?
-# xheight = ?
 # End metric override section
 ###################################################################################################
