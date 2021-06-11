@@ -71,7 +71,6 @@ if [[ -n $APT ]]; then
                             openssh-server \
                             pandoc \
                             pgcli \
-                            polybar \
                             pylint \
                             python-dev \
                             python-openssl \
@@ -92,7 +91,6 @@ if [[ -n $APT ]]; then
                             tilix \
                             tmux \
                             udiskie \
-                            unetbootin \
                             vagrant \
                             vim \
                             vim-python-jedi \
