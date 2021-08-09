@@ -132,9 +132,9 @@ sman() {
 # k8s stuff
 kgo() {
     if [[ -z $2 ]]; then
-        kubectl exec --stdin --tty $(kubectl get pods | grep "$1" | cut -d' ' -f1) -- /bin/sh;
+        kubectl exec --stdin --tty $(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1) -- /bin/sh;
     else
-        kubectl exec --stdin --tty -c "$2" $(kubectl get pods | grep "$1" | cut -d' ' -f1) -- /bin/sh;
+        kubectl exec --stdin --tty -c "$2" $(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1) -- /bin/sh;
     fi
 }
 kku() {
@@ -151,5 +151,18 @@ kku() {
     fi
 }
 kecm() {
-    kubectl edit configmap $(kubectl get configmap | grep "$1" | cut -d' ' -f1)
+    kubectl edit configmap $(kubectl get configmap | grep -E "$1" | cut -d' ' -f1 | head -n1)
+}
+
+klog() {
+    if [[ -z $2 ]]; then
+        kubectl logs "pod/$(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1)" -c "$1"
+    else
+        kubectl logs "pod/$(kubectl get pods | grep -E "$1$2" | cut -d' ' -f1 | head -n1)" -c "$1"
+    fi
+}
+
+klgf() {
+    kubectl logs -f -lapp="$1" --all-containers=true --max-log-requests=9 --pod-running-timeout=60m; \
+    while true; do kubectl logs -f -lapp="$1" --all-containers=true --max-log-requests=9 --pod-running-timeout=60m | tail -n"${2:-+10}"; done
 }
