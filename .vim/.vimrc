@@ -111,6 +111,13 @@ let g:nvim_pfix_pfind_opts='--hidden --line-number --no-heading'
 nnoremap <M-f> :Pfind<CR>
 nnoremap <M-r> :Pfix<CR>
 
+" tcomment
+nnoremap <Leader>__ :TComment<CR>
+nnoremap <Leader>-- :TComment<CR>
+
+" delimitmate
+let g:delimitMate_offByDefault=1
+
 " deoplete
 let g:python3_host_prog = "/usr/bin/python3.8"
 let g:deoplete#enable_at_startup = 1
@@ -135,7 +142,8 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_loc_list_height = 5
-let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_python_checkers = ['pylint', 'python']
+let g:syntastic_python_python_exec = 'python3'
 
 " indentline
 let g:indentLine_enabled = 0

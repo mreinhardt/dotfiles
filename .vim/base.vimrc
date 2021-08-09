@@ -461,6 +461,9 @@ nnoremap <Leader>eb :split ~/.vim/base.vimrc<CR>
 nnoremap <Leader>rv :so $MYVIMRC<CR>
 nnoremap <Leader>rb :so ~/.vim/base.vimrc<CR>
 
+" commonly edited
+nnoremap <Leader>ez :split ~/.zsh<CR>
+
 " Toggles
 nmap <Leader># :setlocal number! relativenumber!<CR>
 nmap <Leader>> :set paste!<CR>
