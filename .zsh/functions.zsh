@@ -57,6 +57,19 @@ hb() {
         {sub(/^[0-9]+/, human($1)); print}'
 }
 
+h() {
+    navi=$(command -v navi)
+    if [[ -z $1 ]]; then
+        $navi
+    else
+        $navi --query "$1"
+    fi
+}
+
+ch() {
+    curl -s "https://cheat.sh/$1" | less -R
+}
+
 help-important-commands() {
     echo -e "
     Add commands that you want to always be available in history to ~/.important_commands
@@ -132,11 +145,12 @@ sman() {
 # k8s stuff
 kgo() {
     if [[ -z $2 ]]; then
-        kubectl exec --stdin --tty $(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1) -- /bin/sh;
+        kubectl exec --stdin --tty $(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1) -- "/bin/sh";
     else
-        kubectl exec --stdin --tty -c "$2" $(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1) -- /bin/sh;
+        kubectl exec --stdin --tty -c "$2" $(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1) -- "/bin/$3sh";
     fi
 }
+
 kku() {
     # kku app=nginx server # (dry-run only deployment and service)
     # kku app=nginx        # (only deployment and service)
@@ -165,4 +179,18 @@ klog() {
 klgf() {
     kubectl logs -f -lapp="$1" --all-containers=true --max-log-requests=9 --pod-running-timeout=60m; \
     while true; do kubectl logs -f -lapp="$1" --all-containers=true --max-log-requests=9 --pod-running-timeout=60m | tail -n"${2:-+10}"; done
+}
+
+krestart() {
+    pod=$(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1)
+    kubectl rollout restart "${2:-deployment}" "$1"
+    sleep 1
+    kubectl delete pod "$pod" --grace-period=0 --force
+    sleep 10
+    running="$(kubectl get pods | grep -E "$1.*Running")"
+    if [[ $running != "" ]]; then
+        echo "$running"
+    else
+        echo "Failed to restart $2 $1!"
+    fi
 }

@@ -2,6 +2,7 @@
 
 alias cmd='command'
 alias emacs='XLIB_SKIP_ARGB_VISUALS=1 emacs24 -nw'
+alias l=$(command -v ssh)
 alias g=$(command -v git)
 alias la='ls -laFh'
 alias logout="pkill -u $(whoami)"

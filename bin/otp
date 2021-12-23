@@ -14,3 +14,4 @@ def get_totp_token(secret):
 
 if __name__ == '__main__':
     print(get_totp_token(sys.argv[1]))
+    #sys.stdout.write(get_totp_token(sys.argv[1]))
