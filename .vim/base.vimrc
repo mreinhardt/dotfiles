@@ -498,6 +498,9 @@ nnoremap <Leader>] :bn<CR>
 nnoremap <Leader>[ :bp<CR>
 nnoremap <Leader>b :ls<CR>:b<Space>
 
+" Copy buffer to clipboard
+nnoremap <Leader>bb :%:w !/usr/bin/xclip -selection clipboard<CR><CR>
+
 " Tabs
 nnoremap <Leader>T :tabnew<CR>:b#<BAR>bd#<CR>
 nnoremap <Leader>. :tabnext<CR>
