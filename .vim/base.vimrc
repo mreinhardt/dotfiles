@@ -462,7 +462,9 @@ nnoremap <Leader>rv :so $MYVIMRC<CR>
 nnoremap <Leader>rb :so ~/.vim/base.vimrc<CR>
 
 " commonly edited
-nnoremap <Leader>ez :split ~/.zsh<CR>
+nnoremap <Leader>ezz :split ~/.zsh<CR>
+nnoremap <Leader>eza :split ~/.zsh/aliases.zsh<CR>
+nnoremap <Leader>ezf :split ~/.zsh/functions.zsh<CR>
 
 " Toggles
 nmap <Leader># :setlocal number! relativenumber!<CR>
