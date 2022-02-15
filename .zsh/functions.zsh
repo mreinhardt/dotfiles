@@ -106,6 +106,10 @@ lgf () {
 # View Markdown
 mk () { pandoc $1 | lynx -stdin }
 
+# grep processes and output as JSON
+# NOTE: Must have eat (github.com/antonmedv/eat) installed
+pj () { ps aux | grep -E "%CPU.*%MEM|$1" | eat }
+
 # Find and edit
 rged () { $(command -v rg) -l $1 | xargs $(command -v nvim) -p }
 rgud () { $(command -v rg) -uuu -l $1 | xargs $(command -v nvim) -p }
