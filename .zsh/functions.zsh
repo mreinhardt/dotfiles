@@ -155,6 +155,18 @@ kgo() {
     fi
 }
 
+kstop() {
+    kubectl scale ${2:-deployment} $1 --replicas=0
+}
+
+kpod() {
+    if [[ -z $1 ]]; then
+        kubectl get pods
+    else
+        kubectl get pods | grep "$1"
+    fi
+}
+
 kku() {
     # kku app=nginx server # (dry-run only deployment and service)
     # kku app=nginx        # (only deployment and service)
