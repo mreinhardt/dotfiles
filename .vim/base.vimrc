@@ -454,6 +454,7 @@ nnoremap <Leader>q :q<CR>
 nnoremap <Leader>Q :qa<CR>
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>W :wq<CR>
+nnoremap <Leader>c :w<CR> :SyntasticCheck<CR>
 
 " vimrcs
 nnoremap <Leader>ev :split $MYVIMRC<CR>
