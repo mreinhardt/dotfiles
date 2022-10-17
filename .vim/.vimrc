@@ -24,7 +24,6 @@ call plug#begin()
   Plug 'raimondi/delimitmate'
   Plug 'ruanyl/vim-gh-line'
   Plug 'sheerun/vim-polyglot'
-  Plug 'SirVer/ultisnips'
   Plug 'sukima/xmledit'
   Plug 'tomtom/tcomment_vim'
   Plug 'tpope/vim-fugitive'
@@ -45,6 +44,8 @@ call plug#begin()
   Plug 'hdima/python-syntax'
   Plug 'nvie/vim-flake8'
   Plug 'pangloss/vim-javascript'
+  Plug 'leafgarland/typescript-vim'
+  Plug 'MaxMEllon/vim-jsx-pretty'
   Plug 'plasticboy/vim-markdown'
   Plug 'prettier/vim-prettier', {
     \ 'do': 'npm install',
@@ -119,18 +120,8 @@ nnoremap <Leader>-- :TComment<CR>
 let g:delimitMate_offByDefault=1
 
 " deoplete
-let g:python3_host_prog = "/usr/bin/python3.8"
+let g:python3_host_prog = "/opt/homebrew/bin/python3.9"
 let g:deoplete#enable_at_startup = 1
-
-" UltiSnips
-let g:UltiSnipsExpandTrigger = "<Tab>"
-let g:UltiSnipsJumpForwardTrigger = "<Tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
-let g:UltiSnipsEditSplit="horizontal"
-let g:UltiSnipsSnippetsDir="~/.vim/ultisnips"
-let g:UltiSnipsSnippetDirectories=["ultisnips"]
-nnoremap <Leader>es :split ~/.vim/ultisnips<CR>
-nnoremap <Leader>ue :UltiSnipsEdit<CR>
 
 " Syntastic
 set statusline+="%#warningmsg#"
@@ -143,7 +134,8 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_mode_map = {'mode':'passive'}
 let g:syntastic_loc_list_height = 5
-let g:syntastic_python_checkers = ['pylint', 'python']
+let g:syntastic_python_checkers = ['pylint', 'flake8', 'python']
+let g:syntastic_python_pylint_args = '-E'
 let g:syntastic_python_python_exec = 'python3'
 
 " indentline
