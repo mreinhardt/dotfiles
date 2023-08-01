@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-TMP_FILE="/tmp/wttr.in.$(date +%H).log"
+TMP_FILE="/tmp/wttr.in.$(date +'%Y%m%d%H').log"
 
 function saveweather {
     local full_weather

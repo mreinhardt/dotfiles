@@ -76,6 +76,10 @@ help-important-commands() {
     "
 }
 
+urldecode() {
+    echo $1 | PERL_BADLANG=0 perl -pe 's/\%(\w\w)/chr hex $1/ge'
+}
+
 # Convert hex colors to rgb
 hex2rgb() {
     hexinput=`echo $1 | sed 's/^#//g' | tr '[:lower:]' '[:upper:]'`
@@ -104,21 +108,81 @@ lgf () {
 }
 
 # View Markdown
-mk () { pandoc $1 | lynx -stdin }
+mk () { pandoc -f markdown $1 | lynx -stdin }
 
 # grep processes and output as JSON
 # NOTE: Must have eat (github.com/antonmedv/eat) installed
 pj () { ps aux | grep -E "%CPU.*%MEM|$1" | eat }
 
 # Find and edit
-rged () { $(command -v rg) -l $1 | xargs $(command -v nvim) -p }
-rgud () { $(command -v rg) -uuu -l $1 | xargs $(command -v nvim) -p }
+FIND=$(command -v find)
+NVIM=$(command -v nvim)
+PIPENV=$(command -v pipenv)
+BAKE=$(command -v bake)
+RG=$(command -v rg)
+nv () {
+    $NVIM $@
+}
+rged () {
+    $RG -l $1 | xargs $NVIM -p
+}
+rgud () {
+    $RG -uuu -l $1 | xargs $NVIM -p
+}
+fd () {
+    $FIND . -iname "*$1*" -not -path "*/.git/*"
+}
+fp () {
+    $FIND . -ipath "*$1*" -not -path "*/.git/*"
+}
 ffed () {
     if [[ -n $2 ]]; then
-        $(command -v find) . -iname "*$1*" -o -iname "*$2*" -not -path "*/.git/*" | xargs $(command -v nvim) -p
+        $FIND . -iname "*$1*" -o -iname "*$2*" -not -path "*/.git/*" | xargs $NVIM -p
     else
-        $(command -v find) . -iname "*$1*" -not -path "*/.git/*" | xargs $(command -v nvim) -p
+        fd "$1" | xargs $NVIM -p
     fi
+}
+gsed () {
+    git status -sb | tail -n+2 | awk '{print $NF}' | xargs $NVIM -p
+}
+gded () {
+    git diff --name-only "$1" "${2:-HEAD}" | xargs $NVIM -p
+}
+gshed () {
+    git show -U2 --name-only ${1:-HEAD} | sed -E '/^ |^$/d' | tail -n+4 | xargs $NVIM -p
+}
+
+# git
+gcls () {
+    local new_url="$(printf "$1" | sed -e 's#https\{0,1\}://#git@#' -e 's#\([.][a-z]*\)/#\1:#')"
+    echo "Cloning $new_url..."
+    printf "$new_url" | xargs -I {} git clone {} ${@:2}
+}
+
+gra () {
+    local new_url="$(printf "$2" | sed -e 's#https\{0,1\}://#git@#' -e 's#\([.][a-z]*\)/#\1:#')"
+    echo "Adding remote $1 $new_url..."
+    printf "$new_url" | xargs git remote add $1
+}
+
+# pipenv
+pei () {
+    $PIPENV install -d $@
+}
+per () {
+    $PIPENV run $@
+}
+pes () {
+    $PIPENV shell $@
+}
+pet () {
+    $PIPENV run python -m pytest -vv $@
+}
+
+
+# bake
+bkt () {
+    $BAKE tests.unit:run
 }
 
 # Detailed memory footprint of a process
@@ -167,6 +231,10 @@ kpod() {
     fi
 }
 
+kns() {
+    kubectl config set-context --current --namespace=$1
+}
+
 kku() {
     # kku app=nginx server # (dry-run only deployment and service)
     # kku app=nginx        # (only deployment and service)
@@ -180,21 +248,34 @@ kku() {
         kubectl kustomize "$(kubectl config view | grep namespace | awk '{print $NF }' | tr '-' '/' | sed 's#\(.*\)/\(.*\)#\2/\1/#')" | kubectl apply --dry-run="$2" -l "$1" -f -
     fi
 }
+
 kecm() {
     kubectl edit configmap $(kubectl get configmap | grep -E "$1" | cut -d' ' -f1 | head -n1)
 }
 
 klog() {
     if [[ -z $2 ]]; then
-        kubectl logs "pod/$(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1)" -c "$1"
+        # kubectl logs "pod/$(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1)" -c "$1"
+        kubectl logs "pod/$(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1)"
     else
         kubectl logs "pod/$(kubectl get pods | grep -E "$1$2" | cut -d' ' -f1 | head -n1)" -c "$1"
     fi
 }
 
 klgf() {
-    kubectl logs -f -lapp="$1" --all-containers=true --max-log-requests=9 --pod-running-timeout=60m; \
-    while true; do kubectl logs -f -lapp="$1" --all-containers=true --max-log-requests=9 --pod-running-timeout=60m | tail -n"${2:-+10}"; done
+    kubectl logs -f "pod/$(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1)" --max-log-requests=9 --pod-running-timeout=60m --tail=10; \
+    while true; do kubectl logs -f "pod/$(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1)" --max-log-requests=9 --pod-running-timeout=60m --tail=10; done
+}
+# klgf() {
+#     kubectl logs -f -lapp="$1" --all-containers=true --max-log-requests=9 --pod-running-timeout=60m; \
+#     while true; do kubectl logs -f -lapp="$1" --all-containers=true --max-log-requests=9 --pod-running-timeout=60m | tail -n"${2:-+10}"; done
+# }
+
+klgr() {
+    while true; do
+        kubectl logs "pod/$(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1)" --all-containers=true --max-log-requests=9 --pod-running-timeout=60m --since="${2:-60}s"
+        sleep "${2:-60}"
+    done
 }
 
 krestart() {

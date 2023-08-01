@@ -30,7 +30,8 @@ call plug#begin()
   Plug 'tpope/vim-repeat'
   Plug 'vim-airline/vim-airline'
   Plug 'vim-scripts/ag.vim'
-  Plug 'vim-syntastic/syntastic'
+  " Plug 'vim-syntastic/syntastic'
+  Plug 'neoclide/coc.nvim', { 'branch': 'release' }
   Plug 'yggdroot/indentline'
   " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   " Plug 'zchee/deoplete-jedi'
@@ -46,10 +47,13 @@ call plug#begin()
   Plug 'pangloss/vim-javascript'
   Plug 'leafgarland/typescript-vim'
   Plug 'MaxMEllon/vim-jsx-pretty'
+  Plug 'peitalin/vim-jsx-typescript'
+  Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
   Plug 'plasticboy/vim-markdown'
   Plug 'prettier/vim-prettier', {
     \ 'do': 'npm install',
     \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss']}
+  Plug 'AndrewRadev/splitjoin.vim'
   Plug 'raichoo/haskell-vim'
   Plug 'stephpy/vim-php-cs-fixer'
   Plug 'tpope/vim-classpath'
@@ -88,7 +92,8 @@ let g:airline_theme='onedark'
 let g:airline#extensions#bufferline#enabled=1
 let g:airline#extensions#ctrlp#enabled=1
 let g:airline#extensions#netrw#enabled=1
-let g:airline#extensions#syntastic#enabled=1
+" let g:airline#extensions#syntastic#enabled=1
+let g:airline#extensions#coc#enabled=1
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#virtualenv#enabled=1
 let g:airline_powerline_fonts=1
@@ -124,19 +129,69 @@ let g:python3_host_prog = "/opt/homebrew/bin/python3.9"
 let g:deoplete#enable_at_startup = 1
 
 " Syntastic
-set statusline+="%#warningmsg#"
-set statusline+="%{SyntasticStatuslineFlag()}"
-set statusline+="%*"
+" set statusline+="%#warningmsg#"
+" set statusline+="%{SyntasticStatuslineFlag()}"
+" set statusline+="%*"
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_mode_map = {'mode':'passive'}
-let g:syntastic_loc_list_height = 5
-let g:syntastic_python_checkers = ['pylint', 'flake8', 'python']
-let g:syntastic_python_pylint_args = '-E'
-let g:syntastic_python_python_exec = 'python3'
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 0
+" let g:syntastic_check_on_wq = 0
+" let g:syntastic_mode_map = {'mode':'passive'}
+" let g:syntastic_loc_list_height = 5
+" let g:syntastic_python_checkers = ['pylint', 'flake8', 'python']
+" let g:syntastic_python_pylint_args = '-E'
+" let g:syntastic_python_flake8_args = '--config=/Users/mreinhardt/dev/riot/dss/config-linters/flake8'
+" let g:syntastic_python_python_exec = 'python3'
+
+" vim-gh-line
+let g:gh_line_map = '<leader>gl'
+
+" coc
+let g:coc_global_extensions = [
+      \ 'coc-pyright',
+      \ 'coc-tsserver'
+      \ ]
+if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
+  let g:coc_global_extensions += ['coc-prettier']
+endif
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
+  let g:coc_global_extensions += ['coc-eslint']
+endif
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved
+set signcolumn=yes
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice.
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+nnoremap <Leader>ec :split ~/.config/nvim/coc-settings.json<CR>
+nnoremap <silent> [e <Plug>(coc-diagnostic-prev)
+nnoremap <silent> ]e <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
+" Symbol renaming
+nmap <leader>rn <Plug>(coc-rename)
 
 " indentline
 let g:indentLine_enabled = 0
@@ -182,6 +237,9 @@ autocmd! User GoyoLeave nested call <SID>goyo_leave()
 let python_highlight_all = 1
 
 " vim-markdown
+set conceallevel=0
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
 let g:vim_markdown_no_default_key_mappings = 1
 
 " haskell-vim

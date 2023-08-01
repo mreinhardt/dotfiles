@@ -99,11 +99,11 @@ set refresh-mode          = auto      # Enum: manual, auto, after-command, perio
 set refresh-interval      = 10        # Interval in seconds between refreshes
 set ignore-case           = no        # Ignore case when searching?
 set focus-child           = yes       # Move focus to child view when opened?
-set horizontal-scroll     = 50%       # Number of columns to scroll as % of width
-set split-view-height     = 67%       # Height of the bottom view for horizontal splits
+set horizontal-scroll     = 25%       # Number of columns to scroll as % of width
+set split-view-height     = 75%       # Height of the bottom view for horizontal splits
 set vertical-split        = auto      # Enum: horizontal, vertical, auto; Use auto to
                                       # switch to horizontal split when width allows it
-# set split-view-width      = 60%       # Width of right-most view for vertical splits
+set split-view-width      = 80%       # Width of right-most view for vertical splits
 set editor-line-number    = yes       # Automatically pass line number to editor? Used
                                       # for opening file at specific line e.g. from a diff
 set mouse                 = no        # Enable mouse support?
