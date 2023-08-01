@@ -45,6 +45,8 @@ fi
 echo -n "Install plugins? [yN]"
 read -r INSTALL_PLUGINS
 if [[ $INSTALL_PLUGINS = "y" || $INSTALL_PLUGINS = "Y" ]]; then
+    ln -sfv "$HEREDIR/coc-settings.json" "$INSTALLDIR/coc-settings.json"
+    ln -sfv "$HEREDIR/coc-settings.json" "$NEOVIMDIR/coc-settings.json"
     vim -u "$HOME/.vimrc" -c PlugUpgrade -c PlugInstall -c PlugUpdate -c qa
     nvim -u "$NEOVIMDIR/init.vim" -c PlugUpgrade -c PlugInstall -c PlugUpdate -c qa
 fi

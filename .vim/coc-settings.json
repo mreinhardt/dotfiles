@@ -1,0 +1,7 @@
+{
+    "diagnostic.checkCurrentLine": true,
+
+    "git.github.hosts": ["gh.riotgames.com", "github.com"],
+
+    "python.linting.pylintEnabled": true
+}
