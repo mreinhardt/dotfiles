@@ -57,6 +57,30 @@ hb() {
         {sub(/^[0-9]+/, human($1)); print}'
 }
 
+gono() {
+    preface=$1
+    command=$2
+    zsh -c "$preface"
+    select yn in "Go" "No"; do
+        case $yn in
+            Go) zsh -c "source ${ZDOTDIR:-$HOME}/.zshrc && $command"; break;;
+            No) echo "NOPE!"; break;;
+        esac
+    done
+}
+
+poll() {
+    command=$1
+    interval=${2:-5}
+    display=$3
+    while true; do
+        if [[ $display != "" ]]; then echo "[$(date)]\tRunning '${command}'..."; fi
+        zsh -c "source ${ZDOTDIR:-$HOME}/.zshrc && $command"
+        if [[ $display != "" ]]; then echo "[$(date)]\tSleeping ${interval}s...\t[Hit Ctrl-C to exit]"; fi
+        sleep $interval
+    done
+}
+
 h() {
     navi=$(command -v navi)
     if [[ -z $1 ]]; then
@@ -114,6 +138,17 @@ mk () { pandoc -f markdown $1 | lynx -stdin }
 # NOTE: Must have eat (github.com/antonmedv/eat) installed
 pj () { ps aux | grep -E "%CPU.*%MEM|$1" | eat }
 
+# global protect (mac)
+restart_global_protect() {
+    launchctl unload /Library/LaunchAgents/com.paloaltonetworks.gp.pangps.plist
+    launchctl unload /Library/LaunchAgents/com.paloaltonetworks.gp.pangpa.plist
+    launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangps.plist
+    launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangpa.plist
+}
+gprestart() {
+    restart_global_protect
+}
+
 # Find and edit
 FIND=$(command -v find)
 NVIM=$(command -v nvim)
@@ -124,16 +159,16 @@ nv () {
     $NVIM $@
 }
 rged () {
-    $RG -l $1 | xargs $NVIM -p
+    $RG -l $1 | grep "${2:-}" | xargs $NVIM -p
 }
 rgud () {
-    $RG -uuu -l $1 | xargs $NVIM -p
+    $RG -uuu -l $1 | grep "${2:-}" | xargs $NVIM -p
 }
 fd () {
-    $FIND . -iname "*$1*" -not -path "*/.git/*"
+    $FIND . -iname "*$1*" -not -path "*/.git/*" | grep "${2:-}"
 }
 fp () {
-    $FIND . -ipath "*$1*" -not -path "*/.git/*"
+    $FIND . -ipath "*$1*" -not -path "*/.git/*" | grep "${2:-}"
 }
 ffed () {
     if [[ -n $2 ]]; then
@@ -143,7 +178,10 @@ ffed () {
     fi
 }
 gsed () {
-    git status -sb | tail -n+2 | awk '{print $NF}' | xargs $NVIM -p
+    git status -sb | tail -n+2 | grep -Ev '^D ' | awk '{print $NF}' | grep "${1:-}" | xargs $NVIM -p
+}
+gsud () {
+    git status -sb | tail -n+2 | grep -E '^U' | awk '{print $NF}' | grep "${1:-}" | xargs $NVIM -p
 }
 gded () {
     git diff --name-only "$1" "${2:-HEAD}" | xargs $NVIM -p
@@ -166,8 +204,14 @@ gra () {
 }
 
 # pipenv
+pec () {
+    $PIPENV --rm; $PIPENV clean
+}
 pei () {
     $PIPENV install -d $@
+}
+peci () {
+    $PIPENV --rm; $PIPENV clean; $PIPENV install -d $@
 }
 per () {
     $PIPENV run $@
@@ -177,6 +221,12 @@ pes () {
 }
 pet () {
     $PIPENV run python -m pytest -vv $@
+}
+pfg () {
+    $PIPENV run pip freeze | grep $@
+}
+peg () {
+    $PIPENV graph | less
 }
 
 
@@ -203,7 +253,7 @@ psg() {
 }
 
 # SUPERMAN! (80 width centered man pages)
-sman() {
+man() {
     MANWIDTH=${MANWIDTH:-80}
     indent_count=$(echo "($(tput cols) - 80) / 2" | bc)
     indent=$(seq -s' ' ${indent_count} | tr -d '[:digit:]')
@@ -232,7 +282,14 @@ kpod() {
 }
 
 kns() {
-    kubectl config set-context --current --namespace=$1
+    if [[ "$1" == "" ]]; then
+        echo $(kubectl config view --minify -o jsonpath='{..namespace}')
+    else
+        kubectl config set-context --current --namespace=$1
+    fi
+}
+knss () {
+    kubectl get namespaces
 }
 
 kku() {
@@ -263,8 +320,8 @@ klog() {
 }
 
 klgf() {
-    kubectl logs -f "pod/$(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1)" --max-log-requests=9 --pod-running-timeout=60m --tail=10; \
-    while true; do kubectl logs -f "pod/$(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1)" --max-log-requests=9 --pod-running-timeout=60m --tail=10; done
+    kubectl logs -f "pod/$(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1)" --max-log-requests=9 --pod-running-timeout=60m --tail=${2:-10}; \
+    while true; do kubectl logs -f "pod/$(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1)" --max-log-requests=9 --pod-running-timeout=60m --tail=${2:-10}; done
 }
 # klgf() {
 #     kubectl logs -f -lapp="$1" --all-containers=true --max-log-requests=9 --pod-running-timeout=60m; \
@@ -281,6 +338,11 @@ klgr() {
 krestart() {
     pod=$(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1)
     kubectl rollout restart "${2:-deployment}" "$1"
+}
+
+krestart_FORCE() {
+    pod=$(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1)
+    kubectl rollout restart "${2:-deployment}" "$1"
     sleep 1
     kubectl delete pod "$pod" --grace-period=0 --force
     sleep 10
@@ -290,4 +352,33 @@ krestart() {
     else
         echo "Failed to restart $2 $1!"
     fi
+}
+
+krep() {
+    kubectl scale --replicas="$2" "deployment.apps/$1"
+}
+
+kdn() {
+    kubectl scale --replicas=0 "deployment.apps/$1"
+}
+
+kup() {
+    kubectl scale --replicas="${2:-1}" "deployment.apps/$1"
+}
+
+kdnup() {
+    kubectl scale --replicas=0 "deployment.apps/$1"
+    sleep 1
+    kubectl scale --replicas="${2:-1}" "deployment.apps/$1"
+}
+
+kroll() {
+    for app in "${@}"; do
+        kubectl scale --replicas=0 "deployment.apps/$app"
+        sleep 1
+        kubectl scale --replicas=1 "deployment.apps/$app"
+        sleep 1
+        kubectl get pods | grep "$app"
+        sleep 1
+    done
 }
