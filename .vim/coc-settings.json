@@ -1,7 +1,21 @@
 {
+
     "diagnostic.checkCurrentLine": true,
+    "diagnostic.level": "information",
 
     "git.github.hosts": ["gh.riotgames.com", "github.com"],
 
-    "python.linting.pylintEnabled": true
+    "python.linting.pylintEnabled": true,
+
+    "languageserver": {
+        "go": {
+            "command": "gopls",
+            "rootPatterns": ["go.work", "go.mod", ".vim/", ".git/", ".hg/"],
+            "filetypes": ["go"],
+            "initializationOptions": {
+                "usePlaceholders": true
+            }
+        }
+    }
+
 }
