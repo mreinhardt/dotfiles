@@ -472,7 +472,8 @@ nmap <Leader># :setlocal number! relativenumber!<CR>
 nmap <Leader>> :set paste!<CR>
 nmap <Leader>< :setlocal wrap!<CR>:setlocal wrap?<CR>
 
-" Dir view
+" Files
+nnoremap <Leader>f :file<CR>
 nnoremap <Leader>o :Explore<CR>
 
 " Easier jump to line
