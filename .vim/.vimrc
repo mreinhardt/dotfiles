@@ -9,10 +9,13 @@ call plug#begin()
   Plug 'airblade/vim-gitgutter'
   Plug 'bling/vim-bufferline'
   Plug 'easymotion/vim-easymotion'
-  Plug 'ervandew/supertab'
+  " Plug 'ervandew/supertab'
   Plug 'godlygeek/tabular'
   Plug 'honza/vim-snippets'
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all --no-update-rc' }
+  Plug 'tpope/vim-fugitive'
+  Plug 'tpope/vim-repeat'
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
+  Plug 'junegunn/fzf.vim'
   Plug 'junegunn/gv.vim'
   Plug 'junegunn/vader.vim'
   Plug 'junegunn/goyo.vim'
@@ -26,8 +29,6 @@ call plug#begin()
   Plug 'sheerun/vim-polyglot'
   Plug 'sukima/xmledit'
   Plug 'tomtom/tcomment_vim'
-  Plug 'tpope/vim-fugitive'
-  Plug 'tpope/vim-repeat'
   Plug 'vim-airline/vim-airline'
   Plug 'vim-scripts/ag.vim'
   " Plug 'vim-syntastic/syntastic'
@@ -40,6 +41,7 @@ call plug#begin()
   Plug 'davidhalter/jedi-vim'
   Plug 'elzr/vim-json'
   Plug 'fbernier/nginx-vim-syntax'
+  Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
   Plug 'guns/vim-clojure-highlight'
   Plug 'guns/vim-clojure-static'
   Plug 'hdima/python-syntax'
@@ -149,8 +151,10 @@ let g:gh_line_map = '<leader>gl'
 
 " coc
 let g:coc_global_extensions = [
+      \ 'coc-go',
       \ 'coc-pyright',
-      \ 'coc-tsserver'
+      \ 'coc-tsserver',
+      \ 'coc-yaml'
       \ ]
 if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
   let g:coc_global_extensions += ['coc-prettier']
@@ -192,6 +196,7 @@ endfunction
 
 " Symbol renaming
 nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>im <Plug>(coc-autoimport)
 
 " indentline
 let g:indentLine_enabled = 0
@@ -235,6 +240,10 @@ autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 " python-syntax
 let python_highlight_all = 1
+
+" vim-go
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
 
 " vim-markdown
 set conceallevel=0
