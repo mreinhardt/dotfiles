@@ -9,7 +9,6 @@ call plug#begin()
   Plug 'airblade/vim-gitgutter'
   Plug 'bling/vim-bufferline'
   Plug 'easymotion/vim-easymotion'
-  " Plug 'ervandew/supertab'
   Plug 'godlygeek/tabular'
   Plug 'honza/vim-snippets'
   Plug 'tpope/vim-fugitive'
@@ -31,11 +30,9 @@ call plug#begin()
   Plug 'tomtom/tcomment_vim'
   Plug 'vim-airline/vim-airline'
   Plug 'vim-scripts/ag.vim'
-  " Plug 'vim-syntastic/syntastic'
   Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+  Plug 'neovim/nvim-lspconfig'
   Plug 'yggdroot/indentline'
-  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  " Plug 'zchee/deoplete-jedi'
   " Language Specific
   Plug 'artur-shaik/vim-javacomplete2'
   Plug 'davidhalter/jedi-vim'

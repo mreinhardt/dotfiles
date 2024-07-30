@@ -5,7 +5,8 @@
 
     "git.github.hosts": ["gh.riotgames.com", "github.com"],
 
-    "python.linting.pylintEnabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.ruffEnabled": true,
 
     "languageserver": {
         "go": {
