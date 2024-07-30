@@ -57,16 +57,30 @@ hb() {
         {sub(/^[0-9]+/, human($1)); print}'
 }
 
+hush() {
+    "$@" 2>/dev/null
+}
+
 gono() {
     preface=$1
     command=$2
-    zsh -c "$preface"
+    zsh -c "source ${ZDOTDIR:-$HOME}/.zshrc && $preface"
     select yn in "Go" "No"; do
         case $yn in
             Go) zsh -c "source ${ZDOTDIR:-$HOME}/.zshrc && $command"; break;;
             No) echo "NOPE!"; break;;
         esac
     done
+}
+
+yn() {
+    preface=$1
+    command=$2
+    read "?$preface [yN] " answer
+    case $answer in
+        [Yy]*) zsh -c "source ${ZDOTDIR:-$HOME}/.zshrc && $command";;
+        *) echo "NOPE!"; exit;;
+    esac
 }
 
 poll() {
@@ -159,10 +173,18 @@ nv () {
     $NVIM $@
 }
 rged () {
-    $RG -l $1 | grep "${2:-}" | xargs $NVIM -p
+    if [[ -n $3 ]]; then
+        $RG -t $3 -l $1 | $RG "${2:-}" | xargs $NVIM -p
+    else
+        $RG -l $1 | $RG "${2:-}" | xargs $NVIM -p
+    fi
 }
 rgud () {
-    $RG -uuu -l $1 | grep "${2:-}" | xargs $NVIM -p
+    if [[ -n $3 ]]; then
+        $RG -uuu -t $3 -l $1 | $RG "${2:-}" | xargs $NVIM -p
+    else
+        $RG -uuu -l $1 | $RG "${2:-}" | xargs $NVIM -p
+    fi
 }
 fd () {
     $FIND . -iname "*$1*" -not -path "*/.git/*" | grep "${2:-}"
@@ -261,6 +283,11 @@ man() {
 }
 
 # k8s stuff
+kenv() {
+    ns=$(kubectl config view --minify -o jsonpath='{..namespace}')
+    echo "env: ${AWS_PROFILE:-unset}, ns: ${ns:-unknown}"
+}
+
 kgo() {
     if [[ -z $2 ]]; then
         kubectl exec --stdin --tty $(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1) -- "/bin/sh";
@@ -274,6 +301,7 @@ kstop() {
 }
 
 kpod() {
+    kenv
     if [[ -z $1 ]]; then
         kubectl get pods
     else

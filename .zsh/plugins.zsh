@@ -1,7 +1,12 @@
 ### PLUGINS ###
 
-# fasd
-if [[ $(command -v fasd) ]]; then
+# zoxide and fasd
+if [[ $(command -v zoxide) ]]; then
+    eval "$(zoxide init zsh --cmd c --hook pwd)"
+    alias cc='ci'
+    v () { c "$1" && vim . }
+    vv () { ci "$1" && vim . }
+elif [[ $(command -v fasd) ]]; then
     fasd_cache="$HOME/.fasd-init-zsh"
     if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
       fasd --init posix-alias zsh-hook zsh-ccomp zsh-ccomp-install >| "$fasd_cache"

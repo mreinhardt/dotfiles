@@ -20,6 +20,7 @@ fi
 alias tis="$(command -v tig) status"
 alias tp="$(command -v tmuxp)"
 alias tx="$(command -v tmux)"
+alias txn="$(command -v tmuxinator)"
 alias vag="$(command -v vagrant)"
 alias vim=$(command -v nvim)
 alias vm=$(command -v nvim)
