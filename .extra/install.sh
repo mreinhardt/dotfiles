@@ -233,10 +233,12 @@ elif [[ $PLATFORM == "Darwin" ]]; then
                  the_silver_searcher \
                  tig \
                  tmux \
+                 tmuxinator \
                  tree \
                  vim \
                  w3m \
-                 wget || true
+                 wget \
+                 zoxide || true
 
     brew upgrade --cleanup
     brew prune
