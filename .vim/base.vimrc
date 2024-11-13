@@ -464,6 +464,7 @@ nnoremap <Leader>rb :so ~/.vim/base.vimrc<CR>
 
 " commonly edited
 nnoremap <Leader>ezz :split ~/.zsh<CR>
+nnoremap <Leader>ezl :split ~/.zsh/.zshrc.local<CR>
 nnoremap <Leader>eza :split ~/.zsh/aliases.zsh<CR>
 nnoremap <Leader>ezf :split ~/.zsh/functions.zsh<CR>
 
@@ -473,7 +474,7 @@ nmap <Leader>> :set paste!<CR>
 nmap <Leader>< :setlocal wrap!<CR>:setlocal wrap?<CR>
 
 " Files
-nnoremap <Leader>f :file<CR>
+nnoremap <Leader>F :file<CR>
 nnoremap <Leader>o :Explore<CR>
 
 " Easier jump to line

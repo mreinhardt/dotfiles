@@ -23,7 +23,7 @@ if [[ $(command -v fzf) ]]; then
     if [ -f ~/.fzf.zsh ]; then
         source ~/.fzf.zsh
     fi
-    export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+    export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git --ignore vendor -g ""'
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     export FZF_ALT_C_COMMAND="command find -L . \( -fstype 'dev' -o -fstype 'proc' -o -ipath '*/.git/*' \) -prune -o -type d -print 2> /dev/null"
 fi

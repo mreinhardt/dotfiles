@@ -49,9 +49,7 @@ call plug#begin()
   Plug 'peitalin/vim-jsx-typescript'
   Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
   Plug 'plasticboy/vim-markdown'
-  Plug 'prettier/vim-prettier', {
-    \ 'do': 'npm install',
-    \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss']}
+  Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
   Plug 'AndrewRadev/splitjoin.vim'
   Plug 'raichoo/haskell-vim'
   Plug 'stephpy/vim-php-cs-fixer'
@@ -144,7 +142,7 @@ let g:deoplete#enable_at_startup = 1
 " let g:syntastic_python_python_exec = 'python3'
 
 " vim-gh-line
-let g:gh_line_map = '<leader>gl'
+let g:gh_line_map = '<leader>ghl'
 
 " coc
 let g:coc_global_extensions = [
@@ -195,6 +193,9 @@ endfunction
 nmap <leader>rn <Plug>(coc-rename)
 nmap <leader>im <Plug>(coc-autoimport)
 
+" Quickfix navigation
+nnoremap <Leader>ff :.cc<CR>
+
 " indentline
 let g:indentLine_enabled = 0
 let g:indentLine_char = '▏'
@@ -241,6 +242,42 @@ let python_highlight_all = 1
 " vim-go
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
+let g:go_metalinter_command = 'golangci-lint'
+" Example set linters enabled if no .golangci.yml specified:
+" let g:go_metalinter_enabled = [
+"       \ 'bodyclose',
+"       \ 'dogsled',
+"       \ 'dupl',
+"       \ 'exhaustruct',
+"       \ 'errcheck',
+"       \ 'copyloopvar',
+"       \ 'funlen',
+"       \ 'gci',
+"       \ 'goconst',
+"       \ 'gocritic',
+"       \ 'gocyclo',
+"       \ 'gofmt',
+"       \ 'goimports',
+"       \ 'goprintffuncname',
+"       \ 'gosec',
+"       \ 'gosimple',
+"       \ 'govet',
+"       \ 'ineffassign',
+"       \ 'lll',
+"       \ 'misspell',
+"       \ 'mnd',
+"       \ 'nakedret',
+"       \ 'noctx',
+"       \ 'nolintlint',
+"       \ 'revive',
+"       \ 'staticcheck',
+"       \ 'stylecheck',
+"       \ 'typecheck',
+"       \ 'unconvert',
+"       \ 'unparam',
+"       \ 'unused',
+"       \ 'whitespace' ]
+nnoremap <Leader>gl :GoMetaLinter<CR>
 
 " vim-markdown
 set conceallevel=0

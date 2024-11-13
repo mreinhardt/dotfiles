@@ -5,6 +5,8 @@
 
     "git.github.hosts": ["gh.riotgames.com", "github.com"],
 
+    "inlayHint.enable": false,
+
     "python.linting.pylintEnabled": false,
     "python.linting.ruffEnabled": true,
 

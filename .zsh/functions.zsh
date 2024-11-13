@@ -35,6 +35,15 @@ cx() {
     fi
 }
 
+# flush dns cache
+dnsflush () {
+    if [[ $OSTYPE == "darwin"* ]]; then
+        sudo dscacheutil -flushcache
+        sudo killall -HUP mDNSResponder
+    fi
+    # TODO: other os'es
+}
+
 # directory tree
 dtree () {
     CURDIR=$(pwd)
@@ -145,6 +154,11 @@ lgf () {
     du -a "$root_dir" | sort -nr | head -n $file_count
 }
 
+# List recent files
+lt () {
+    ls -laFht | head -n "${1:-10}"
+}
+
 # View Markdown
 mk () { pandoc -f markdown $1 | lynx -stdin }
 
@@ -161,6 +175,17 @@ restart_global_protect() {
 }
 gprestart() {
     restart_global_protect
+}
+
+# openssl
+pfx_key () {
+    openssl pkcs12 -in "$1" -nocerts -out "$(echo $1 | sed 's/[.]pfx$/.key/')"
+}
+pfx_key_decrypt () {
+    openssl rsa -in "$1" -out "$(echo $1 | sed 's/[.]key$/_decrypted.key/')"
+}
+pfx_crt () {
+    openssl pkcs12 -in "$1" -clcerts -nokeys -out "$(echo $1 | sed 's/[.]pfx$/.crt/')"
 }
 
 # Find and edit
@@ -199,6 +224,14 @@ ffed () {
         fd "$1" | xargs $NVIM -p
     fi
 }
+goled () {
+    o=$(golangci-lint run --out-format=colored-tab)
+    if [[ $o == "" ]]; then
+        echo "[lint] PASS"
+    else
+        echo $o | cut -d':' -f1 | sort -u | xargs $NVIM -c 'GoMetaLinter' -p
+    fi
+}
 gsed () {
     git status -sb | tail -n+2 | grep -Ev '^D ' | awk '{print $NF}' | grep "${1:-}" | xargs $NVIM -p
 }
@@ -223,6 +256,11 @@ gra () {
     local new_url="$(printf "$2" | sed -e 's#https\{0,1\}://#git@#' -e 's#\([.][a-z]*\)/#\1:#')"
     echo "Adding remote $1 $new_url..."
     printf "$new_url" | xargs git remote add $1
+}
+
+# python
+eba () {
+    printf "$HOME/.venv/$(basename $(pwd))/bin/activate"
 }
 
 # pipenv
@@ -250,7 +288,6 @@ pfg () {
 peg () {
     $PIPENV graph | less
 }
-
 
 # bake
 bkt () {
@@ -290,9 +327,9 @@ kenv() {
 
 kgo() {
     if [[ -z $2 ]]; then
-        kubectl exec --stdin --tty $(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1) -- "/bin/sh";
+        kubectl exec --stdin --tty $(kubectl get pods | grep -E "$1" | grep "Running" | cut -d' ' -f1 | head -n1) -- "/bin/sh";
     else
-        kubectl exec --stdin --tty -c "$2" $(kubectl get pods | grep -E "$1" | cut -d' ' -f1 | head -n1) -- "/bin/$3sh";
+        kubectl exec --stdin --tty -c "$2" $(kubectl get pods | grep -E "$1" | grep "Running" | cut -d' ' -f1 | head -n1) -- "/bin/$3sh";
     fi
 }
 
