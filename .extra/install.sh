@@ -214,15 +214,20 @@ elif [[ $PLATFORM == "Darwin" ]]; then
 
     # install packages
     brew install automake \
+                 axel \
+                 bat \
                  cmake \
                  coreutils \
                  curl \
+                 eza \
                  fasd \
                  fzf \
                  gnupg \
                  htop-osx \
                  leiningen \
+                 mas \
                  mobile-shell \
+                 ncdu \
                  neovim/neovim/neovim \
                  nginx \
                  node \
@@ -238,6 +243,7 @@ elif [[ $PLATFORM == "Darwin" ]]; then
                  vim \
                  w3m \
                  wget \
+                 yazi \
                  zoxide || true
 
     brew upgrade --cleanup
