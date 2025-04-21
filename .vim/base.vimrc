@@ -464,6 +464,7 @@ nnoremap <Leader>rb :so ~/.vim/base.vimrc<CR>
 
 " commonly edited
 nnoremap <Leader>ezz :split ~/.zsh<CR>
+nnoremap <Leader>eze :split ~/.zsh/.zshenv.local<CR>
 nnoremap <Leader>ezl :split ~/.zsh/.zshrc.local<CR>
 nnoremap <Leader>eza :split ~/.zsh/aliases.zsh<CR>
 nnoremap <Leader>ezf :split ~/.zsh/functions.zsh<CR>
