@@ -1,3 +1,4 @@
+[[ -r ${ZDOTDIR:-${HOME}}/.zshrc.pre ]] && source ${ZDOTDIR:-${HOME}}/.zshrc.pre
 source ${ZDOTDIR:-$HOME}/.zshrc.grml
 source ${ZDOTDIR:-$HOME}/.zshrc.local.grml
-source ${ZDOTDIR:-$HOME}/.zshrc.post
+[[ -r ${ZDOTDIR:-${HOME}}/.zshrc.post ]] && source ${ZDOTDIR:-${HOME}}/.zshrc.post

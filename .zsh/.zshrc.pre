@@ -1,3 +1,5 @@
 ## CUSTOM ZSHRC ##############################################################
 autoload -U promptinit && promptinit
+# Load prompt as nicety before dotfiles finished processing
+prompt sfz
 ## END CUSTOM ZSHRC ##########################################################

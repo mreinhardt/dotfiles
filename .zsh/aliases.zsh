@@ -2,11 +2,14 @@
 
 alias cmd='command'
 alias emacs='XLIB_SKIP_ARGB_VISUALS=1 emacs24 -nw'
-alias l=$(command -v ssh)
+# alias l=$(command -v ssh)
 alias g=$(command -v git)
 alias glci="$(command -v golangci-lint) run --out-format=colored-tab"
-alias la='ls -laFh'
-alias lad='ls -ldFh */'
+# alias la='ls -laFh'
+# alias lad='ls -ldFh */'
+alias la='eza -laZ --icons --git --git-repos --show-symlinks --follow-symlinks'
+alias lad='eza -ldZ --icons --git --git-repos --show-symlinks --follow-symlinks'
+alias laf='eza -lfZ --icons --git --git-repos --show-symlinks --follow-symlinks'
 alias logout="pkill -u $(whoami)"
 alias lsb="echo 'Largest files'; ls -flh *(.OL[1,10])"
 alias lst="echo 'Smallest files'; ls -Srl *(.oL[1,10])"
@@ -18,6 +21,7 @@ if [[ $(uname -s) != "Darwin" ]]; then
     alias pbcopy="$(command -v xclip) -selection clipboard"
     alias pbpaste="$(command -v xclip) -selection clipboard -o"
 fi
+alias rgn="$(command -v rg) --no-config"
 alias tis="$(command -v tig) status"
 alias tp="$(command -v tmuxp)"
 alias tx="$(command -v tmux)"

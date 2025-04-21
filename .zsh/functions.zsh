@@ -70,6 +70,18 @@ hush() {
     "$@" 2>/dev/null
 }
 
+jqat() {
+    cat "$1" | jq -Sr "${2:-.}"
+}
+
+jqurl() {
+    curl -s "$1" | jq -Sr "${2:-.}"
+}
+
+batail() {
+    tail -f $1 | bat --paging=never -l log
+}
+
 gono() {
     preface=$1
     command=$2
@@ -156,7 +168,17 @@ lgf () {
 
 # List recent files
 lt () {
-    ls -laFht | head -n "${1:-10}"
+    ls -laFht "${@:2}" | head -n "${1:-10}"
+}
+
+# yazi
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
 }
 
 # View Markdown
@@ -211,6 +233,13 @@ rgud () {
         $RG -uuu -l $1 | $RG "${2:-}" | xargs $NVIM -p
     fi
 }
+rgnded () {
+    if [[ -n $3 ]]; then
+        $RG -t $3 -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}" | xargs $NVIM -p
+    else
+        $RG -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}" | xargs $NVIM -p
+    fi
+}
 fd () {
     $FIND . -iname "*$1*" -not -path "*/.git/*" | grep "${2:-}"
 }
@@ -243,6 +272,9 @@ gded () {
 }
 gshed () {
     git show -U2 --name-only ${1:-HEAD} | sed -E '/^ |^$/d' | tail -n+4 | xargs $NVIM -p
+}
+gshnded () {
+    git show -U2 --name-only ${1:-HEAD} | grep -v vendor | sed -E '/^ |^$/d' | tail -n+4 | xargs $NVIM -p
 }
 
 # git
@@ -317,6 +349,15 @@ man() {
     indent_count=$(echo "($(tput cols) - 80) / 2" | bc)
     indent=$(seq -s' ' ${indent_count} | tr -d '[:digit:]')
     command man $@ | sed "s/^/${indent}/" | less -isR
+}
+
+# docker stuff
+dockstart() {
+    docker start $(docker ps -a | grep -E "$1" | cut -d' ' -f1)
+}
+
+dockstop() {
+    docker stop $(docker ps | grep -E "$1" | cut -d' ' -f1)
 }
 
 # k8s stuff
