@@ -80,6 +80,10 @@ ln -sfv "$DOTFILES_REPO_DIR/.tmux.conf" "$HOME"
 ln -sfv "$DOTFILES_REPO_DIR/.tmux" "$HOME"
 
 
+### warp
+mkdir -p "$HOME/.warp/themes"
+ln -sfv "$DOTFILES_REPO_DIR/.warp/themes/seadragon.yaml" "$HOME/.warp/themes/seadragon.yaml"
+
 ### xmonad
 
 # mkdir -p "$HOME/.xmonad"
