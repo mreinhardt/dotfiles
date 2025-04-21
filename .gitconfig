@@ -31,8 +31,10 @@
     aam = commit -a --amend
     rbm = rebase origin/master
     pd = push origin HEAD:refs/for/develop
-    rbd = rebase origin/develop
     rbi = "!git rebase -i --rebase-merges HEAD~$1 #"
+    rbd = rebase origin/develop
+    rbc = rebase --continue
+    rba = rebase --abort
     sp = stash pop
     smu = submodule update --init
     smur = submodule update --init --recursive
