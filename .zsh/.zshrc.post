@@ -28,7 +28,7 @@ prompt sfz
 unsetopt share_history
 
 #k# Perform abbreviation expansion
-bind2maps emacs viins       -- -s '^xx' zleiab
+# bind2maps emacs viins       -- -s '^xx' zleiab
 
 ## Unset debian aliases
 if [[ -r /etc/debian_version ]] ; then

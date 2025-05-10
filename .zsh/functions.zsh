@@ -12,6 +12,11 @@ colortable() {
     echo
 }
 
+# Strip ANSI color codes
+strip_ansi_color() {
+    perl -pe 's/\x1b\[[0-9;]*[mG]//g'
+}
+
 # unzip anything
 cx() {
     if [[ -f $1 ]]; then
@@ -210,6 +215,31 @@ pfx_crt () {
     openssl pkcs12 -in "$1" -clcerts -nokeys -out "$(echo $1 | sed 's/[.]pfx$/.crt/')"
 }
 
+# lazy load nvm, node, npm
+init_nvm() {
+    export NVM_DIR="$HOME/.nvm"
+    export NVM_INIT="$(brew --prefix nvm)/nvm.sh"
+    [ -s "$NVM_INIT" ] && . "$NVM_INIT"
+}
+
+nvm() {
+    unfunction $0
+    init_nvm
+    nvm "$@"
+}
+
+node() {
+    unfunction $0
+    init_nvm
+    node "$@"
+}
+
+npm() {
+    unfunction $0
+    init_nvm
+    npm "$@"
+}
+
 # Find and edit
 FIND=$(command -v find)
 NVIM=$(command -v nvim)
@@ -221,26 +251,33 @@ nv () {
 }
 rged () {
     if [[ -n $3 ]]; then
-        $RG -t $3 -l $1 | $RG "${2:-}" | xargs $NVIM -p
+        $RG -L -t $3 -l $1 | $RG "${2:-}" | xargs $NVIM -p
     else
-        $RG -l $1 | $RG "${2:-}" | xargs $NVIM -p
+        $RG -L -l $1 | $RG "${2:-}" | xargs $NVIM -p
     fi
 }
 rgud () {
     if [[ -n $3 ]]; then
-        $RG -uuu -t $3 -l $1 | $RG "${2:-}" | xargs $NVIM -p
+        $RG -Luuu -t $3 -l $1 | $RG "${2:-}" | xargs $NVIM -p
     else
-        $RG -uuu -l $1 | $RG "${2:-}" | xargs $NVIM -p
+        $RG -Luuu -l $1 | $RG "${2:-}" | xargs $NVIM -p
     fi
 }
 rgnded () {
     if [[ -n $3 ]]; then
-        $RG -t $3 -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}" | xargs $NVIM -p
+        $RG -L -t $3 -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}" | xargs $NVIM -p
     else
-        $RG -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}" | xargs $NVIM -p
+        $RG -L -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}" | xargs $NVIM -p
     fi
 }
-fd () {
+rgndud () {
+    if [[ -n $3 ]]; then
+        $RG -Luuu -t $3 -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}" | xargs $NVIM -p
+    else
+        $RG -Luuu -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}" | xargs $NVIM -p
+    fi
+}
+ffd () {
     $FIND . -iname "*$1*" -not -path "*/.git/*" | grep "${2:-}"
 }
 fp () {
@@ -252,6 +289,9 @@ ffed () {
     else
         fd "$1" | xargs $NVIM -p
     fi
+}
+pyled () {
+    ruff check --ignore-noqa --output-format concise . | cut -d':' -f1 | grep -E '[.]py$' | xargs $NVIM -p
 }
 goled () {
     o=$(golangci-lint run --out-format=colored-tab)

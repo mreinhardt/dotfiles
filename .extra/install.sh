@@ -216,6 +216,7 @@ elif [[ $PLATFORM == "Darwin" ]]; then
     brew install automake \
                  axel \
                  bat \
+                 btop \
                  cmake \
                  coreutils \
                  curl \
@@ -225,6 +226,7 @@ elif [[ $PLATFORM == "Darwin" ]]; then
                  gnupg \
                  htop-osx \
                  leiningen \
+                 lolcat \
                  mas \
                  mobile-shell \
                  ncdu \

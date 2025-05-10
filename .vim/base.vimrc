@@ -457,10 +457,10 @@ nnoremap <Leader>W :wq<CR>
 " nnoremap <Leader>c :w<CR>:SyntasticCheck<CR>
 
 " vimrcs
-nnoremap <Leader>ev :split $MYVIMRC<CR>
-nnoremap <Leader>eb :split ~/.vim/base.vimrc<CR>
-nnoremap <Leader>rv :so $MYVIMRC<CR>
-nnoremap <Leader>rb :so ~/.vim/base.vimrc<CR>
+" nnoremap <Leader>ev :split $MYVIMRC<CR>
+" nnoremap <Leader>eb :split ~/.vim/base.vimrc<CR>
+" nnoremap <Leader>rv :so $MYVIMRC<CR>
+" nnoremap <Leader>rb :so ~/.vim/base.vimrc<CR>
 
 " commonly edited
 nnoremap <Leader>ezz :split ~/.zsh<CR>
@@ -477,6 +477,7 @@ nmap <Leader>< :setlocal wrap!<CR>:setlocal wrap?<CR>
 " Files
 nnoremap <Leader>F :file<CR>
 nnoremap <Leader>o :Explore<CR>
+nnoremap <Leader>O :Yazi<CR>
 
 " Easier jump to line
 nnoremap <CR> G
@@ -572,4 +573,3 @@ nnoremap <Leader>S :setlocal spell! spelllang=en_us<CR>
 if has('nvim')
     tnoremap <esc><esc> <c-\><c-n>
 endif
-

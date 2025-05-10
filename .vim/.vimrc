@@ -10,18 +10,19 @@ call plug#begin()
   Plug 'bling/vim-bufferline'
   Plug 'easymotion/vim-easymotion'
   Plug 'godlygeek/tabular'
-  Plug 'honza/vim-snippets'
+  " Plug 'honza/vim-snippets'
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-repeat'
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
+  Plug 'nvim-telescope/telescope.nvim'
+  Plug 'mikavilpas/yazi.nvim'
   Plug 'junegunn/gv.vim'
   Plug 'junegunn/vader.vim'
-  Plug 'junegunn/goyo.vim'
   Plug 'justinmk/vim-sneak'
   Plug 'mbbill/undotree'
   Plug 'mhinz/vim-startify'
-  Plug 'mreinhardt/nvim-pfix', { 'do': ':UpdateRemotePlugins' }
+  " Plug 'mreinhardt/nvim-pfix', { 'do': ':UpdateRemotePlugins' }
   Plug 'preservim/vimux'
   Plug 'raimondi/delimitmate'
   Plug 'ruanyl/vim-gh-line'
@@ -53,7 +54,7 @@ call plug#begin()
   Plug 'peitalin/vim-jsx-typescript'
   Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
   Plug 'plasticboy/vim-markdown'
-  Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
+  " Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
   Plug 'AndrewRadev/splitjoin.vim'
   Plug 'raichoo/haskell-vim'
   Plug 'stephpy/vim-php-cs-fixer'
@@ -87,6 +88,11 @@ call InitVimRcColors()
 
 let mapleader = "\<Space>"
 set relativenumber
+filetype indent off
+filetype plugin indent on
+
+nnoremap <silent> e[ :lprev<CR>
+nnoremap <silent> e] :lnext<CR>
 
 " Bufferline
 let g:bufferline_echo=0
@@ -113,15 +119,11 @@ vmap <C-v> <Plug>(expand_region_shrink)
 let g:fzf_layout = {'down': '~40%'}
 nnoremap <C-p> :FZF<CR>
 
-" greplace
-let g:greplace_cmd='ag'
-let g:greplace_cmd_opts='--recurse --hidden --numbers --noheading'
-
-" nvim-pfix
-let g:nvim_pfix_pfind='rg'
-let g:nvim_pfix_pfind_opts='--hidden --line-number --no-heading'
-nnoremap <M-f> :Pfind<CR>
-nnoremap <M-r> :Pfix<CR>
+" " nvim-pfix
+" let g:nvim_pfix_pfind='rg'
+" let g:nvim_pfix_pfind_opts='--hidden --line-number --no-heading'
+" nnoremap <M-f> :Pfind<CR>
+" nnoremap <M-r> :Pfix<CR>
 
 " tcomment
 nnoremap <Leader>__ :TComment<CR>
@@ -129,10 +131,6 @@ nnoremap <Leader>-- :TComment<CR>
 
 " delimitmate
 let g:delimitMate_offByDefault=1
-
-" deoplete
-let g:python3_host_prog = "/opt/homebrew/bin/python3.9"
-let g:deoplete#enable_at_startup = 1
 
 " Syntastic
 " set statusline+="%#warningmsg#"
@@ -211,6 +209,7 @@ lua require("lsp_config")
 " autocmd BufWritePre *.go lua goimports(1000)
 
 " copilot
+let g:node_host_prog = '/Users/mreinhardt/.asdf/shims/node'
 nnoremap <Leader>c :Copilot<CR>
 nnoremap <Leader>c< :CopilotPrev<CR>
 nnoremap <Leader>c> :CopilotNext<CR>
@@ -252,32 +251,6 @@ let g:undotree_DiffpanelHeight = 6
 let g:undotree_TreeNodeShape = '¤'
 let g:undotree_TreeVertShape = '│'
 
-" Goyo
-function! s:goyo_enter()
-  " tmux zoom pane
-  if executable('tmux') && strlen($TMUX)
-    silent !tmux set status off
-    silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
-  endif
-  " Custom disables
-  set wrap linebreak
-  set eventignore=BufWinEnter,CursorMoved,CursorMovedI,FocusLost,InsertEnter,InsertLeave,WinEnter
-endfunction
-
-function! s:goyo_leave()
-  if executable('tmux') && strlen($TMUX)
-    silent !tmux set status on
-    silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
-  endif
-
-  " Custom enables
-  set eventignore=""
-  call InitVimRcColors()
-endfunction
-
-autocmd! User GoyoEnter nested call <SID>goyo_enter()
-autocmd! User GoyoLeave nested call <SID>goyo_leave()
-
 " python-syntax
 let python_highlight_all = 1
 
@@ -285,40 +258,6 @@ let python_highlight_all = 1
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 let g:go_metalinter_command = 'golangci-lint'
-" Example set linters enabled if no .golangci.yml specified:
-" let g:go_metalinter_enabled = [
-"       \ 'bodyclose',
-"       \ 'dogsled',
-"       \ 'dupl',
-"       \ 'exhaustruct',
-"       \ 'errcheck',
-"       \ 'copyloopvar',
-"       \ 'funlen',
-"       \ 'gci',
-"       \ 'goconst',
-"       \ 'gocritic',
-"       \ 'gocyclo',
-"       \ 'gofmt',
-"       \ 'goimports',
-"       \ 'goprintffuncname',
-"       \ 'gosec',
-"       \ 'gosimple',
-"       \ 'govet',
-"       \ 'ineffassign',
-"       \ 'lll',
-"       \ 'misspell',
-"       \ 'mnd',
-"       \ 'nakedret',
-"       \ 'noctx',
-"       \ 'nolintlint',
-"       \ 'revive',
-"       \ 'staticcheck',
-"       \ 'stylecheck',
-"       \ 'typecheck',
-"       \ 'unconvert',
-"       \ 'unparam',
-"       \ 'unused',
-"       \ 'whitespace' ]
 nnoremap <Leader>gl :GoMetaLinter<CR>
 
 " vim-markdown
@@ -333,42 +272,6 @@ let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and 
 let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
 let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
-
-" vim-javacoplete2
-autocmd FileType java setlocal omnifunc=javacomplete#Complete
-" Default mappings:
-"   nmap <leader>jI <Plug>(JavaComplete-Imports-AddMissing)
-"   nmap <leader>jR <Plug>(JavaComplete-Imports-RemoveUnused)
-"   nmap <leader>ji <Plug>(JavaComplete-Imports-AddSmart)
-"   nmap <leader>jii <Plug>(JavaComplete-Imports-Add)
-"   imap <C-j>I <Plug>(JavaComplete-Imports-AddMissing)
-"   imap <C-j>R <Plug>(JavaComplete-Imports-RemoveUnused)
-"   imap <C-j>i <Plug>(JavaComplete-Imports-AddSmart)
-"   imap <C-j>ii <Plug>(JavaComplete-Imports-Add)
-"   nmap <leader>jM <Plug>(JavaComplete-Generate-AbstractMethods)
-"   imap <C-j>jM <Plug>(JavaComplete-Generate-AbstractMethods)
-"   nmap <leader>jA <Plug>(JavaComplete-Generate-Accessors)
-"   nmap <leader>js <Plug>(JavaComplete-Generate-AccessorSetter)
-"   nmap <leader>jg <Plug>(JavaComplete-Generate-AccessorGetter)
-"   nmap <leader>ja <Plug>(JavaComplete-Generate-AccessorSetterGetter)
-"   nmap <leader>jts <Plug>(JavaComplete-Generate-ToString)
-"   nmap <leader>jeq <Plug>(JavaComplete-Generate-EqualsAndHashCode)
-"   nmap <leader>jc <Plug>(JavaComplete-Generate-Constructor)
-"   nmap <leader>jcc <Plug>(JavaComplete-Generate-DefaultConstructor)
-"   imap <C-j>s <Plug>(JavaComplete-Generate-AccessorSetter)
-"   imap <C-j>g <Plug>(JavaComplete-Generate-AccessorGetter)
-"   imap <C-j>a <Plug>(JavaComplete-Generate-AccessorSetterGetter)
-"   vmap <leader>js <Plug>(JavaComplete-Generate-AccessorSetter)
-"   vmap <leader>jg <Plug>(JavaComplete-Generate-AccessorGetter)
-"   vmap <leader>ja <Plug>(JavaComplete-Generate-AccessorSetterGetter)
-"   nmap <silent> <buffer> <leader>jn <Plug>(JavaComplete-Generate-NewClass)
-"   nmap <silent> <buffer> <leader>jN <Plug>(JavaComplete-Generate-ClassInFile)
-
-nnoremap <silent> e[ :lprev<CR>
-nnoremap <silent> e] :lnext<CR>
-
-filetype indent off
-filetype plugin indent on
 
 " CopilotChat
 lua << EOF

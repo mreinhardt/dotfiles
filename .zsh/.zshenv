@@ -1,9 +1,14 @@
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+
 export EDITOR=$(which nvim)
 export PAGER=$(which less)
 
 fpath=( "${ZDOTDIR:-$HOME}/.zfunctions" $fpath )
 
-source ${ZDOTDIR:-$HOME}/.zshenv.grml
+source ${ZDOTDIR:-$HOME}/.zshenv.zi
 
 if [[ -x $(command -v brew) ]]; then     OS_HAS_BREW=1; fi
 if [[ -x $(command -v apt-get) ]]; then  OS_HAS_APT=1; fi
