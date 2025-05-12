@@ -1,0 +1,41 @@
+## CUSTOM ZSHRC ##############################################################
+
+
+### OVERRIDES ###
+
+# Custom prompt
+# prompt sfz
+eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/cymatik.omp.yaml")"
+
+# No shared history between terminal sessions
+unsetopt share_history
+
+## Unset debian aliases
+if [[ -r /etc/debian_version ]] ; then
+    unalias acs 2> /dev/null || true
+    unalias acsh 2> /dev/null || true
+    unalias acp 2> /dev/null || true
+    unalias adg 2> /dev/null || true
+    unalias agi 2> /dev/null || true
+    unalias ati 2> /dev/null || true
+    unalias ag 2> /dev/null || true
+    unalias au 2> /dev/null || true
+    unalias up 2> /dev/null || true
+    unalias dbp 2> /dev/null || true
+    unalias ge 2> /dev/null || true
+fi
+
+
+### INCLUDES ###
+
+. ${ZDOTDIR:-$HOME}/aliases.zsh
+. ${ZDOTDIR:-$HOME}/functions.zsh
+. ${ZDOTDIR:-$HOME}/plugins.zsh
+
+
+### PATH ###
+
+export PATH="$HOME/bin:$HOME/.local/bin:$HOME/.cabal/bin:$PATH"
+
+
+## END CUSTOM ZSHRC ##########################################################

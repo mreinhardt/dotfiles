@@ -8,7 +8,7 @@ export PAGER=$(which less)
 
 fpath=( "${ZDOTDIR:-$HOME}/.zfunctions" $fpath )
 
-source ${ZDOTDIR:-$HOME}/.zshenv.zi
+[[ -r "${ZDOTDIR:-${HOME}}/.zshenv.zi" ]] && source "${ZDOTDIR:-$HOME}/.zshenv.zi"
 
 if [[ -x $(command -v brew) ]]; then     OS_HAS_BREW=1; fi
 if [[ -x $(command -v apt-get) ]]; then  OS_HAS_APT=1; fi

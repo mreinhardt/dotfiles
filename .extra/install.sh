@@ -225,6 +225,7 @@ elif [[ $PLATFORM == "Darwin" ]]; then
                  fzf \
                  gnupg \
                  htop-osx \
+                 jandedobbeleer/oh-my-posh/oh-my-posh \
                  leiningen \
                  lolcat \
                  mas \
@@ -246,6 +247,7 @@ elif [[ $PLATFORM == "Darwin" ]]; then
                  w3m \
                  wget \
                  yazi \
+                 yq \
                  zoxide || true
 
     brew upgrade --cleanup

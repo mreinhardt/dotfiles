@@ -1,0 +1,935 @@
+## Z-SHELL CUSTOM MAIN #########################################################
+## Partial rip from grml ##
+
+
+# zsh profiling
+# just execute 'ZSH_PROFILE_RC=1 zsh' and run 'zprof' to get the details
+if [[ $ZSH_PROFILE_RC -gt 0 ]] ; then
+    zmodload zsh/zprof
+fi
+
+# check for version/system
+# check for versions (compatibility reasons)
+is4(){
+    [[ $ZSH_VERSION == <4->* ]] && return 0
+    return 1
+}
+
+is41(){
+    [[ $ZSH_VERSION == 4.<1->* || $ZSH_VERSION == <5->* ]] && return 0
+    return 1
+}
+
+is42(){
+    [[ $ZSH_VERSION == 4.<2->* || $ZSH_VERSION == <5->* ]] && return 0
+    return 1
+}
+
+is425(){
+    [[ $ZSH_VERSION == 4.2.<5->* || $ZSH_VERSION == 4.<3->* || $ZSH_VERSION == <5->* ]] && return 0
+    return 1
+}
+
+is43(){
+    [[ $ZSH_VERSION == 4.<3->* || $ZSH_VERSION == <5->* ]] && return 0
+    return 1
+}
+
+is433(){
+    [[ $ZSH_VERSION == 4.3.<3->* || $ZSH_VERSION == 4.<4->* \
+                                 || $ZSH_VERSION == <5->* ]] && return 0
+    return 1
+}
+
+is437(){
+    [[ $ZSH_VERSION == 4.3.<7->* || $ZSH_VERSION == 4.<4->* \
+                                 || $ZSH_VERSION == <5->* ]] && return 0
+    return 1
+}
+
+is439(){
+    [[ $ZSH_VERSION == 4.3.<9->* || $ZSH_VERSION == 4.<4->* \
+                                 || $ZSH_VERSION == <5->* ]] && return 0
+    return 1
+}
+
+# OS
+
+ZI_OSTYPE=$(uname -s)
+
+islinux(){
+    [[ $ZI_OSTYPE == "Linux" ]]
+}
+
+isdarwin(){
+    [[ $ZI_OSTYPE == "Darwin" ]]
+}
+
+isfreebsd(){
+    [[ $ZI_OSTYPE == "FreeBSD" ]]
+}
+
+isopenbsd(){
+    [[ $ZI_OSTYPE == "OpenBSD" ]]
+}
+
+issolaris(){
+    [[ $ZI_OSTYPE == "SunOS" ]]
+}
+
+
+# autoload wrapper - use this one instead of autoload directly
+# We need to define this function as early as this, because autoloading
+# 'is-at-least()' needs it.
+function zrcautoload() {
+    emulate -L zsh
+    setopt extended_glob
+    local fdir ffile
+    local -i ffound
+
+    ffile=$1
+    (( ffound = 0 ))
+    for fdir in ${fpath} ; do
+        [[ -e ${fdir}/${ffile} ]] && (( ffound = 1 ))
+    done
+
+    (( ffound == 0 )) && return 1
+    if [[ $ZSH_VERSION == 3.1.<6-> || $ZSH_VERSION == <4->* ]] ; then
+        autoload -U ${ffile} || return 1
+    else
+        autoload ${ffile} || return 1
+    fi
+    return 0
+}
+
+# set some important options (as early as possible)
+
+# append history list to the history file; this is the default but we make sure
+# because it's required for share_history.
+setopt append_history
+
+# import new commands from the history file also in other zsh-session
+is4 && setopt share_history
+
+# save each command's beginning timestamp and the duration to the history file
+setopt extended_history
+
+# If a new command line being added to the history list duplicates an older
+# one, the older command is removed from the list
+is4 && setopt histignorealldups
+
+# remove command lines from the history list when the first character on the
+# line is a space
+setopt histignorespace
+
+# if a command is issued that can't be executed as a normal command, and the
+# command is the name of a directory, perform the cd command to that directory.
+setopt auto_cd
+
+# in order to use #, ~ and ^ for filename generation grep word
+# *~(*.gz|*.bz|*.bz2|*.zip|*.Z) -> searches for word not in compressed files
+# don't forget to quote '^', '~' and '#'!
+setopt extended_glob
+
+# display PID when suspending processes as well
+setopt longlistjobs
+
+# report the status of backgrounds jobs immediately
+setopt notify
+
+# whenever a command completion is attempted, make sure the entire command path
+# is hashed first.
+setopt hash_list_all
+
+# not just at the end
+setopt completeinword
+
+# Don't send SIGHUP to background processes when the shell exits.
+setopt nohup
+
+# make cd push the old directory onto the directory stack.
+setopt auto_pushd
+
+# avoid "beep"ing
+setopt nobeep
+
+# don't push the same dir twice.
+setopt pushd_ignore_dups
+
+# * shouldn't match dotfiles. ever.
+setopt noglobdots
+
+# use zsh style word splitting
+setopt noshwordsplit
+
+# don't error out when unset parameters are used
+setopt unset
+
+# setting some default values
+
+typeset -ga ls_options
+typeset -ga grep_options
+if ls --color=auto / >/dev/null 2>&1; then
+    ls_options+=( --color=auto )
+elif ls -G / >/dev/null 2>&1; then
+    ls_options+=( -G )
+fi
+if grep --color=auto -q "a" <<< "a" >/dev/null 2>&1; then
+    grep_options+=( --color=auto )
+fi
+
+
+# utility functions
+# this function checks if a command exists and returns either true
+# or false. This avoids using 'which' and 'whence', which will
+# avoid problems with aliases for which on certain weird systems. :-)
+# Usage: check_com [-c|-g] word
+#   -c  only checks for external commands
+#   -g  does the usual tests and also checks for global aliases
+check_com() {
+    emulate -L zsh
+    local -i comonly gatoo
+    comonly=0
+    gatoo=0
+
+    if [[ $1 == '-c' ]] ; then
+        comonly=1
+        shift 1
+    elif [[ $1 == '-g' ]] ; then
+        gatoo=1
+        shift 1
+    fi
+
+    if (( ${#argv} != 1 )) ; then
+        printf 'usage: check_com [-c|-g] <command>\n' >&2
+        return 1
+    fi
+
+    if (( comonly > 0 )) ; then
+        (( ${+commands[$1]}  )) && return 0
+        return 1
+    fi
+
+    if     (( ${+commands[$1]}    )) \
+        || (( ${+functions[$1]}   )) \
+        || (( ${+aliases[$1]}     )) \
+        || (( ${+reswords[(r)$1]} )) ; then
+        return 0
+    fi
+
+    if (( gatoo > 0 )) && (( ${+galiases[$1]} )) ; then
+        return 0
+    fi
+
+    return 1
+}
+
+# creates an alias and precedes the command with
+# sudo if $EUID is not zero.
+salias() {
+    emulate -L zsh
+    local only=0 ; local multi=0
+    local key val
+    while getopts ":hao" opt; do
+        case $opt in
+            o) only=1 ;;
+            a) multi=1 ;;
+            h)
+                printf 'usage: salias [-hoa] <alias-expression>\n'
+                printf '  -h      shows this help text.\n'
+                printf '  -a      replace '\'' ; '\'' sequences with '\'' ; sudo '\''.\n'
+                printf '          be careful using this option.\n'
+                printf '  -o      only sets an alias if a preceding sudo would be needed.\n'
+                return 0
+                ;;
+            *) salias -h >&2; return 1 ;;
+        esac
+    done
+    shift "$((OPTIND-1))"
+
+    if (( ${#argv} > 1 )) ; then
+        printf 'Too many arguments %s\n' "${#argv}"
+        return 1
+    fi
+
+    key="${1%%\=*}" ;  val="${1#*\=}"
+    if (( EUID == 0 )) && (( only == 0 )); then
+        alias -- "${key}=${val}"
+    elif (( EUID > 0 )) ; then
+        (( multi > 0 )) && val="${val// ; / ; sudo }"
+        alias -- "${key}=sudo ${val}"
+    fi
+
+    return 0
+}
+
+# Check if we can read given files and source those we can.
+xsource() {
+    if (( ${#argv} < 1 )) ; then
+        printf 'usage: xsource FILE(s)...\n' >&2
+        return 1
+    fi
+
+    while (( ${#argv} > 0 )) ; do
+        [[ -r "$1" ]] && source "$1"
+        shift
+    done
+    return 0
+}
+
+# Check if we can read a given file and 'cat(1)' it.
+xcat() {
+    emulate -L zsh
+    if (( ${#argv} != 1 )) ; then
+        printf 'usage: xcat FILE\n' >&2
+        return 1
+    fi
+
+    [[ -r $1 ]] && cat $1
+    return 0
+}
+
+# Remove these functions again, they are of use only in these
+# setup files. This should be called at the end of .zshrc.
+xunfunction() {
+    emulate -L zsh
+    local -a funcs
+    local func
+    funcs=(salias xcat xsource xunfunction zrcautoload zrcautozle)
+    for func in $funcs ; do
+        [[ -n ${functions[$func]} ]] \
+            && unfunction $func
+    done
+    return 0
+}
+
+# this allows us to stay in sync with zi's zshrc and put own
+# modifications in ~/.zshrc.local
+zrclocal() {
+    xsource "/etc/zsh/zshrc.local"
+    xsource "${ZDOTDIR:-${HOME}}/.zshrc.local"
+    return 0
+}
+
+# locale setup
+if (( ZSH_NO_DEFAULT_LOCALE == 0 )); then
+    xsource "/etc/default/locale"
+fi
+
+for var in LANG LC_ALL LC_MESSAGES ; do
+    [[ -n ${(P)var} ]] && export $var
+done
+builtin unset -v var
+
+# set some variables
+if check_com -c nvim ; then
+    export EDITOR=${EDITOR:-nvim}
+else
+    if check_com -c vim ; then
+        #v#
+        export EDITOR=${EDITOR:-vim}
+    else
+        export EDITOR=${EDITOR:-vi}
+    fi
+fi
+
+#v#
+export PAGER=${PAGER:-less}
+
+#v#
+export MAIL=${MAIL:-/var/mail/$USER}
+
+# color setup for ls:
+check_com -c dircolors && eval $(dircolors -b)
+# color setup for ls on OS X / FreeBSD:
+isdarwin && export CLICOLOR=1
+isfreebsd && export CLICOLOR=1
+
+# do path (MacPorts, etc) setup on darwin
+if isdarwin && [[ -d /opt/local ]]; then
+    # Note: PATH gets set in /etc/zprofile on Darwin, so this can't go into
+    # zshenv.
+    PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+    MANPATH="/opt/local/share/man:$MANPATH"
+fi
+# do Fink setup on darwin
+isdarwin && xsource /sw/bin/init.sh
+
+# support colors in less
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+
+# mailchecks
+MAILCHECK=30
+
+# report about cpu-/system-/user-time of command if running longer than
+# 5 seconds
+REPORTTIME=5
+
+# watch for everyone but me and root
+watch=(notme root)
+
+# Use emacs-like key bindings by default:
+bindkey -e
+
+# Custom widgets:
+
+## beginning-of-line OR beginning-of-buffer OR beginning of history
+## by: Bart Schaefer <schaefer@brasslantern.com>, Bernhard Tittelbach
+beginning-or-end-of-somewhere() {
+    local hno=$HISTNO
+    if [[ ( "${LBUFFER[-1]}" == $'\n' && "${WIDGET}" == beginning-of* ) || \
+      ( "${RBUFFER[1]}" == $'\n' && "${WIDGET}" == end-of* ) ]]; then
+        zle .${WIDGET:s/somewhere/buffer-or-history/} "$@"
+    else
+        zle .${WIDGET:s/somewhere/line-hist/} "$@"
+        if (( HISTNO != hno )); then
+            zle .${WIDGET:s/somewhere/buffer-or-history/} "$@"
+        fi
+    fi
+}
+zle -N beginning-of-somewhere beginning-or-end-of-somewhere
+zle -N end-of-somewhere beginning-or-end-of-somewhere
+
+# add a command line to the shells history without executing it
+commit-to-history() {
+    print -s ${(z)BUFFER}
+    zle send-break
+}
+zle -N commit-to-history
+
+# only slash should be considered as a word separator:
+slash-backward-kill-word() {
+    local WORDCHARS="${WORDCHARS:s@/@}"
+    # zle backward-word
+    zle backward-kill-word
+}
+zle -N slash-backward-kill-word
+
+zleiab() {
+    emulate -L zsh
+    setopt extendedglob
+    local MATCH
+
+    LBUFFER=${LBUFFER%%(#m)[.\-+:|_a-zA-Z0-9]#}
+    LBUFFER+=${abk[$MATCH]:-$MATCH}
+}
+zle -N zleiab
+
+# press "ctrl-e d" to insert the actual date in the form yyyy-mm-dd
+insert-datestamp() { LBUFFER+=${(%):-'%D{%Y-%m-%d}'}; }
+zle -N insert-datestamp
+
+# press esc-m for inserting last typed word again (thanks to caphuso!)
+insert-last-typed-word() { zle insert-last-word -- 0 -1 };
+zle -N insert-last-typed-word;
+
+function zi-zsh-fg() {
+  if (( ${#jobstates} )); then
+    zle .push-input
+    [[ -o hist_ignore_space ]] && BUFFER=' ' || BUFFER=''
+    BUFFER="${BUFFER}fg"
+    zle .accept-line
+  else
+    zle -M 'No background jobs. Doing nothing.'
+  fi
+}
+zle -N zi-zsh-fg
+
+# run command line as user root via sudo:
+sudo-command-line() {
+    [[ -z $BUFFER ]] && zle up-history
+    if [[ $BUFFER != sudo\ * ]]; then
+        BUFFER="sudo $BUFFER"
+        CURSOR=$(( CURSOR+5 ))
+    fi
+}
+zle -N sudo-command-line
+
+### jump behind the first word on the cmdline.
+### useful to add options.
+function jump_after_first_word() {
+    local words
+    words=(${(z)BUFFER})
+
+    if (( ${#words} <= 1 )) ; then
+        CURSOR=${#BUFFER}
+    else
+        CURSOR=${#${words[1]}}
+    fi
+}
+zle -N jump_after_first_word
+
+#f5# Create directory under cursor or the selected area
+inplaceMkDirs() {
+    # Press ctrl-xM to create the directory under the cursor or the selected area.
+    # To select an area press ctrl-@ or ctrl-space and use the cursor.
+    # Use case: you type "mv abc ~/testa/testb/testc/" and remember that the
+    # directory does not exist yet -> press ctrl-XM and problem solved
+    local PATHTOMKDIR
+    if ((REGION_ACTIVE==1)); then
+        local F=$MARK T=$CURSOR
+        if [[ $F -gt $T ]]; then
+            F=${CURSOR}
+            T=${MARK}
+        fi
+        # get marked area from buffer and eliminate whitespace
+        PATHTOMKDIR=${BUFFER[F+1,T]%%[[:space:]]##}
+        PATHTOMKDIR=${PATHTOMKDIR##[[:space:]]##}
+    else
+        local bufwords iword
+        bufwords=(${(z)LBUFFER})
+        iword=${#bufwords}
+        bufwords=(${(z)BUFFER})
+        PATHTOMKDIR="${(Q)bufwords[iword]}"
+    fi
+    [[ -z "${PATHTOMKDIR}" ]] && return 1
+    PATHTOMKDIR=${~PATHTOMKDIR}
+    if [[ -e "${PATHTOMKDIR}" ]]; then
+        zle -M " path already exists, doing nothing"
+    else
+        zle -M "$(mkdir -p -v "${PATHTOMKDIR}")"
+        zle end-of-line
+    fi
+}
+zle -N inplaceMkDirs
+
+# Load a few more functions and tie them to widgets, so they can be bound:
+function zrcautozle() {
+    emulate -L zsh
+    local fnc=$1
+    zrcautoload $fnc && zle -N $fnc
+}
+
+function zrcgotwidget() {
+    (( ${+widgets[$1]} ))
+}
+
+function zrcgotkeymap() {
+    [[ -n ${(M)keymaps:#$1} ]]
+}
+
+zrcautozle insert-files
+zrcautozle edit-command-line
+zrcautozle insert-unicode-char
+if zrcautoload history-search-end; then
+    zle -N history-beginning-search-backward-end history-search-end
+    zle -N history-beginning-search-forward-end  history-search-end
+fi
+zle -C hist-complete complete-word _generic
+zstyle ':completion:hist-complete:*' completer _history
+
+
+# The actual terminal setup hooks and bindkey-calls:
+
+# An array to note missing features to ease diagnosis in case of problems.
+typeset -ga zi_missing_features
+
+function zrcbindkey() {
+    if (( ARGC )) && zrcgotwidget ${argv[-1]}; then
+        bindkey "$@"
+    fi
+}
+
+function bind2maps () {
+    local i sequence widget
+    local -a maps
+
+    while [[ "$1" != "--" ]]; do
+        maps+=( "$1" )
+        shift
+    done
+    shift
+
+    if [[ "$1" == "-s" ]]; then
+        shift
+        sequence="$1"
+    else
+        sequence="${key[$1]}"
+    fi
+    widget="$2"
+
+    [[ -z "$sequence" ]] && return 1
+
+    for i in "${maps[@]}"; do
+        zrcbindkey -M "$i" "$sequence" "$widget"
+    done
+}
+
+if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
+    function zle-smkx () {
+        emulate -L zsh
+        printf '%s' ${terminfo[smkx]}
+    }
+    function zle-rmkx () {
+        emulate -L zsh
+        printf '%s' ${terminfo[rmkx]}
+    }
+    function zle-line-init () {
+        zle-smkx
+    }
+    function zle-line-finish () {
+        zle-rmkx
+    }
+    zle -N zle-line-init
+    zle -N zle-line-finish
+else
+    for i in {s,r}mkx; do
+        (( ${+terminfo[$i]} )) || zi_missing_features+=($i)
+    done
+    unset i
+fi
+
+typeset -A key
+key=(
+    Home     "${terminfo[khome]}"
+    End      "${terminfo[kend]}"
+    Insert   "${terminfo[kich1]}"
+    Delete   "${terminfo[kdch1]}"
+    Up       "${terminfo[kcuu1]}"
+    Down     "${terminfo[kcud1]}"
+    Left     "${terminfo[kcub1]}"
+    Right    "${terminfo[kcuf1]}"
+    PageUp   "${terminfo[kpp]}"
+    PageDown "${terminfo[knp]}"
+    BackTab  "${terminfo[kcbt]}"
+)
+
+# Guidelines for adding key bindings:
+#
+#   - Do not add hardcoded escape sequences, to enable non standard key
+#     combinations such as Ctrl-Meta-Left-Cursor. They are not easily portable.
+#
+#   - Adding Ctrl characters, such as '^b' is okay; note that '^b' and '^B' are
+#     the same key.
+#
+#   - All keys from the $key[] mapping are obviously okay.
+#
+#   - Most terminals send "ESC x" when Meta-x is pressed. Thus, sequences like
+#     '\ex' are allowed in here as well.
+
+bind2maps emacs             -- Home   beginning-of-somewhere
+bind2maps       viins vicmd -- Home   vi-beginning-of-line
+bind2maps emacs             -- End    end-of-somewhere
+bind2maps       viins vicmd -- End    vi-end-of-line
+bind2maps emacs viins       -- Insert overwrite-mode
+bind2maps             vicmd -- Insert vi-insert
+bind2maps emacs             -- Delete delete-char
+bind2maps       viins vicmd -- Delete vi-delete-char
+bind2maps emacs viins vicmd -- Up     up-line-or-search
+bind2maps emacs viins vicmd -- Down   down-line-or-search
+bind2maps emacs             -- Left   backward-char
+bind2maps       viins vicmd -- Left   vi-backward-char
+bind2maps emacs             -- Right  forward-char
+bind2maps       viins vicmd -- Right  vi-forward-char
+#k# Perform abbreviation expansion
+bind2maps emacs viins       -- -s '^x.' zleiab
+#k# Display list of abbreviations that would expand
+bind2maps emacs viins       -- -s '^xb' help-show-abk
+#k# mkdir -p <dir> from string under cursor or marked area
+bind2maps emacs viins       -- -s '^xM' inplaceMkDirs
+#k# display help for keybindings and ZLE
+bind2maps emacs viins       -- -s '^xz' help-zle
+#k# Insert files and test globbing
+bind2maps emacs viins       -- -s "^xf" insert-files
+#k# Edit the current line in \kbd{\$EDITOR}
+bind2maps emacs viins       -- -s '\ee' edit-command-line
+#k# search history backward for entry beginning with typed text
+bind2maps emacs viins       -- -s '^xp' history-beginning-search-backward-end
+#k# search history forward for entry beginning with typed text
+bind2maps emacs viins       -- -s '^xP' history-beginning-search-forward-end
+#k# search history backward for entry beginning with typed text
+bind2maps emacs viins       -- PageUp history-beginning-search-backward-end
+#k# search history forward for entry beginning with typed text
+bind2maps emacs viins       -- PageDown history-beginning-search-forward-end
+bind2maps emacs viins       -- -s "^x^h" commit-to-history
+#k# Kill left-side word or everything up to next slash
+bind2maps emacs viins       -- -s '\ev' slash-backward-kill-word
+#k# Kill left-side word or everything up to next slash
+bind2maps emacs viins       -- -s '\e^h' slash-backward-kill-word
+#k# Kill left-side word or everything up to next slash
+bind2maps emacs viins       -- -s '\e^?' slash-backward-kill-word
+# Do history expansion on space:
+bind2maps emacs viins       -- -s ' ' magic-space
+#k# Trigger menu-complete
+bind2maps emacs viins       -- -s '\ei' menu-complete  # menu completion via esc-i
+#k# Insert a timestamp on the command line (yyyy-mm-dd)
+bind2maps emacs viins       -- -s '^ed' insert-datestamp
+#k# Insert last typed word
+bind2maps emacs viins       -- -s "\em" insert-last-typed-word
+#k# A smart shortcut for \kbd{fg<enter>}
+bind2maps emacs viins       -- -s '^z' zi-zsh-fg
+#k# prepend the current command with "sudo"
+bind2maps emacs viins       -- -s "^os" sudo-command-line
+#k# jump to after first word (for adding options)
+bind2maps emacs viins       -- -s '^x1' jump_after_first_word
+#k# complete word from history with menu
+bind2maps emacs viins       -- -s "^x^x" hist-complete
+
+# insert unicode character
+# usage example: 'ctrl-x i' 00A7 'ctrl-x i' will give you an §
+# See for example http://unicode.org/charts/ for unicode characters code
+#k# Insert Unicode character
+bind2maps emacs viins       -- -s '^xi' insert-unicode-char
+
+# use the new *-pattern-* widgets for incremental history search
+if zrcgotwidget history-incremental-pattern-search-backward; then
+    for seq wid in '^r' history-incremental-pattern-search-backward \
+                   '^s' history-incremental-pattern-search-forward
+    do
+        bind2maps emacs viins vicmd -- -s $seq $wid
+    done
+    builtin unset -v seq wid
+fi
+
+if zrcgotkeymap menuselect; then
+    #m# k Shift-tab Perform backwards menu completion
+    bind2maps menuselect -- BackTab reverse-menu-complete
+
+    #k# menu selection: pick item but stay in the menu
+    bind2maps menuselect -- -s '\e^M' accept-and-menu-complete
+    # also use + and INSERT since it's easier to press repeatedly
+    bind2maps menuselect -- -s '+' accept-and-menu-complete
+    bind2maps menuselect -- Insert accept-and-menu-complete
+
+    # accept a completion and try to complete again by using menu
+    # completion; very useful with completing directories
+    # by using 'undo' one's got a simple file browser
+    bind2maps menuselect -- -s '^o' accept-and-infer-next-history
+fi
+
+# Finally, here are still a few hardcoded escape sequences; Special sequences
+# like Ctrl-<Cursor-key> etc do suck a fair bit, because they are not
+# standardised and most of the time are not available in a terminals terminfo
+# entry.
+#
+# While we do not encourage adding bindings like these, we will keep these for
+# backward compatibility.
+
+## use Ctrl-left-arrow and Ctrl-right-arrow for jumping to word-beginnings on
+## the command line.
+# URxvt sequences:
+bind2maps emacs viins vicmd -- -s '\eOc' forward-word
+bind2maps emacs viins vicmd -- -s '\eOd' backward-word
+# These are for xterm:
+bind2maps emacs viins vicmd -- -s '\e[1;5C' forward-word
+bind2maps emacs viins vicmd -- -s '\e[1;5D' backward-word
+## the same for alt-left-arrow and alt-right-arrow
+# URxvt again:
+bind2maps emacs viins vicmd -- -s '\e\e[C' forward-word
+bind2maps emacs viins vicmd -- -s '\e\e[D' backward-word
+# Xterm again:
+bind2maps emacs viins vicmd -- -s '^[[1;3C' forward-word
+bind2maps emacs viins vicmd -- -s '^[[1;3D' backward-word
+# Also try ESC Left/Right:
+bind2maps emacs viins vicmd -- -s '\e'${key[Right]} forward-word
+bind2maps emacs viins vicmd -- -s '\e'${key[Left]}  backward-word
+
+
+# autoloading
+
+zrcautoload zmv
+zrcautoload zed
+
+# we don't want to quote/espace URLs on our own...
+# if autoload -U url-quote-magic ; then
+#    zle -N self-insert url-quote-magic
+#    zstyle ':url-quote-magic:*' url-metas '*?[]^()~#{}='
+# else
+#    print 'Notice: no url-quote-magic available :('
+# fi
+alias url-quote='autoload -U url-quote-magic ; zle -N self-insert url-quote-magic'
+
+#m# k ESC-h Call \kbd{run-help} for the 1st word on the command line
+alias run-help >&/dev/null && unalias run-help
+for rh in run-help{,-git,-svk,-svn}; do
+    zrcautoload $rh
+done; unset rh
+
+# history
+
+#v#
+HISTFILE=${ZDOTDIR:-${HOME}}/.zsh_history
+HISTSIZE=5000
+SAVEHIST=10000 # useful for setopt append_history
+
+# see http://www.cl.cam.ac.uk/~mgk25/unicode.html#term for details
+alias term2iso="echo 'Setting terminal to iso mode' ; print -n '\e%@'"
+alias term2utf="echo 'Setting terminal to utf-8 mode'; print -n '\e%G'"
+
+# make sure it is not assigned yet
+[[ -n ${aliases[utf2iso]} ]] && unalias utf2iso
+utf2iso() {
+    if isutfenv ; then
+        local ENV
+        for ENV in $(env | command grep -i '.utf') ; do
+            eval export "$(echo $ENV | sed 's/UTF-8/iso885915/ ; s/utf8/iso885915/')"
+        done
+    fi
+}
+
+# make sure it is not assigned yet
+[[ -n ${aliases[iso2utf]} ]] && unalias iso2utf
+iso2utf() {
+    if ! isutfenv ; then
+        local ENV
+        for ENV in $(env | command grep -i '\.iso') ; do
+            eval export "$(echo $ENV | sed 's/iso.*/UTF-8/ ; s/ISO.*/UTF-8/')"
+        done
+    fi
+}
+
+# keephack
+is4 && xsource "/etc/zsh/keephack"
+
+# make sure our environment is clean regarding colors
+for var in BLUE RED GREEN CYAN YELLOW MAGENTA WHITE ; unset $var
+builtin unset -v var
+
+# "persistent history"
+# just write important commands you always need to ~/.important_commands
+if [[ -r ~/.important_commands ]] ; then
+    fc -R ~/.important_commands
+fi
+
+# load the lookup subsystem if it's available on the system
+zrcautoload lookupinit && lookupinit
+
+# variables
+
+# set terminal property (used e.g. by msgid-chooser)
+export COLORTERM="yes"
+
+# smart cd function, allows switching to /etc when running 'cd /etc/fstab'
+cd() {
+    if (( ${#argv} == 1 )) && [[ -f ${1} ]]; then
+        [[ ! -e ${1:h} ]] && return 1
+        print "Correcting ${1} to ${1:h}"
+        builtin cd ${1:h}
+    else
+        builtin cd "$@"
+    fi
+}
+
+# use colors when GNU grep with color-support
+if (( $#grep_options > 0 )); then
+    o=${grep_options:+"${grep_options[*]}"}
+    #a2# Execute \kbd{grep -{}-color=auto}
+    alias grep='grep '$o
+    alias egrep='egrep '$o
+    unset o
+fi
+
+
+## ZSH CUSTOM LOCAL ############################################################
+
+
+# just type '...' to get '../..'
+rationalise-dot() {
+    local MATCH
+    if [[ $LBUFFER =~ '(^|/| |	|'$'\n''|\||;|&)\.\.$' ]]; then
+        LBUFFER+=/
+        zle self-insert
+        zle self-insert
+    else
+        zle self-insert
+    fi
+}
+zle -N rationalise-dot
+bindkey . rationalise-dot
+
+## without this, typing a . aborts incremental history search
+bindkey -M isearch . self-insert
+
+bindkey '\eq' push-line-or-edit
+
+
+## some popular options ##
+
+## add `|' to output redirections in the history
+#setopt histallowclobber
+
+## try to avoid the 'zsh: no matches found...'
+setopt nonomatch
+
+## warning if file exists ('cat /dev/null > ~/.zshrc')
+# setopt NO_clobber
+
+## don't warn me about bg processes when exiting
+setopt nocheckjobs
+
+## alert me if something failed
+setopt printexitvalue
+
+## Allow comments even in interactive shells
+#setopt interactivecomments
+
+
+## global aliases (for those who like them) ##
+
+alias -g '...'='../..'
+alias -g '....'='../../..'
+#alias -g BG='& exit'
+alias -g WC='| wc -c'
+alias -g WL='| wc -l'
+alias -g WW='| wc -w'
+alias -g G='| grep'
+alias -g RG='| rg'
+alias -g H='| head'
+alias -g HLP=' --help | less -r'
+#alias -g K='|keep'
+alias -g L='| less'
+alias -g LL='| less -r'
+#alias -g M='|most'
+alias -g N='&> /dev/null'
+#alias -g R='| tr A-z N-za-m'
+alias -g SL='| sort | less'
+alias -g S='| sort'
+alias -g T='| tail'
+#alias -g V='| vim -'
+alias -g NV='| xargs nvim -p'
+
+
+## miscellaneous code ##
+
+## get top 10 shell commands:
+alias top10='print -l ${(o)history%% *} | uniq -c | sort -nr | head -n 10'
+
+## Use a default width of 80 for manpages for more convenient reading
+export MANWIDTH=${MANWIDTH:-80}
+
+## Switching shell safely and efficiently? http://www.zsh.org/mla/workers/2001/msg02410.html
+bash() {
+   NO_SWITCH="yes" command bash "$@"
+}
+restart () {
+   exec $SHELL $SHELL_ARGS "$@"
+}
+
+## Memory overview
+memusage() {
+   ps aux | awk '{if (NR > 1) print $5;
+                  if (NR > 2) print "+"}
+                  END { print "p" }' | dc
+}
+
+## print hex value of a number
+hex() {
+   emulate -L zsh
+   if [[ -n "$1" ]]; then
+       printf "%x\n" $1
+   else
+       print 'Usage: hex <number-to-convert>'
+       return 1
+   fi
+}
+
+### HACKS ###
+vimhelp ()    { vim -c "help $1" -c on -c "au! VimEnter *" }
+
+## END OF FILE #################################################################
