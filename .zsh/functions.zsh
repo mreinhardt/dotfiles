@@ -17,6 +17,17 @@ strip_ansi_color() {
     perl -pe 's/\x1b\[[0-9;]*[mG]//g'
 }
 
+# Start screen saver
+ss() {
+    if [[ $OSTYPE == "darwin"* ]]; then
+        open -b com.apple.ScreenSaver.Engine
+    elif [[ $OSTYPE == "linux-gnu"* ]]; then
+        xdg-screensaver activate
+    else
+        echo "Screen saver not supported on this OS"
+    fi
+}
+
 # unzip anything
 cx() {
     if [[ -f $1 ]]; then
@@ -251,30 +262,37 @@ nv () {
 }
 rged () {
     if [[ -n $3 ]]; then
-        $RG -L -t $3 -l $1 | $RG "${2:-}" | xargs $NVIM -p
+        $RG -L -t $3 -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}" | xargs $NVIM
     else
-        $RG -L -l $1 | $RG "${2:-}" | xargs $NVIM -p
+        $RG -L -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}" | xargs $NVIM
     fi
 }
 rgud () {
     if [[ -n $3 ]]; then
-        $RG -Luuu -t $3 -l $1 | $RG "${2:-}" | xargs $NVIM -p
+        $RG -Luuu -t $3 -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}" | xargs $NVIM
     else
-        $RG -Luuu -l $1 | $RG "${2:-}" | xargs $NVIM -p
+        $RG -Luuu -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}" | xargs $NVIM
     fi
 }
-rgnded () {
+rgnd () {
     if [[ -n $3 ]]; then
-        $RG -L -t $3 -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}" | xargs $NVIM -p
+        $RG -L -t $3 -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}"
     else
-        $RG -L -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}" | xargs $NVIM -p
+        $RG -L -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}"
     fi
 }
-rgndud () {
+rgwded () {
     if [[ -n $3 ]]; then
-        $RG -Luuu -t $3 -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}" | xargs $NVIM -p
+        $RG -L -t $3 -l $1 | $RG "${2:-}" | xargs $NVIM
     else
-        $RG -Luuu -l $1 --iglob '!vendor' --iglob '!node_modules' | $RG "${2:-}" | xargs $NVIM -p
+        $RG -L -l $1 | $RG "${2:-}" | xargs $NVIM
+    fi
+}
+rgwdud () {
+    if [[ -n $3 ]]; then
+        $RG -Luuu -t $3 -l $1 | $RG "${2:-}" | xargs $NVIM
+    else
+        $RG -Luuu -l $1 | $RG "${2:-}" | xargs $NVIM
     fi
 }
 ffd () {
@@ -285,36 +303,36 @@ fp () {
 }
 ffed () {
     if [[ -n $2 ]]; then
-        $FIND . -iname "*$1*" -o -iname "*$2*" -not -path "*/.git/*" | xargs $NVIM -p
+        $FIND . -iname "*$1*" -o -iname "*$2*" -not -path "*/.git/*" | xargs $NVIM
     else
-        fd "$1" | xargs $NVIM -p
+        fd "$1" | xargs $NVIM
     fi
 }
 pyled () {
-    ruff check --ignore-noqa --output-format concise . | cut -d':' -f1 | grep -E '[.]py$' | xargs $NVIM -p
+    ruff check --ignore-noqa --output-format concise . | cut -d':' -f1 | grep -E '[.]py$' | xargs $NVIM
 }
 goled () {
     o=$(golangci-lint run --out-format=colored-tab)
     if [[ $o == "" ]]; then
         echo "[lint] PASS"
     else
-        echo $o | cut -d':' -f1 | sort -u | xargs $NVIM -c 'GoMetaLinter' -p
+        echo $o | cut -d':' -f1 | sort -u | xargs $NVIM -c 'GoMetaLinter'
     fi
 }
 gsed () {
-    git status -sb | tail -n+2 | grep -Ev '^D ' | awk '{print $NF}' | grep "${1:-}" | xargs $NVIM -p
+    git status -sb | tail -n+2 | grep -Ev '^D ' | awk '{print $NF}' | grep "${1:-}" | xargs $NVIM
 }
 gsud () {
-    git status -sb | tail -n+2 | grep -E '^U' | awk '{print $NF}' | grep "${1:-}" | xargs $NVIM -p
+    git status -sb | tail -n+2 | grep -E '^U' | awk '{print $NF}' | grep "${1:-}" | xargs $NVIM
 }
 gded () {
-    git diff --name-only "$1" "${2:-HEAD}" | xargs $NVIM -p
+    git diff --name-only "$1" "${2:-HEAD}" | xargs $NVIM
 }
 gshed () {
-    git show -U2 --name-only ${1:-HEAD} | sed -E '/^ |^$/d' | tail -n+4 | xargs $NVIM -p
+    git show -U2 --name-only ${1:-HEAD} | sed -E '/^ |^$/d' | tail -n+4 | xargs $NVIM
 }
 gshnded () {
-    git show -U2 --name-only ${1:-HEAD} | grep -v vendor | sed -E '/^ |^$/d' | tail -n+4 | xargs $NVIM -p
+    git show -U2 --name-only ${1:-HEAD} | grep -v vendor | sed -E '/^ |^$/d' | tail -n+4 | xargs $NVIM
 }
 
 # git
