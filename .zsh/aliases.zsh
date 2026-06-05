@@ -40,3 +40,11 @@ alias lgh="git lgg | head"
 alias ku=$(command -v kubectl)
 alias tf=$(command -v terraform)
 alias tg=$(command -v terragrunt)
+
+# claude
+### Claude Code launch profiles (per-session MCP loading) ###
+# Default `claude` loads zero MCPs to keep startup context lean.
+# Opt into MCPs explicitly per session via these aliases.
+alias claude-dd='claude --mcp-config ~/.claude/mcp/datadog.json'
+alias claude-slack='claude --mcp-config ~/.claude/mcp/slack.json'
+alias claude-all='claude --mcp-config ~/.claude/mcp/all.json'
