@@ -1,0 +1,15 @@
+#!/bin/zsh
+name="$(basename "$(pwd)")"
+colors=(
+    "red"
+    "blue"
+    "green"
+    "yellow"
+    "purple"
+    "orange"
+    "pink"
+    "cyan"
+)
+idx=$(( 0x$(echo -n "$name" | md5sum | cut -c 1-8) % 8 ))
+color=${colors[$idx]}
+"$HOME/.local/bin/claude" $@ -n "$name" "/color $color"
