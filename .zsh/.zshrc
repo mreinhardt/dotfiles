@@ -8,3 +8,11 @@ fpath=(/Users/mreinhardt/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+
+# Machine-local Claude env. Must be in the real shell env (Claude Code applies
+# settings.json `env` too late for startup auth + model resolution). Sourced if
+# present; no-op on machines without them.
+#   env.sh     - non-secret (base URL, model mappings, flags), tracked in overlay
+#   secrets.env - ANTHROPIC_AUTH_TOKEN, gitignored, never committed
+[ -f "$HOME/claude/env.sh" ] && source "$HOME/claude/env.sh"
+[ -f "$HOME/claude/secrets.env" ] && source "$HOME/claude/secrets.env"

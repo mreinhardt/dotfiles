@@ -45,6 +45,6 @@ alias tg=$(command -v terragrunt)
 ### Claude Code launch profiles (per-session MCP loading) ###
 # Default `claude` loads zero MCPs to keep startup context lean.
 # Opt into MCPs explicitly per session via these aliases.
-alias claude-dd='claude --mcp-config ~/.claude/mcp/datadog.json'
-alias claude-slack='claude --mcp-config ~/.claude/mcp/slack.json'
-alias claude-all='claude --mcp-config ~/.claude/mcp/all.json'
+alias claude-dd='claude --mcp-config ~/claude/mcp/datadog.json'
+alias claude-slack='claude --mcp-config ~/claude/mcp/slack.json'
+alias claude-all='claude --mcp-config ~/claude/mcp/all.json'
