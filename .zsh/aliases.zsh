@@ -47,4 +47,5 @@ alias tg=$(command -v terragrunt)
 # Opt into MCPs explicitly per session via these aliases.
 alias claude-dd='claude --mcp-config ~/claude/mcp/datadog.json'
 alias claude-slack='claude --mcp-config ~/claude/mcp/slack.json'
+alias claude-jira='claude --mcp-config ~/claude/mcp/jira.json'
 alias claude-all='claude --mcp-config ~/claude/mcp/all.json'
