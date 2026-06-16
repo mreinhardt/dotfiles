@@ -1,0 +1,161 @@
+#!/bin/zsh
+#
+zparseopts -D -E -M -- \
+  'n:=name' '-name:=name' \
+  'i:=input_path' '-input-path:=input_path' \
+  'o+:=output_paths' '-output-paths+:=output_paths' \
+  'b=backup' '-backup=backup' \
+  'r=restore' '-restore=restore' \
+  'y=yes' '-yes=yes' \
+  'v=verbose' '-verbose=verbose' \
+  'h=help' '-help=help' || return
+
+# Example opt handling:
+#
+# if [[ -n $verbose ]]; then
+#   echo "Verbose output enabled"
+# fi
+#
+# if [[ -n $input_path ]]; then
+#   echo "Input path: ${input_path[-1]}"
+# fi
+#
+# if [[ -n $output_paths ]]; then
+#   for (( i=2; i<=${#output_paths[@]}; i+=2 )); do
+#     echo "Output path: ${output_paths[$i]}"
+#   done
+# fi
+#
+# echo "Remaining arguments: $@"
+
+BASE_ENV_DIR="$HOME/.nvimenv"
+
+copy_env() {
+  local src="$1"
+  local dest="$2"
+  if [[ -n $verbose ]]; then
+    echo "rsync --exclude .git* -a --progress --delete $src/ $dest/"
+    rsync --exclude-from="$src/.nvimenv-ignore" -a --progress --delete "$src"/ "$dest"/
+    echo ""
+  else
+    rsync --exclude-from="$src/.nvimenv-ignore" -a --delete "$src"/ "$dest"/
+  fi
+}
+
+usage() {
+  echo "Usage: nvimenv [options]"
+  echo "Options:"
+  echo "  -n, --name <name>         Specify the name of the neovim env"
+  echo "  -i, --input-path <path>   Specify the input path of the neovim env"
+  echo "  -o, --output-paths <path> Specify one or more output paths to sync the neovim env to"
+  echo "  -b, --backup              Create a backup of the output paths before syncing"
+  echo "  -r, --restore             Restore neovim env from backup"
+  echo "  -y, --yes                 Skip confirmation prompts"
+  echo "  -v, --verbose             Enable verbose output"
+  echo "  -h, --help                Show this help message"
+}
+
+if [[ -n $help ]]; then
+  usage
+  exit 0
+fi
+
+### in_path ###
+if [[ -n $name ]]; then
+  in_path="$BASE_ENV_DIR/${name[-1]}"
+else
+  in_path="${input_path[-1]}"
+fi
+
+if [[ -z $in_path ]]; then
+  echo "Must specify name or input-path"
+  exit 1
+elif [[ ! -d "$in_path" ]]; then
+  echo "$in_path does not exist"
+  exit 1
+fi
+
+### out_paths ###
+if [[ -z $output_paths ]]; then
+  echo "Must specify at least one output-paths"
+  exit 1
+else
+  out_paths=()
+  for (( i=2; i<=${#output_paths[@]}; i+=2 )); do
+    out_paths+=("${output_paths[$i]}")
+  done
+fi
+
+### plan ###
+if [[ -n $verbose ]]; then
+  echo "in-path: $in_path"
+  echo "out-paths: ${out_paths}"
+  echo ""
+  # for item in "$in_path"/**/*; do
+  #   if [[ -f "$item" ]]; then
+  #     echo "file: $item"
+  #   elif [[ -d "$item" ]]; then
+  #     echo "dir:  $item"
+  #   else
+  #     echo "unknown: $item"
+  #   fi
+  # done
+  # echo ""
+fi
+
+### restore ###
+if [[ -n $restore ]]; then
+  for out_path in "${out_paths[@]}"; do
+    bak_path="${out_path}.bak"
+    if [[ (! -d "$bak_path") && -z $yes ]]; then
+      echo "Backup path ${bak_path} does not exist, not restoring"
+      continue
+    fi
+    if [[ -z $yes ]]; then
+      echo "Restore from ${bak_path} overwriting ${out_path}? [yN] "
+      read -r answer
+      if [[ $answer != "y" ]]; then
+        echo "Skipping restore for ${out_path}"
+        continue
+      fi
+    fi
+    copy_env "$bak_path" "$out_path"
+  done
+  exit 0  # always exit after restore
+fi
+
+### backup ###
+if [[ -n $backup ]]; then
+  for out_path in "${out_paths[@]}"; do
+    bak_path="${out_path}.bak"
+    if [[ (-d "$bak_path") && -z $yes ]]; then
+      echo "Backup path ${bak_path} already exists, overwrite? [yN] "
+      read -r answer
+      if [[ $answer != "y" ]]; then
+        continue
+      fi
+    elif [[ (! -d "$bak_path") && -z $yes ]]; then
+      echo "Backup path ${bak_path} does not exist, create? [yN] "
+      read -r answer
+      if [[ $answer != "y" ]]; then
+        continue
+      fi
+    fi
+    if [[ ! -d "$bak_path" ]]; then
+      mkdir -p "$bak_path"
+    fi
+    copy_env "$out_path" "$bak_path"
+  done
+fi
+
+### execute ###
+for out_path in "${out_paths[@]}"; do
+  if [[ -z $yes ]]; then
+    echo "Sync ${in_path} to ${out_path}?"
+    read -r answer
+    if [[ $answer != "y" ]]; then
+      continue
+    fi
+  fi
+  copy_env "$in_path" "$out_path"
+done

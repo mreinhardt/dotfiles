@@ -264,6 +264,12 @@ if [[ -n $(command -v mise) ]]; then
     mise install golangci-lint@1.64.8 golangci-lint@2.4.0 || true
 fi
 
+# clone neovim env(s) used by the nvimenv tool (bin/nvimenv syncs these into ~/.config/nvim)
+mkdir -p "$HOME/.nvimenv"
+if [[ ! -d "$HOME/.nvimenv/maria/.git" ]]; then
+    git clone git@github.com:mreinhardt/maria.nvim "$HOME/.nvimenv/maria" || true
+fi
+
 # install neovim python
 pip2 install --upgrade neovim \
                        pip
