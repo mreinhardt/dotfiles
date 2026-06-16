@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# golangci-lint-lsp: version-aware shim for golangci-lint-langserver.
+#
+# golangci-lint v1 and v2 take different output flags, and v2 hard-rejects a v1 config
+# (and vice versa). The config schema itself signals the major: a v2 config has a
+# top-level `version:` key (commonly `version: "2"`); a v1 config has none. This shim
+# walks up from $PWD to find the project's .golangci.{yml,yaml,toml}, detects the major,
+# and runs the matching mise-managed binary with the matching JSON output flags.
+#
+# Both versions emit the same JSON issue schema, so the langserver parses either.
+#
+# Used by nvim lsp/golangci_lint.lua. Any extra args (e.g. paths the langserver appends)
+# are passed through after the output flags.
+#
+# Requires the two versions to be installed via mise:
+#   mise install golangci-lint@1.64.8 golangci-lint@2.4.0
+
+set -euo pipefail
+
+# Resolve mise from PATH (portable across Linux/macOS), with common fallbacks for the
+# thin PATH that GUI-launched editors may have.
+MISE="$(command -v mise || true)"
+for candidate in /opt/homebrew/bin/mise /usr/local/bin/mise "$HOME/.local/bin/mise"; do
+	[[ -n "$MISE" ]] && break
+	[[ -x "$candidate" ]] && MISE="$candidate"
+done
+if [[ -z "$MISE" ]]; then
+	echo "golangci-lint-lsp: mise not found on PATH" >&2
+	exit 127
+fi
+
+V1=1.64.8
+V2=2.4.0
+
+# Find the nearest golangci config walking up from the current directory.
+find_config() {
+	local dir="$PWD"
+	while [[ "$dir" != "/" ]]; do
+		for name in .golangci.yml .golangci.yaml .golangci.toml; do
+			if [[ -f "$dir/$name" ]]; then
+				printf '%s\n' "$dir/$name"
+				return 0
+			fi
+		done
+		dir="$(dirname "$dir")"
+	done
+	return 1
+}
+
+# Decide the major version from the config.
+# v2 iff a top-level `version:` key is present (YAML or TOML). Default v1 otherwise --
+# matching golangci's own treatment of a versionless config as the v1 schema.
+detect_major() {
+	local cfg="$1"
+	[[ -z "$cfg" ]] && { echo 1; return; }
+
+	case "$cfg" in
+	*.toml)
+		# TOML: top-level `version = "2"` / `version = 2`
+		if grep -Eq '^[[:space:]]*version[[:space:]]*=' "$cfg"; then echo 2; else echo 1; fi
+		;;
+	*)
+		# YAML: top-level `version:` key (column 0, not nested/indented, not a comment)
+		if grep -Eq '^version[[:space:]]*:' "$cfg"; then echo 2; else echo 1; fi
+		;;
+	esac
+}
+
+cfg="$(find_config || true)"
+major="$(detect_major "$cfg")"
+
+if [[ "$major" == "2" ]]; then
+	exec "$MISE" exec "golangci-lint@${V2}" -- golangci-lint run \
+		--issues-exit-code=1 \
+		--output.json.path stdout \
+		--show-stats=false \
+		"$@"
+else
+	exec "$MISE" exec "golangci-lint@${V1}" -- golangci-lint run \
+		--issues-exit-code=1 \
+		--out-format=json \
+		"$@"
+fi

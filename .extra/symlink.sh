@@ -24,6 +24,7 @@ ln -sfv "$DOTFILES_REPO_DIR/.zsh/.prompts/sfz/prompt_sfz_setup" "$HOME/.zsh/.zfu
 mkdir -p "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/0x2ip" "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/claude" "$HOME/bin"
+ln -sfv "$DOTFILES_REPO_DIR/bin/golangci-lint-lsp" "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/gpull" "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/gpush" "$HOME/bin"
 ln -sfv "$DOTFILES_REPO_DIR/bin/grd" "$HOME/bin"

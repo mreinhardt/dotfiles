@@ -229,6 +229,7 @@ elif [[ $PLATFORM == "Darwin" ]]; then
                  leiningen \
                  lolcat \
                  mas \
+                 mise \
                  mobile-shell \
                  ncdu \
                  neovim/neovim/neovim \
@@ -238,6 +239,7 @@ elif [[ $PLATFORM == "Darwin" ]]; then
                  postgresql \
                  python3 \
                  rogue \
+                 shellcheck \
                  the_silver_searcher \
                  tig \
                  tmux \
@@ -253,6 +255,13 @@ elif [[ $PLATFORM == "Darwin" ]]; then
     brew upgrade --cleanup
     brew prune
 
+fi
+
+# install mise-managed tools
+# golangci-lint: both majors pinned so the golangci-lint-lsp shim (bin/) can pick the one
+# matching each project's .golangci config. v1.64.8 is also what conductor CI uses.
+if [[ -n $(command -v mise) ]]; then
+    mise install golangci-lint@1.64.8 golangci-lint@2.4.0 || true
 fi
 
 # install neovim python
