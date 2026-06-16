@@ -36,6 +36,7 @@ cx() {
           *.tar.gz) tar xvzf $1;;
           *.tar.xz) tar xvJf $1;;
           *.tar.lzma) tar --lzma xvf $1;;
+          *.tar.zst) tar --use-compress-program=unzstd -xvf $1;;
           *.rar) unrar $1;;
           *.gz) gunzip $1;;
           *.tar) tar xvf $1;;
@@ -407,6 +408,16 @@ man() {
     indent_count=$(echo "($(tput cols) - 80) / 2" | bc)
     indent=$(seq -s' ' ${indent_count} | tr -d '[:digit:]')
     command man $@ | sed "s/^/${indent}/" | less -isR
+}
+
+# notion
+notion_unpack() {
+    cp "$1" . &>/dev/null || true
+    unzip "$1"
+    unzip ExportBlock-*.zip
+    cp -R "Private & Shared/"* .
+    rm -rf "Private & Shared"
+    rm ExportBlock-*.zip
 }
 
 # docker stuff
