@@ -4,9 +4,9 @@
 [[ -r "${ZDOTDIR:-${HOME}}/.zshrc.local" ]] && source "${ZDOTDIR:-$HOME}/.zshrc.local"
 [[ -r "${ZDOTDIR:-${HOME}}/.zshrc.post.zi" ]] && source "${ZDOTDIR:-${HOME}}/.zshrc.post.zi"
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/mreinhardt/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
+# fpath=("$HOME/.docker/completions" $fpath)
+# autoload -Uz compinit
+# compinit
 # End of Docker CLI completions
 
 # Machine-local Claude env. Must be in the real shell env (Claude Code applies
