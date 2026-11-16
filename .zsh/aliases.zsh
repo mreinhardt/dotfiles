@@ -50,5 +50,7 @@ alias claude-slack='claude --mcp-config ~/claude/mcp/slack.json'
 alias claude-jira='claude --mcp-config ~/claude/mcp/jira.json'
 alias claude-all='claude --mcp-config ~/claude/mcp/all.json'
 
+alias piu="$(command -v pi) update && $(command -v pi) update --extensions"
+
 alias python=$(command -v python3)
 alias pip=$(command -v pip3)
