@@ -7,9 +7,6 @@
 
 ### GRML OVERRIDES ###
 
-# Custom prompt
-prompt sfz
-
 # Start polybar
 # if [[ $(pgrep polybar) == '' ]]; then
 #     monitor_index=1

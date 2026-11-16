@@ -227,7 +227,28 @@ pfx_crt () {
     openssl pkcs12 -in "$1" -clcerts -nokeys -out "$(echo $1 | sed 's/[.]pfx$/.crt/')"
 }
 
-# lazy load nvm, node, npm
+# Put NVM's configured default first on PATH without running nvm at startup.
+# Otherwise tools that invoke node directly use asdf's version until nvm loads.
+export NVM_DIR="$HOME/.nvm"
+if [[ -r "$NVM_DIR/alias/default" ]]; then
+    nvm_default=$(<"$NVM_DIR/alias/default")
+    for (( nvm_alias_depth = 0; nvm_alias_depth < 3; nvm_alias_depth++ )); do
+        if [[ $nvm_default == 'lts/*' ]]; then
+            [[ -r "$NVM_DIR/alias/lts/*" ]] || break
+            nvm_default=$(<"$NVM_DIR/alias/lts/*")
+        elif [[ $nvm_default == lts/* && -r "$NVM_DIR/alias/$nvm_default" ]]; then
+            nvm_default=$(<"$NVM_DIR/alias/$nvm_default")
+        else
+            break
+        fi
+    done
+    if [[ $nvm_default == v<->.<->.<-> && -x "$NVM_DIR/versions/node/$nvm_default/bin/node" ]]; then
+        export PATH="$NVM_DIR/versions/node/$nvm_default/bin:$PATH"
+    fi
+    unset nvm_default nvm_alias_depth
+fi
+
+# Load nvm itself only when invoking nvm, node, or npm.
 init_nvm() {
     export NVM_DIR="$HOME/.nvm"
     export NVM_INIT="$(brew --prefix nvm)/nvm.sh"
